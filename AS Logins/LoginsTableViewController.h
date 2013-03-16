@@ -1,5 +1,5 @@
 //
-//  ViewController.h
+//  LoginsTableViewController.h
 //  AS Logins
 //
 //  Created by Robbie Clarken on 17/03/13.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ViewController : UIViewController
+@interface LoginsTableViewController : UITableViewController
 
 @end
