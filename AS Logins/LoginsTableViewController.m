@@ -7,9 +7,9 @@
 //
 
 #import "LoginsTableViewController.h"
-#import "EditLoginTableViewController.h"
+#import "EditLoginViewController.h"
 
-@interface LoginsTableViewController () <EditLoginTableViewControllerDelegate>
+@interface LoginsTableViewController () <EditLoginViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *groups;
 
@@ -37,7 +37,11 @@
 
 #pragma mark - Login edit delegate
 
-- (void)cancelEditLogin {
+- (void)editLoginTableViewControllerDidCancel:(EditLoginViewController *)editLoginViewController {
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
+}
+
+- (void)editLoginTableViewControllerDidSave:(EditLoginViewController *)editLoginViewController {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
@@ -120,8 +124,8 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[EditLoginTableViewController class]]) {
-        EditLoginTableViewController *destinationViewController = (EditLoginTableViewController *)segue.destinationViewController;
+    if ([segue.destinationViewController isKindOfClass:[EditLoginViewController class]]) {
+        EditLoginViewController *destinationViewController = (EditLoginViewController *)segue.destinationViewController;
         destinationViewController.delegate = self;
     }
 }

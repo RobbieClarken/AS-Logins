@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DC5E5F0A16F64CF700FC84EC /* ASLoginsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F0816F64CF700FC84EC /* ASLoginsModel.xcdatamodeld */; };
 		DCB6556E16F4F53E00205396 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6556D16F4F53E00205396 /* UIKit.framework */; };
 		DCB6557016F4F53E00205396 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6556F16F4F53E00205396 /* Foundation.framework */; };
 		DCB6557216F4F53E00205396 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6557116F4F53E00205396 /* CoreGraphics.framework */; };
@@ -18,10 +19,11 @@
 		DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558316F4F53E00205396 /* Default-568h@2x.png */; };
 		DCB6558716F4F53E00205396 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */; };
 		DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* LoginsTableViewController.m */; };
-		DCB6559516F503C900205396 /* EditLoginTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* EditLoginTableViewController.m */; };
+		DCB6559516F503C900205396 /* EditLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* EditLoginViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		DC5E5F0916F64CF700FC84EC /* ASLoginsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ASLoginsModel.xcdatamodel; sourceTree = "<group>"; };
 		DCB6556A16F4F53E00205396 /* AS Logins.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AS Logins.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB6556D16F4F53E00205396 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCB6556F16F4F53E00205396 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -38,8 +40,8 @@
 		DCB6558616F4F53E00205396 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		DCB6559016F4F6B900205396 /* LoginsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTableViewController.h; sourceTree = "<group>"; };
 		DCB6559116F4F6B900205396 /* LoginsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTableViewController.m; sourceTree = "<group>"; };
-		DCB6559316F503C900205396 /* EditLoginTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLoginTableViewController.h; sourceTree = "<group>"; };
-		DCB6559416F503C900205396 /* EditLoginTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLoginTableViewController.m; sourceTree = "<group>"; };
+		DCB6559316F503C900205396 /* EditLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLoginViewController.h; sourceTree = "<group>"; };
+		DCB6559416F503C900205396 /* EditLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLoginViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -88,6 +90,7 @@
 			children = (
 				DCB6559616F503D600205396 /* View Controllers */,
 				DCB6557C16F4F53E00205396 /* AppDelegate.h */,
+				DC5E5F0816F64CF700FC84EC /* ASLoginsModel.xcdatamodeld */,
 				DCB6557D16F4F53E00205396 /* AppDelegate.m */,
 				DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */,
 				DCB6557416F4F53E00205396 /* Supporting Files */,
@@ -112,8 +115,8 @@
 		DCB6559616F503D600205396 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				DCB6559316F503C900205396 /* EditLoginTableViewController.h */,
-				DCB6559416F503C900205396 /* EditLoginTableViewController.m */,
+				DCB6559316F503C900205396 /* EditLoginViewController.h */,
+				DCB6559416F503C900205396 /* EditLoginViewController.m */,
 				DCB6559016F4F6B900205396 /* LoginsTableViewController.h */,
 				DCB6559116F4F6B900205396 /* LoginsTableViewController.m */,
 			);
@@ -189,7 +192,8 @@
 				DCB6557A16F4F53E00205396 /* main.m in Sources */,
 				DCB6557E16F4F53E00205396 /* AppDelegate.m in Sources */,
 				DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */,
-				DCB6559516F503C900205396 /* EditLoginTableViewController.m in Sources */,
+				DCB6559516F503C900205396 /* EditLoginViewController.m in Sources */,
+				DC5E5F0A16F64CF700FC84EC /* ASLoginsModel.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,8 +316,22 @@
 				DCB6558F16F4F53E00205396 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		DC5E5F0816F64CF700FC84EC /* ASLoginsModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				DC5E5F0916F64CF700FC84EC /* ASLoginsModel.xcdatamodel */,
+			);
+			currentVersion = DC5E5F0916F64CF700FC84EC /* ASLoginsModel.xcdatamodel */;
+			path = ASLoginsModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = DCB6556216F4F53E00205396 /* Project object */;
 }

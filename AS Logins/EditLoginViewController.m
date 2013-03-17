@@ -1,18 +1,18 @@
 //
-//  EditLoginTableViewController.m
+//  EditLoginViewController.m
 //  AS Logins
 //
 //  Created by Robbie Clarken on 17/03/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
-#import "EditLoginTableViewController.h"
+#import "EditLoginViewController.h"
 
-@interface EditLoginTableViewController ()
+@interface EditLoginViewController ()
 
 @end
 
-@implementation EditLoginTableViewController
+@implementation EditLoginViewController
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -34,11 +34,12 @@
 }
 
 - (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
-    [self.delegate cancelEditLogin];
+    [self.delegate editLoginTableViewControllerDidCancel:self];
 }
 
 
 - (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
+    [self.delegate editLoginTableViewControllerDidCancel:self];
 }
 
 
@@ -66,6 +67,10 @@
     cell.textLabel.text = @"Hostname";
     cell.detailTextLabel.text = @"";
     
+    CGFloat linePosition = floorf((cell.textLabel.frame.origin.x + cell.textLabel.frame.size.width + cell.detailTextLabel.frame.origin.x)/2.0f);
+    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(linePosition, 0, 1, cell.contentView.bounds.size.height)];
+    lineView.backgroundColor = self.tableView.separatorColor;
+    [cell.contentView addSubview:lineView];
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.detailTextLabel.frame.origin.x];
     NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
