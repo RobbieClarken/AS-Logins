@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		DC5E5F0A16F64CF700FC84EC /* ASLoginsModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F0816F64CF700FC84EC /* ASLoginsModel.xcdatamodeld */; };
+		DC5E5F1616F64EE600FC84EC /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F1516F64EE600FC84EC /* Group.m */; };
+		DC5E5F1916F64EE700FC84EC /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F1816F64EE600FC84EC /* Device.m */; };
+		DC5E5F1C16F64EE700FC84EC /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F1B16F64EE700FC84EC /* Login.m */; };
 		DCB6556E16F4F53E00205396 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6556D16F4F53E00205396 /* UIKit.framework */; };
 		DCB6557016F4F53E00205396 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6556F16F4F53E00205396 /* Foundation.framework */; };
 		DCB6557216F4F53E00205396 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6557116F4F53E00205396 /* CoreGraphics.framework */; };
@@ -24,6 +27,12 @@
 
 /* Begin PBXFileReference section */
 		DC5E5F0916F64CF700FC84EC /* ASLoginsModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ASLoginsModel.xcdatamodel; sourceTree = "<group>"; };
+		DC5E5F1416F64EE600FC84EC /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		DC5E5F1516F64EE600FC84EC /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		DC5E5F1716F64EE600FC84EC /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
+		DC5E5F1816F64EE600FC84EC /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		DC5E5F1A16F64EE700FC84EC /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
+		DC5E5F1B16F64EE700FC84EC /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
 		DCB6556A16F4F53E00205396 /* AS Logins.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AS Logins.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB6556D16F4F53E00205396 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCB6556F16F4F53E00205396 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -91,6 +100,12 @@
 				DCB6559616F503D600205396 /* View Controllers */,
 				DCB6557C16F4F53E00205396 /* AppDelegate.h */,
 				DC5E5F0816F64CF700FC84EC /* ASLoginsModel.xcdatamodeld */,
+				DC5E5F1A16F64EE700FC84EC /* Login.h */,
+				DC5E5F1B16F64EE700FC84EC /* Login.m */,
+				DC5E5F1716F64EE600FC84EC /* Device.h */,
+				DC5E5F1816F64EE600FC84EC /* Device.m */,
+				DC5E5F1416F64EE600FC84EC /* Group.h */,
+				DC5E5F1516F64EE600FC84EC /* Group.m */,
 				DCB6557D16F4F53E00205396 /* AppDelegate.m */,
 				DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */,
 				DCB6557416F4F53E00205396 /* Supporting Files */,
@@ -194,6 +209,9 @@
 				DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */,
 				DCB6559516F503C900205396 /* EditLoginViewController.m in Sources */,
 				DC5E5F0A16F64CF700FC84EC /* ASLoginsModel.xcdatamodeld in Sources */,
+				DC5E5F1616F64EE600FC84EC /* Group.m in Sources */,
+				DC5E5F1916F64EE700FC84EC /* Device.m in Sources */,
+				DC5E5F1C16F64EE700FC84EC /* Login.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
