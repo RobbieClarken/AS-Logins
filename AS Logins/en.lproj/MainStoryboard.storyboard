@@ -40,11 +40,68 @@
                             <outlet property="delegate" destination="Kfq-tj-6c8" id="I1j-5l-kCE"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Logins" id="BTx-wU-h8q"/>
+                    <navigationItem key="navigationItem" title="Logins" id="BTx-wU-h8q">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="CZo-2x-sLm">
+                            <connections>
+                                <segue destination="7IQ-3h-sxY" kind="modal" id="f6Q-qB-1x0"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LlI-t0-VET" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="869" y="-76"/>
+        </scene>
+        <!--Edit Login Table View Controller-->
+        <scene sceneID="VMt-oW-dR9">
+            <objects>
+                <tableViewController id="7IQ-3h-sxY" customClass="EditLoginTableViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8n7-V6-7bx">
+                        <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                        <navigationBar key="tableHeaderView" contentMode="scaleToFill" id="Ywe-c9-jBR">
+                            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                            <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
+                            <items>
+                                <navigationItem title="[Title]" id="V37-Av-uDi">
+                                    <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="GSX-oN-TD9"/>
+                                    <barButtonItem key="rightBarButtonItem" systemItem="done" id="T5t-rF-oE2"/>
+                                </navigationItem>
+                            </items>
+                        </navigationBar>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableLoginCell" textLabel="Gyo-DN-nGS" detailTextLabel="2Ze-0z-fMn" style="IBUITableViewCellStyleValue2" id="cRg-PY-LRJ">
+                                <rect key="frame" x="0.0" y="80" width="320" height="46"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gyo-DN-nGS">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                            <color key="textColor" red="0.32156862745098042" green="0.40000000000000002" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Ze-0z-fMn">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="7IQ-3h-sxY" id="iKb-Zq-6uB"/>
+                            <outlet property="delegate" destination="7IQ-3h-sxY" id="lOm-R5-Dk2"/>
+                        </connections>
+                    </tableView>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="GZQ-Ta-vrK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1408" y="-279"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RWx-23-E0s">
@@ -66,6 +123,9 @@
         </scene>
     </scenes>
     <classes>
+        <class className="EditLoginTableViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditLoginTableViewController.h"/>
+        </class>
         <class className="LoginsTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/LoginsTableViewController.h"/>
         </class>

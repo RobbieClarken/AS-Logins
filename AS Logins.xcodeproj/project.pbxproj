@@ -18,6 +18,7 @@
 		DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558316F4F53E00205396 /* Default-568h@2x.png */; };
 		DCB6558716F4F53E00205396 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */; };
 		DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* LoginsTableViewController.m */; };
+		DCB6559516F503C900205396 /* EditLoginTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* EditLoginTableViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -37,6 +38,8 @@
 		DCB6558616F4F53E00205396 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		DCB6559016F4F6B900205396 /* LoginsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTableViewController.h; sourceTree = "<group>"; };
 		DCB6559116F4F6B900205396 /* LoginsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTableViewController.m; sourceTree = "<group>"; };
+		DCB6559316F503C900205396 /* EditLoginTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLoginTableViewController.h; sourceTree = "<group>"; };
+		DCB6559416F503C900205396 /* EditLoginTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLoginTableViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,11 +86,10 @@
 		DCB6557316F4F53E00205396 /* AS Logins */ = {
 			isa = PBXGroup;
 			children = (
+				DCB6559616F503D600205396 /* View Controllers */,
 				DCB6557C16F4F53E00205396 /* AppDelegate.h */,
 				DCB6557D16F4F53E00205396 /* AppDelegate.m */,
 				DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */,
-				DCB6559016F4F6B900205396 /* LoginsTableViewController.h */,
-				DCB6559116F4F6B900205396 /* LoginsTableViewController.m */,
 				DCB6557416F4F53E00205396 /* Supporting Files */,
 			);
 			path = "AS Logins";
@@ -105,6 +107,17 @@
 				DCB6558316F4F53E00205396 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		DCB6559616F503D600205396 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				DCB6559316F503C900205396 /* EditLoginTableViewController.h */,
+				DCB6559416F503C900205396 /* EditLoginTableViewController.m */,
+				DCB6559016F4F6B900205396 /* LoginsTableViewController.h */,
+				DCB6559116F4F6B900205396 /* LoginsTableViewController.m */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -176,6 +189,7 @@
 				DCB6557A16F4F53E00205396 /* main.m in Sources */,
 				DCB6557E16F4F53E00205396 /* AppDelegate.m in Sources */,
 				DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */,
+				DCB6559516F503C900205396 /* EditLoginTableViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
