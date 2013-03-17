@@ -7,8 +7,9 @@
 //
 
 #import "LoginsTableViewController.h"
+#import "EditLoginTableViewController.h"
 
-@interface LoginsTableViewController ()
+@interface LoginsTableViewController () <EditLoginTableViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *groups;
 
@@ -34,9 +35,10 @@
                     @"X-Ray Fluorescence"];
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - Login edit delegate
+
+- (void)cancelEditLogin {
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
 #pragma mark - Table view data source
@@ -48,14 +50,16 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 0;
+    return 1;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"Cell";
+    static NSString *CellIdentifier = @"LoginCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     // Configure the cell...
+    cell.textLabel.text = @"Text";
+    cell.detailTextLabel.text = @"Detail Text";
     
     return cell;
 }
@@ -105,8 +109,7 @@
 
 #pragma mark - Table view delegate
 
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
-{
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -114,6 +117,13 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.destinationViewController isKindOfClass:[EditLoginTableViewController class]]) {
+        EditLoginTableViewController *destinationViewController = (EditLoginTableViewController *)segue.destinationViewController;
+        destinationViewController.delegate = self;
+    }
 }
 
 @end

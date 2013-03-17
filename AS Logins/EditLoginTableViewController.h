@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol EditLoginTableViewControllerDelegate <NSObject>
+
+- (void)cancelEditLogin;
+
+@end
+
 @interface EditLoginTableViewController : UITableViewController
+
+@property (nonatomic, weak) id <EditLoginTableViewControllerDelegate> delegate;
 
 @end

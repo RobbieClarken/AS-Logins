@@ -33,6 +33,15 @@
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
+- (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
+    [self.delegate cancelEditLogin];
+}
+
+
+- (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
+}
+
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -50,13 +59,17 @@
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
     CGRect textFrame = cell.detailTextLabel.frame;
-    textFrame.size.width = cell.contentView.frame.size.width - textFrame.origin.x;
     UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
     textField.font = cell.detailTextLabel.font;
     textField.text = @"host";
     [cell.contentView addSubview:textField];
     cell.textLabel.text = @"Hostname";
     cell.detailTextLabel.text = @"";
+    
+    textField.translatesAutoresizingMaskIntoConstraints = NO;
+    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.detailTextLabel.frame.origin.x];
+    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
+    [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
     
     return cell;
 }
@@ -93,6 +106,7 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSLog(@"this works");
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
