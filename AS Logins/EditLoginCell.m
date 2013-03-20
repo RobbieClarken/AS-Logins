@@ -11,6 +11,7 @@
 @interface EditLoginCell()
 
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *usernameLeftHConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *passwordRightHConstraint;
 
 @end
 
@@ -27,10 +28,13 @@
 
 - (void)awakeFromNib {
     [self removeConstraint:self.usernameLeftHConstraint];
+    [self removeConstraint:self.passwordRightHConstraint];
+    
     // TODO: Get the standard spacing from somewhere smart or use visual format
     CGFloat standardSpacing = 8.0f;
-    NSLayoutConstraint *constraint = [NSLayoutConstraint constraintWithItem:self.usernameTextField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:standardSpacing];
-    [self addConstraint:constraint];
+    NSLayoutConstraint *newUsernameLeftHConstraint = [NSLayoutConstraint constraintWithItem:self.usernameTextField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:standardSpacing];
+    NSLayoutConstraint *newPasswordRightHConstraint = [NSLayoutConstraint constraintWithItem:self.passwordTextField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:-standardSpacing];
+    [self addConstraints:@[newUsernameLeftHConstraint, newPasswordRightHConstraint]];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

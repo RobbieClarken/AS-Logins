@@ -142,6 +142,7 @@
                                     <constraint firstItem="2xD-Xc-S2X" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="wFG-pP-8Iw"/>
                                 </constraints>
                                 <connections>
+                                    <outlet property="passwordRightHConstraint" destination="9Ne-y6-Y6E" id="8bS-a9-0uI"/>
                                     <outlet property="passwordTextField" destination="2xD-Xc-S2X" id="WFU-1g-QGc"/>
                                     <outlet property="usernameLeftHConstraint" destination="vGw-Ar-SMh" id="MGd-9Q-8be"/>
                                     <outlet property="usernameTextField" destination="gKA-dR-ISQ" id="0NS-xH-mWJ"/>
