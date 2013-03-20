@@ -13,9 +13,9 @@
 
 @implementation Device
 
-@dynamic name;
 @dynamic hostname;
 @dynamic ip;
+@dynamic name;
 @dynamic url;
 @dynamic group;
 @dynamic logins;

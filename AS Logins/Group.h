@@ -15,14 +15,19 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * position;
-@property (nonatomic, retain) NSSet *devices;
+@property (nonatomic, retain) NSOrderedSet *devices;
 @end
 
 @interface Group (CoreDataGeneratedAccessors)
 
+- (void)insertObject:(Device *)value inDevicesAtIndex:(NSUInteger)idx;
+- (void)removeObjectFromDevicesAtIndex:(NSUInteger)idx;
+- (void)insertDevices:(NSArray *)value atIndexes:(NSIndexSet *)indexes;
+- (void)removeDevicesAtIndexes:(NSIndexSet *)indexes;
+- (void)replaceObjectInDevicesAtIndex:(NSUInteger)idx withObject:(Device *)value;
+- (void)replaceDevicesAtIndexes:(NSIndexSet *)indexes withDevices:(NSArray *)values;
 - (void)addDevicesObject:(Device *)value;
 - (void)removeDevicesObject:(Device *)value;
-- (void)addDevices:(NSSet *)values;
-- (void)removeDevices:(NSSet *)values;
-
+- (void)addDevices:(NSOrderedSet *)values;
+- (void)removeDevices:(NSOrderedSet *)values;
 @end

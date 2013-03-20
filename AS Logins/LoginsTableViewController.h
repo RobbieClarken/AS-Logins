@@ -10,4 +10,6 @@
 
 @interface LoginsTableViewController : UITableViewController
 
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
 @end

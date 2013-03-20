@@ -12,8 +12,8 @@
 
 @implementation Login
 
-@dynamic username;
 @dynamic password;
+@dynamic username;
 @dynamic device;
 
 @end

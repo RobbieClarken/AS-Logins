@@ -6,12 +6,12 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="group" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="devices" inverseEntity="Group" syncable="YES"/>
-        <relationship name="logins" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Login" inverseName="device" inverseEntity="Login" syncable="YES"/>
+        <relationship name="logins" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Login" inverseName="device" inverseEntity="Login" syncable="YES"/>
     </entity>
     <entity name="Group" representedClassName="Group" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 16" defaultValueString="0" syncable="YES"/>
-        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="Device" inverseName="group" inverseEntity="Device" syncable="YES"/>
+        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Device" inverseName="group" inverseEntity="Device" syncable="YES"/>
     </entity>
     <entity name="Login" representedClassName="Login" syncable="YES">
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
@@ -19,8 +19,8 @@
         <relationship name="device" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Device" inverseName="logins" inverseEntity="Device" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Group" positionX="36" positionY="60" width="128" height="88"/>
         <element name="Device" positionX="250" positionY="57" width="128" height="133"/>
+        <element name="Group" positionX="36" positionY="60" width="128" height="88"/>
         <element name="Login" positionX="439" positionY="63" width="128" height="88"/>
     </elements>
 </model>

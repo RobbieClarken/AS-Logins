@@ -13,8 +13,8 @@
 
 @interface Login : NSManagedObject
 
-@property (nonatomic, retain) NSString * username;
 @property (nonatomic, retain) NSString * password;
+@property (nonatomic, retain) NSString * username;
 @property (nonatomic, retain) Device *device;
 
 @end

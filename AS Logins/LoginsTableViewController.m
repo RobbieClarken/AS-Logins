@@ -8,10 +8,13 @@
 
 #import "LoginsTableViewController.h"
 #import "EditLoginViewController.h"
+#import "Group.h"
+#import "Device.h"
 
 @interface LoginsTableViewController () <EditLoginViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *groups;
+@property (nonatomic, strong) UIManagedDocument *localDatabase;
 
 @end
 
@@ -27,12 +30,17 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    self.groups = @[@"IR Microscope",
-                    @"Far-IR",
-                    @"Micro Crystallography",
-                    @"Macromolecular Crystallography",
-                    @"X-Ray Fluorescence"];
+    self.groups = @[];
+    /*
+    [DatabaseHelper openDatabaseUsingBlock:^(UIManagedDocument *database) {
+        self.localDatabase = database;
+    }];
+    */
+}
+
+- (Device *)deviceForIndexPath:(NSIndexPath *)indexPath {
+    Group *group = self.groups[indexPath.section];
+    return group.devices[indexPath.row];
 }
 
 #pragma mark - Login edit delegate
@@ -54,22 +62,22 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 1;
+    return [[(Group *)self.groups[section] devices] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"LoginCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    // Configure the cell...
-    cell.textLabel.text = @"Text";
-    cell.detailTextLabel.text = @"Detail Text";
+    Device *device = [self deviceForIndexPath:indexPath];
+    cell.textLabel.text = device.name;
+    cell.detailTextLabel.text = device.hostname;
     
     return cell;
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    return self.groups[section];
+    return [(Group *)self.groups[section] name];
 }
 
 /*
