@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Device.h"
 
 @class EditDeviceViewController;
 
@@ -19,6 +20,7 @@
 
 @interface EditDeviceViewController : UITableViewController
 
-@property (nonatomic, weak) id <EditLoginViewControllerDelegate> delegate;
+@property (weak, nonatomic) Device *device;
+@property (weak, nonatomic) id <EditLoginViewControllerDelegate> delegate;
 
 @end

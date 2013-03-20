@@ -7,6 +7,7 @@
 //
 
 #import "EditDeviceViewController.h"
+#import "Login.h"
 
 @interface EditDeviceViewController ()
 
@@ -42,45 +43,103 @@
     [self.delegate editLoginTableViewControllerDidCancel:self];
 }
 
-
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     // Return the number of sections.
-    return 1;
+    return 1 + [self.device.logins count] + 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     // Return the number of rows in the section.
-    return 1;
+    if (section == 0) {
+        return 4;
+    } else {
+        return 2;
+    }
+}
+
+- (Login *)loginForRow:(NSUInteger)row {
+    NSOrderedSet *logins = self.device.logins;
+    if (row < [logins count]) {
+        return [logins objectAtIndex:row];
+    } else {
+        return nil;
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"EditableLoginCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
-    CGRect textFrame = cell.detailTextLabel.frame;
-    UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
-    textField.font = cell.detailTextLabel.font;
-    textField.text = @"host";
-    [cell.contentView addSubview:textField];
-    cell.textLabel.text = @"Hostname";
+    NSString *cellIdentifier;
+    if (indexPath.section == 0) {
+        cellIdentifier = @"EditableDeviceFieldCell";
+    } else {
+        cellIdentifier = @"EditableLoginFieldCell";
+    }
+    NSLog(@"new row for [%u, %u]", indexPath.section, indexPath.row);
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
     cell.detailTextLabel.text = @"";
-    
-    CGFloat linePosition = floorf((cell.textLabel.frame.origin.x + cell.textLabel.frame.size.width + cell.detailTextLabel.frame.origin.x)/2.0f);
-    UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(linePosition, 0, 1, cell.contentView.bounds.size.height)];
-    lineView.backgroundColor = self.tableView.separatorColor;
-    [cell.contentView addSubview:lineView];
-    textField.translatesAutoresizingMaskIntoConstraints = NO;
-    NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.detailTextLabel.frame.origin.x];
-    NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
-    [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
-    
+    if (indexPath.section == 0) {
+        CGRect textFrame = cell.textLabel.frame;
+        UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
+        textField.font = cell.textLabel.font;
+        switch (indexPath.row) {
+            case 0:
+                textField.placeholder = @"Name";
+                textField.keyboardType = UIKeyboardTypeDefault;
+                textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+                break;
+            case 1:
+                textField.placeholder = @"Hostname";
+                textField.keyboardType = UIKeyboardTypeDefault;
+                textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+                break;
+            case 2:
+                textField.placeholder = @"IP";
+                textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+                textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                break;
+            case 3:
+                textField.placeholder = @"URL";
+                textField.keyboardType = UIKeyboardTypeURL;
+                textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                break;
+        }
+        cell.textLabel.text = @"";
+        [cell.contentView addSubview:textField];
+        textField.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.textLabel.frame.origin.x];
+        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
+        [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
+    } else {
+        Login *login = [self loginForRow:indexPath.row];
+        CGRect textFrame = cell.detailTextLabel.frame;
+        UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
+        textField.font = cell.detailTextLabel.font;
+        if (indexPath.row == 0) {
+            cell.textLabel.text = @"username";
+            textField.text = login.username;
+            textField.placeholder = @"Username";
+        } else {
+            cell.textLabel.text = @"password";
+            textField.text = login.password;
+            textField.placeholder = @"Password";
+        }
+        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+        [cell.contentView addSubview:textField];
+        CGFloat linePosition = floorf((cell.textLabel.frame.origin.x + cell.textLabel.frame.size.width + cell.detailTextLabel.frame.origin.x)/2.0f);
+        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(linePosition, 0, 1, cell.contentView.bounds.size.height)];
+        lineView.backgroundColor = self.tableView.separatorColor;
+        [cell.contentView addSubview:lineView];
+        textField.translatesAutoresizingMaskIntoConstraints = NO;
+        NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.detailTextLabel.frame.origin.x];
+        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
+        [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
+    }
     return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
+    return NO;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {  
