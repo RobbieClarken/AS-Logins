@@ -8,6 +8,7 @@
 
 #import "EditDeviceViewController.h"
 #import "Login.h"
+#import "DeviceFieldCell.h"
 
 @interface EditDeviceViewController ()
 
@@ -26,12 +27,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView setEditing:YES animated:NO];
-
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
- 
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
 
 - (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
@@ -70,19 +65,10 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSString *cellIdentifier;
     if (indexPath.section == 0) {
-        cellIdentifier = @"EditableDeviceFieldCell";
-    } else {
-        cellIdentifier = @"EditableLoginFieldCell";
-    }
-    NSLog(@"new row for [%u, %u]", indexPath.section, indexPath.row);
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-    cell.detailTextLabel.text = @"";
-    if (indexPath.section == 0) {
-        CGRect textFrame = cell.textLabel.frame;
-        UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
-        textField.font = cell.textLabel.font;
+        NSString *cellIdentifier = @"EditableDeviceFieldCell";
+        DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        UITextField *textField = cell.textField;
         switch (indexPath.row) {
             case 0:
                 textField.placeholder = @"Name";
@@ -105,13 +91,11 @@
                 textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
                 break;
         }
-        cell.textLabel.text = @"";
-        [cell.contentView addSubview:textField];
-        textField.translatesAutoresizingMaskIntoConstraints = NO;
-        NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.textLabel.frame.origin.x];
-        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
-        [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
+        return cell;
     } else {
+        NSString *cellIdentifier = @"EditableLoginFieldCell";
+        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        cell.detailTextLabel.text = @"";
         Login *login = [self loginForIndexPath:indexPath];
         CGRect textFrame = cell.detailTextLabel.frame;
         UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
@@ -135,8 +119,8 @@
         NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.detailTextLabel.frame.origin.x];
         NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
         [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
+        return cell;
     }
-    return cell;
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {

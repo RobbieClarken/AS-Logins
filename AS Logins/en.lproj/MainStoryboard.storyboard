@@ -79,23 +79,32 @@
                             </items>
                         </navigationBar>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableDeviceFieldCell" textLabel="Gyo-DN-nGS" style="IBUITableViewCellStyleDefault" id="cRg-PY-LRJ">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableDeviceFieldCell" id="cRg-PY-LRJ" customClass="DeviceFieldCell">
                                 <rect key="frame" x="0.0" y="80" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gyo-DN-nGS">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aet-Ey-dpN">
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="aet-Ey-dpN" secondAttribute="trailing" constant="30" type="user" id="1Cc-1O-PoH"/>
+                                    <constraint firstAttribute="bottom" secondItem="aet-Ey-dpN" secondAttribute="bottom" type="user" id="GO4-eZ-f4H"/>
+                                    <constraint firstItem="aet-Ey-dpN" firstAttribute="centerX" secondItem="cRg-PY-LRJ" secondAttribute="centerX" type="user" id="WKl-rn-irP"/>
+                                    <constraint firstItem="aet-Ey-dpN" firstAttribute="leading" secondItem="cRg-PY-LRJ" secondAttribute="leading" constant="30" type="user" id="ffg-XI-XZ0"/>
+                                    <constraint firstItem="aet-Ey-dpN" firstAttribute="top" secondItem="cRg-PY-LRJ" secondAttribute="top" type="user" id="mEI-gk-2qB"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="textField" destination="aet-Ey-dpN" id="uZt-XX-L1t"/>
+                                </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableLoginFieldCell" textLabel="zg6-Vm-ZsJ" detailTextLabel="f09-1K-UUh" style="IBUITableViewCellStyleValue2" id="sTD-ds-BfE">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableLoginFieldCell" textLabel="zg6-Vm-ZsJ" detailTextLabel="P9b-aT-xBL" style="IBUITableViewCellStyleValue2" id="sTD-ds-BfE">
                                 <rect key="frame" x="0.0" y="125" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -105,11 +114,10 @@
                                         <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zg6-Vm-ZsJ">
                                             <rect key="frame" x="10" y="15" width="67" height="15"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862749999998" green="0.40000000000000002" blue="0.56862745100000001" alpha="1" colorSpace="calibratedRGB"/>
+                                            <color key="textColor" red="0.32156862745098042" green="0.40000000000000002" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
                                         </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="f09-1K-UUh">
-                                            <rect key="frame" x="83" y="12" width="41" height="19"/>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P9b-aT-xBL">
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                             <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
@@ -150,6 +158,12 @@
         </scene>
     </scenes>
     <classes>
+        <class className="DeviceFieldCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DeviceFieldCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
         <class className="DevicesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DevicesTableViewController.h"/>
         </class>
@@ -159,6 +173,9 @@
                 <relationship kind="action" name="cancelButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="doneButtonPressed:" candidateClass="UIBarButtonItem"/>
             </relationships>
+        </class>
+        <class className="NSLayoutConstraint" superclassName="NSObject">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
