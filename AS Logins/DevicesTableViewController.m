@@ -1,24 +1,24 @@
 //
-//  LoginsTableViewController.m
+//  DevicesTableViewController.m
 //  AS Logins
 //
 //  Created by Robbie Clarken on 17/03/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
-#import "LoginsTableViewController.h"
-#import "EditLoginViewController.h"
+#import "DevicesTableViewController.h"
+#import "EditDeviceViewController.h"
 #import "Group.h"
 #import "Device.h"
 
-@interface LoginsTableViewController () <EditLoginViewControllerDelegate>
+@interface DevicesTableViewController () <EditLoginViewControllerDelegate>
 
 @property (nonatomic, strong) NSArray *groups;
 @property (nonatomic, strong) UIManagedDocument *localDatabase;
 
 @end
 
-@implementation LoginsTableViewController
+@implementation DevicesTableViewController
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];
@@ -45,11 +45,11 @@
 
 #pragma mark - Login edit delegate
 
-- (void)editLoginTableViewControllerDidCancel:(EditLoginViewController *)editLoginViewController {
+- (void)editLoginTableViewControllerDidCancel:(EditDeviceViewController *)editLoginViewController {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
-- (void)editLoginTableViewControllerDidSave:(EditLoginViewController *)editLoginViewController {
+- (void)editLoginTableViewControllerDidSave:(EditDeviceViewController *)editLoginViewController {
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
@@ -132,8 +132,8 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[EditLoginViewController class]]) {
-        EditLoginViewController *destinationViewController = (EditLoginViewController *)segue.destinationViewController;
+    if ([segue.destinationViewController isKindOfClass:[EditDeviceViewController class]]) {
+        EditDeviceViewController *destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
         destinationViewController.delegate = self;
     }
 }

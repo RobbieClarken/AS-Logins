@@ -1,5 +1,5 @@
 //
-//  LoginsTableViewController.h
+//  DevicesTableViewController.h
 //  AS Logins
 //
 //  Created by Robbie Clarken on 17/03/13.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginsTableViewController : UITableViewController
+@interface DevicesTableViewController : UITableViewController
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 

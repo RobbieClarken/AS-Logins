@@ -1,18 +1,18 @@
 //
-//  EditLoginViewController.m
+//  EditDeviceViewController.m
 //  AS Logins
 //
 //  Created by Robbie Clarken on 17/03/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
-#import "EditLoginViewController.h"
+#import "EditDeviceViewController.h"
 
-@interface EditLoginViewController ()
+@interface EditDeviceViewController ()
 
 @end
 
-@implementation EditLoginViewController
+@implementation EditDeviceViewController
 
 - (id)initWithStyle:(UITableViewStyle)style {
     self = [super initWithStyle:style];

@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "LoginsTableViewController.h"
+#import "DevicesTableViewController.h"
 
 @implementation AppDelegate
 
@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    LoginsTableViewController *loginsTableViewController = (LoginsTableViewController *)navigationController.topViewController;
+    DevicesTableViewController *loginsTableViewController = (DevicesTableViewController *)navigationController.topViewController;
     loginsTableViewController.managedObjectContext = self.managedObjectContext;
     return YES;
 }

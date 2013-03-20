@@ -22,8 +22,8 @@
 		DCB6558216F4F53E00205396 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558116F4F53E00205396 /* Default@2x.png */; };
 		DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558316F4F53E00205396 /* Default-568h@2x.png */; };
 		DCB6558716F4F53E00205396 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */; };
-		DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* LoginsTableViewController.m */; };
-		DCB6559516F503C900205396 /* EditLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* EditLoginViewController.m */; };
+		DCB6559216F4F6B900205396 /* DevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* DevicesTableViewController.m */; };
+		DCB6559516F503C900205396 /* EditDeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* EditDeviceViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -49,10 +49,10 @@
 		DCB6558116F4F53E00205396 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		DCB6558316F4F53E00205396 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		DCB6558616F4F53E00205396 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		DCB6559016F4F6B900205396 /* LoginsTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginsTableViewController.h; sourceTree = "<group>"; };
-		DCB6559116F4F6B900205396 /* LoginsTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginsTableViewController.m; sourceTree = "<group>"; };
-		DCB6559316F503C900205396 /* EditLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLoginViewController.h; sourceTree = "<group>"; };
-		DCB6559416F503C900205396 /* EditLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLoginViewController.m; sourceTree = "<group>"; };
+		DCB6559016F4F6B900205396 /* DevicesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicesTableViewController.h; sourceTree = "<group>"; };
+		DCB6559116F4F6B900205396 /* DevicesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicesTableViewController.m; sourceTree = "<group>"; };
+		DCB6559316F503C900205396 /* EditDeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditDeviceViewController.h; sourceTree = "<group>"; };
+		DCB6559416F503C900205396 /* EditDeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditDeviceViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,10 +142,10 @@
 		DCB6559616F503D600205396 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				DCB6559316F503C900205396 /* EditLoginViewController.h */,
-				DCB6559416F503C900205396 /* EditLoginViewController.m */,
-				DCB6559016F4F6B900205396 /* LoginsTableViewController.h */,
-				DCB6559116F4F6B900205396 /* LoginsTableViewController.m */,
+				DCB6559316F503C900205396 /* EditDeviceViewController.h */,
+				DCB6559416F503C900205396 /* EditDeviceViewController.m */,
+				DCB6559016F4F6B900205396 /* DevicesTableViewController.h */,
+				DCB6559116F4F6B900205396 /* DevicesTableViewController.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -218,8 +218,8 @@
 			files = (
 				DCB6557A16F4F53E00205396 /* main.m in Sources */,
 				DCB6557E16F4F53E00205396 /* AppDelegate.m in Sources */,
-				DCB6559216F4F6B900205396 /* LoginsTableViewController.m in Sources */,
-				DCB6559516F503C900205396 /* EditLoginViewController.m in Sources */,
+				DCB6559216F4F6B900205396 /* DevicesTableViewController.m in Sources */,
+				DCB6559516F503C900205396 /* EditDeviceViewController.m in Sources */,
 				DC5E5F0A16F64CF700FC84EC /* ASLogins.xcdatamodeld in Sources */,
 				DC5E5F3716F657F700FC84EC /* Group.m in Sources */,
 				DC5E5F3A16F657F700FC84EC /* Login.m in Sources */,
