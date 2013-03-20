@@ -59,10 +59,11 @@
     }
 }
 
-- (Login *)loginForRow:(NSUInteger)row {
+- (Login *)loginForIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger loginNumber = indexPath.section - 1;
     NSOrderedSet *logins = self.device.logins;
-    if (row < [logins count]) {
-        return [logins objectAtIndex:row];
+    if (loginNumber < [logins count]) {
+        return [logins objectAtIndex:loginNumber];
     } else {
         return nil;
     }
@@ -111,7 +112,7 @@
         NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
         [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
     } else {
-        Login *login = [self loginForRow:indexPath.row];
+        Login *login = [self loginForIndexPath:indexPath];
         CGRect textFrame = cell.detailTextLabel.frame;
         UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
         textField.font = cell.detailTextLabel.font;
