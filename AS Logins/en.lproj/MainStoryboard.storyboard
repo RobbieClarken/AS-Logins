@@ -104,27 +104,48 @@
                                     <outlet property="textField" destination="aet-Ey-dpN" id="uZt-XX-L1t"/>
                                 </connections>
                             </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableLoginFieldCell" textLabel="zg6-Vm-ZsJ" detailTextLabel="P9b-aT-xBL" style="IBUITableViewCellStyleValue2" id="sTD-ds-BfE">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableLoginFieldCell" id="rDp-We-GTd" customClass="EditLoginCell">
                                 <rect key="frame" x="0.0" y="125" width="320" height="45"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zg6-Vm-ZsJ">
-                                            <rect key="frame" x="10" y="15" width="67" height="15"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
-                                            <color key="textColor" red="0.32156862745098042" green="0.40000000000000002" blue="0.56862745098039214" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Detail" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P9b-aT-xBL">
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fgk-I6-azh">
+                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="1" type="user" id="I6W-TK-bBf"/>
+                                            </constraints>
+                                        </view>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gKA-dR-ISQ">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2xD-Xc-S2X">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <constraints>
+                                    <constraint firstItem="fgk-I6-azh" firstAttribute="leading" secondItem="gKA-dR-ISQ" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="6TR-aT-ghK"/>
+                                    <constraint firstAttribute="trailing" secondItem="2xD-Xc-S2X" secondAttribute="trailing" constant="29" type="user" id="9Ne-y6-Y6E"/>
+                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="leading" secondItem="fgk-I6-azh" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="Ddc-G5-SKs"/>
+                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="width" secondItem="gKA-dR-ISQ" secondAttribute="width" type="user" id="RDa-1H-gYo"/>
+                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="top" secondItem="rDp-We-GTd" secondAttribute="top" type="user" id="Rx3-1f-sAd"/>
+                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="top" secondItem="rDp-We-GTd" secondAttribute="top" type="user" id="TJy-dr-Tjz"/>
+                                    <constraint firstItem="fgk-I6-azh" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="dkW-sZ-MzO"/>
+                                    <constraint firstItem="fgk-I6-azh" firstAttribute="top" secondItem="rDp-We-GTd" secondAttribute="top" type="user" id="hP8-pq-kkb"/>
+                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="rMH-wo-ghR"/>
+                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="leading" secondItem="rDp-We-GTd" secondAttribute="leading" constant="30" type="user" id="vGw-Ar-SMh"/>
+                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="wFG-pP-8Iw"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="passwordTextField" destination="2xD-Xc-S2X" id="WFU-1g-QGc"/>
+                                    <outlet property="usernameLeftHConstraint" destination="vGw-Ar-SMh" id="MGd-9Q-8be"/>
+                                    <outlet property="usernameTextField" destination="gKA-dR-ISQ" id="0NS-xH-mWJ"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -172,6 +193,14 @@
             <relationships>
                 <relationship kind="action" name="cancelButtonPressed:" candidateClass="UIBarButtonItem"/>
                 <relationship kind="action" name="doneButtonPressed:" candidateClass="UIBarButtonItem"/>
+            </relationships>
+        </class>
+        <class className="EditLoginCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditLoginCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
+                <relationship kind="outlet" name="usernameLeftHConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="usernameTextField" candidateClass="UITextField"/>
             </relationships>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">

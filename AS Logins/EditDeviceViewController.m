@@ -9,6 +9,7 @@
 #import "EditDeviceViewController.h"
 #import "Login.h"
 #import "DeviceFieldCell.h"
+#import "EditLoginCell.h"
 
 @interface EditDeviceViewController ()
 
@@ -41,16 +42,14 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    // Return the number of sections.
-    return 1 + [self.device.logins count] + 1;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
     if (section == 0) {
         return 4;
     } else {
-        return 2;
+        return [self.device.logins count] + 1;
     }
 }
 
@@ -94,45 +93,26 @@
         return cell;
     } else {
         NSString *cellIdentifier = @"EditableLoginFieldCell";
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
-        cell.detailTextLabel.text = @"";
+        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         Login *login = [self loginForIndexPath:indexPath];
-        CGRect textFrame = cell.detailTextLabel.frame;
-        UITextField *textField = [[UITextField alloc] initWithFrame:textFrame];
-        textField.font = cell.detailTextLabel.font;
-        if (indexPath.row == 0) {
-            cell.textLabel.text = @"username";
-            textField.text = login.username;
-            textField.placeholder = @"Username";
-        } else {
-            cell.textLabel.text = @"password";
-            textField.text = login.password;
-            textField.placeholder = @"Password";
-        }
-        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-        [cell.contentView addSubview:textField];
-        CGFloat linePosition = floorf((cell.textLabel.frame.origin.x + cell.textLabel.frame.size.width + cell.detailTextLabel.frame.origin.x)/2.0f);
-        UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(linePosition, 0, 1, cell.contentView.bounds.size.height)];
-        lineView.backgroundColor = self.tableView.separatorColor;
-        [cell.contentView addSubview:lineView];
-        textField.translatesAutoresizingMaskIntoConstraints = NO;
-        NSLayoutConstraint *leftConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:cell.detailTextLabel.frame.origin.x];
-        NSLayoutConstraint *rightConstraint = [NSLayoutConstraint constraintWithItem:textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:cell.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:0.0f];
-        [cell.contentView addConstraints:@[leftConstraint, rightConstraint]];
+        cell.usernameTextField.text = login.username;
+        cell.passwordTextField.text = login.password;
         return cell;
     }
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return NO;
+    return indexPath.section == 1;
 }
 
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {  
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
+    if (indexPath.row < [self.device.logins count]) {
+        return UITableViewCellEditingStyleDelete;
+    }
     return UITableViewCellEditingStyleNone;
 }
 

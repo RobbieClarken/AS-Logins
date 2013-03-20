@@ -13,6 +13,7 @@
 		DC5E5F3A16F657F700FC84EC /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F3916F657F700FC84EC /* Login.m */; };
 		DC5E5F3D16F657F700FC84EC /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F3C16F657F700FC84EC /* Device.m */; };
 		DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */; };
+		DC5E5FA116FA2B0E00FC84EC /* EditLoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */; };
 		DCB6556E16F4F53E00205396 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6556D16F4F53E00205396 /* UIKit.framework */; };
 		DCB6557016F4F53E00205396 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6556F16F4F53E00205396 /* Foundation.framework */; };
 		DCB6557216F4F53E00205396 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCB6557116F4F53E00205396 /* CoreGraphics.framework */; };
@@ -38,6 +39,8 @@
 		DC5E5F3C16F657F700FC84EC /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
 		DC5E5F9C16FA111600FC84EC /* DeviceFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceFieldCell.h; sourceTree = "<group>"; };
 		DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceFieldCell.m; sourceTree = "<group>"; };
+		DC5E5F9F16FA2B0E00FC84EC /* EditLoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLoginCell.h; sourceTree = "<group>"; };
+		DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLoginCell.m; sourceTree = "<group>"; };
 		DCB6556A16F4F53E00205396 /* AS Logins.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "AS Logins.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DCB6556D16F4F53E00205396 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DCB6556F16F4F53E00205396 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -151,6 +154,8 @@
 				DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */,
 				DCB6559016F4F6B900205396 /* DevicesTableViewController.h */,
 				DCB6559116F4F6B900205396 /* DevicesTableViewController.m */,
+				DC5E5F9F16FA2B0E00FC84EC /* EditLoginCell.h */,
+				DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -230,6 +235,7 @@
 				DC5E5F3A16F657F700FC84EC /* Login.m in Sources */,
 				DC5E5F3D16F657F700FC84EC /* Device.m in Sources */,
 				DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */,
+				DC5E5FA116FA2B0E00FC84EC /* EditLoginCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
