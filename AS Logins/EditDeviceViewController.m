@@ -11,7 +11,10 @@
 #import "DeviceFieldCell.h"
 #import "EditLoginCell.h"
 
-@interface EditDeviceViewController ()
+@interface EditDeviceViewController () <UITextFieldDelegate>
+
+@property (nonatomic) NSUInteger newRowCount;
+@property (weak, nonatomic) NSIndexPath *nextEditCellIndexPath;
 
 @end
 
@@ -27,6 +30,8 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.newRowCount = 1;
+    self.nextEditCellIndexPath = nil;
     [self.tableView setEditing:YES animated:NO];
 }
 
@@ -39,6 +44,42 @@
     [self.delegate editLoginTableViewControllerDidCancel:self];
 }
 
+- (NSIndexPath *)indexPathWithView:(UIView *)view {
+    CGPoint textFieldLocation = [view convertPoint:CGPointZero toView:self.tableView];
+    NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:textFieldLocation];
+    return indexPath;
+}
+
+- (void)editedLastLogin:(UITextField *)textField {
+    NSIndexPath *indexPath = [self indexPathWithView:textField];
+    EditLoginCell *loginCell = (EditLoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
+    [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
+    self.newRowCount += 1;
+    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
+    [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (BOOL)indexPathIsLastInSection:(NSIndexPath *)indexPath {
+    return indexPath.row == [self.tableView numberOfRowsInSection:indexPath.section] - 1;
+}
+
+- (void)didEndEditingCellAtIndexPath:(NSIndexPath *)indexPath {
+    if ([self indexPathIsLastInSection:indexPath]) {
+        return;
+    }
+    UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
+    if ([cell isKindOfClass:[EditLoginCell class]]) {
+        EditLoginCell *editLoginCell = (EditLoginCell *)cell;
+        NSString *trimmedUsername = [editLoginCell.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        NSString *trimmedPassword = [editLoginCell.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+        if ([trimmedUsername length] == 0 && [trimmedPassword length] == 0) {
+            self.newRowCount -= 1;
+            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        }
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -49,7 +90,7 @@
     if (section == 0) {
         return 4;
     } else {
-        return [self.device.logins count] + 1;
+        return [self.device.logins count] + self.newRowCount;
     }
 }
 
@@ -95,8 +136,20 @@
         NSString *cellIdentifier = @"EditableLoginFieldCell";
         EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         Login *login = [self loginForIndexPath:indexPath];
-        cell.usernameTextField.text = login.username;
-        cell.passwordTextField.text = login.password;
+        if (login) {
+            cell.usernameTextField.text = login.username;
+            cell.passwordTextField.text = login.password;
+        } else {
+            cell.usernameTextField.text = @"";
+            cell.passwordTextField.text = @"";
+        }
+        if ([self indexPathIsLastInSection:indexPath]) {
+            [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+            [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+        }        
+        cell.usernameTextField.delegate = self;
+        cell.passwordTextField.delegate = self;
+        
         return cell;
     }
 }
@@ -135,7 +188,6 @@
 #pragma mark - Table view delegate
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    NSLog(@"this works");
     // Navigation logic may go here. Create and push another view controller.
     /*
      <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
@@ -143,6 +195,21 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
+}
+
+#pragma mark - Text field delegate
+
+- (void)textFieldDidEndEditing:(UITextField *)textField {
+    NSIndexPath *indexPath = [self indexPathWithView:textField];
+    if (indexPath && ![indexPath isEqual:self.nextEditCellIndexPath]) {
+        [self didEndEditingCellAtIndexPath:indexPath];
+    }
+    self.nextEditCellIndexPath = nil;
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {    
+    self.nextEditCellIndexPath = [self indexPathWithView:textField];
+    return YES;
 }
 
 @end
