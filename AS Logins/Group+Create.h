@@ -1,5 +1,5 @@
 //
-//  Group.m
+//  Group+Create.h
 //  AS Logins
 //
 //  Created by Robbie Clarken on 22/03/13.
@@ -7,12 +7,9 @@
 //
 
 #import "Group.h"
-#import "Device.h"
 
+@interface Group (Create)
 
-@implementation Group
-
-@dynamic name;
-@dynamic devices;
++ (Group *)groupWithName:(NSString *)name inContext:(NSManagedObjectContext *)context;
 
 @end

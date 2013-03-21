@@ -13,7 +13,6 @@
 
 @interface EditDeviceViewController () <UITextFieldDelegate>
 
-@property (nonatomic) NSUInteger newRowCount;
 @property (weak, nonatomic) NSIndexPath *nextEditCellIndexPath;
 
 @end
@@ -30,7 +29,11 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.newRowCount = 1;
+    if ([self.device.logins count] == 0) {
+        // TODO: Add empty login
+        //Login *login = [[Login alloc] initWithEntity:<#(NSEntityDescription *)#> insertIntoManagedObjectContext:<#(NSManagedObjectContext *)#>];
+    }
+    
     self.nextEditCellIndexPath = nil;
     [self.tableView setEditing:YES animated:NO];
 }
@@ -55,7 +58,7 @@
     EditLoginCell *loginCell = (EditLoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
-    self.newRowCount += 1;
+    // TODO: Insert empty login
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -74,7 +77,7 @@
         NSString *trimmedUsername = [editLoginCell.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *trimmedPassword = [editLoginCell.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if ([trimmedUsername length] == 0 && [trimmedPassword length] == 0) {
-            self.newRowCount -= 1;
+            // TODO: Delete login
             [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
         }
     }
@@ -90,7 +93,7 @@
     if (section == 0) {
         return 4;
     } else {
-        return [self.device.logins count] + self.newRowCount;
+        return [self.device.logins count];
     }
 }
 

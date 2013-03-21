@@ -4,6 +4,46 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
     <scenes>
+        <!--Groups View Controller - Groups-->
+        <scene sceneID="Mq8-Ev-LbU">
+            <objects>
+                <tableViewController id="IKO-9r-ovK" customClass="GroupsViewController" sceneMemberID="viewController">
+                    <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" id="Kxv-it-C92">
+                        <rect key="frame" x="0.0" y="64" width="320" height="504"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" textLabel="gJ2-zO-MAC" style="IBUITableViewCellStyleDefault" id="60H-XZ-cXH">
+                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJ2-zO-MAC">
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                        </label>
+                                    </subviews>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                </view>
+                                <connections>
+                                    <segue destination="Kfq-tj-6c8" kind="push" id="l84-ld-OaK"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="IKO-9r-ovK" id="bSl-hU-mAU"/>
+                            <outlet property="delegate" destination="IKO-9r-ovK" id="xBQ-vm-zaO"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="Groups" id="EV7-RQ-VG5"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sny-cj-Zk2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="630" y="72"/>
+        </scene>
         <!--Devices Table View Controller - Devices-->
         <scene sceneID="STO-NG-tev">
             <objects>
@@ -50,7 +90,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="LlI-t0-VET" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="869" y="-76"/>
+            <point key="canvasLocation" x="1181" y="72"/>
         </scene>
         <!--Edit Device View Controller-->
         <scene sceneID="VMt-oW-dR9">
@@ -158,7 +198,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GZQ-Ta-vrK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1408" y="-279"/>
+            <point key="canvasLocation" x="1720" y="-131"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="RWx-23-E0s">
@@ -171,12 +211,12 @@
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="Kfq-tj-6c8" kind="relationship" relationship="rootViewController" id="w2D-xe-kEp"/>
+                        <segue destination="IKO-9r-ovK" kind="relationship" relationship="rootViewController" id="7a1-kX-nYB"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0yx-gf-RX9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="343" y="-76"/>
+            <point key="canvasLocation" x="39" y="72"/>
         </scene>
     </scenes>
     <classes>
@@ -199,10 +239,14 @@
         <class className="EditLoginCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/EditLoginCell.h"/>
             <relationships>
+                <relationship kind="outlet" name="passwordRightHConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="usernameLeftHConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="usernameTextField" candidateClass="UITextField"/>
             </relationships>
+        </class>
+        <class className="GroupsViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupsViewController.h"/>
         </class>
         <class className="NSLayoutConstraint" superclassName="NSObject">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>

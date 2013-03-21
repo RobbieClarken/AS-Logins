@@ -1,61 +1,50 @@
 //
-//  DevicesTableViewController.m
+//  GroupsViewController.m
 //  AS Logins
 //
-//  Created by Robbie Clarken on 17/03/13.
+//  Created by Robbie Clarken on 22/03/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
-#import "DevicesTableViewController.h"
-#import "EditDeviceViewController.h"
-#import "Group.h"
-#import "Device.h"
+#import "GroupsViewController.h"
+#import "Group+Create.h"
 
-@interface DevicesTableViewController () <EditLoginViewControllerDelegate>
+@interface GroupsViewController ()
 
-@property (nonatomic, strong) Group *group;
-
+@property (nonatomic, strong) NSArray *groups;
 
 @end
 
-@implementation DevicesTableViewController
-
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
+@implementation GroupsViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self updateGroups];
+    if ([self.groups count] == 0) {
+        [Group groupWithName:@"Operations" inContext:self.managedObjectContext];
+        [self updateGroups];
+    }
 }
 
-#pragma mark - Login edit delegate
-
-- (void)editLoginTableViewControllerDidCancel:(EditDeviceViewController *)editLoginViewController {
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
-}
-
-- (void)editLoginTableViewControllerDidSave:(EditDeviceViewController *)editLoginViewController {
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
+- (void)updateGroups {
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Group"];
+    NSError *error;
+    // TODO: Handle error
+    self.groups = [self.managedObjectContext executeFetchRequest:request error:&error];
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    // Return the number of rows in the section.
-    return [self.group.devices count];
+    return [self.groups count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"LoginCell";
+    static NSString *CellIdentifier = @"GroupCell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     
-    Device *device = [self.group.devices objectAtIndex:indexPath.row];
-    cell.textLabel.text = device.name;
-    cell.detailTextLabel.text = device.hostname;
+    cell.textLabel.text = [self.groups[indexPath.row] name];
     
     return cell;
 }
@@ -109,13 +98,6 @@
      // Pass the selected object to the new view controller.
      [self.navigationController pushViewController:detailViewController animated:YES];
      */
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[EditDeviceViewController class]]) {
-        EditDeviceViewController *destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
-        destinationViewController.delegate = self;
-    }
 }
 
 @end

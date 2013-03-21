@@ -7,7 +7,7 @@
 //
 
 #import "AppDelegate.h"
-#import "DevicesTableViewController.h"
+#import "GroupsViewController.h"
 
 @implementation AppDelegate
 
@@ -17,8 +17,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    DevicesTableViewController *loginsTableViewController = (DevicesTableViewController *)navigationController.topViewController;
-    loginsTableViewController.managedObjectContext = self.managedObjectContext;
+    GroupsViewController *topViewController = (GroupsViewController *)navigationController.topViewController;
+    topViewController.managedObjectContext = self.managedObjectContext;
     return YES;
 }
 							
