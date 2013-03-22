@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+typedef NS_ENUM(NSInteger, ASLLoginTextField) {
+    ASLLoginTextFieldUsername,
+    ASLLoginTextFieldPassword
+};
+
 @interface EditLoginCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UITextField *usernameTextField;

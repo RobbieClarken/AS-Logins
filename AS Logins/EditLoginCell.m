@@ -27,6 +27,10 @@
 }
 
 - (void)awakeFromNib {
+    
+    self.usernameTextField.tag = ASLLoginTextFieldUsername;
+    self.passwordTextField.tag = ASLLoginTextFieldPassword;
+    
     [self removeConstraint:self.usernameLeftHConstraint];
     [self removeConstraint:self.passwordRightHConstraint];
     

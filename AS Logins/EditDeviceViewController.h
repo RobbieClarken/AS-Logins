@@ -13,8 +13,8 @@
 
 @protocol EditLoginViewControllerDelegate <NSObject>
 
-- (void)editLoginTableViewControllerDidCancel:(EditDeviceViewController *)editLoginViewController;
-- (void)editLoginTableViewControllerDidSave:(EditDeviceViewController *)editLoginViewController;
+- (void)editDeviceTableViewControllerDidCancel:(EditDeviceViewController *)editDeviceViewController;
+- (void)editDeviceTableViewControllerDidSave:(EditDeviceViewController *)editDeviceViewController;
 
 @end
 

@@ -7,31 +7,35 @@
 //
 
 #import "EditDeviceViewController.h"
-#import "Login.h"
+#import "Login+Create.h"
 #import "DeviceFieldCell.h"
 #import "EditLoginCell.h"
 
 @interface EditDeviceViewController () <UITextFieldDelegate>
 
-@property (weak, nonatomic) NSIndexPath *nextEditCellIndexPath;
+@property (strong, nonatomic) NSIndexPath *nextEditCellIndexPath;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
 
 @implementation EditDeviceViewController
 
-- (id)initWithStyle:(UITableViewStyle)style {
-    self = [super initWithStyle:style];
-    if (self) {
-        // Custom initialization
-    }
-    return self;
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.managedObjectContext = [[NSManagedObjectContext alloc] init];
+    self.managedObjectContext.parentContext = self.device.managedObjectContext;
+    NSError *error;
+    Device *device = (Device *)[self.managedObjectContext existingObjectWithID:self.device.objectID error:&error];
+    if (error) {
+        NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
+    }
+    
+    self.device = device;
+    
     if ([self.device.logins count] == 0) {
-        // TODO: Add empty login
-        //Login *login = [[Login alloc] initWithEntity:<#(NSEntityDescription *)#> insertIntoManagedObjectContext:<#(NSManagedObjectContext *)#>];
+        Login *login = [Login loginInContext:self.managedObjectContext];
+        //self.device.logins = [NSOrderedSet orderedSetWithObject:login];
+        [[self.device mutableOrderedSetValueForKey:@"logins"] addObject:login];
     }
     
     self.nextEditCellIndexPath = nil;
@@ -39,12 +43,19 @@
 }
 
 - (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
-    [self.delegate editLoginTableViewControllerDidCancel:self];
+    [self.delegate editDeviceTableViewControllerDidCancel:self];
 }
 
-
 - (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
-    [self.delegate editLoginTableViewControllerDidCancel:self];
+    [self.view endEditing:YES];
+    //[self.managedObjectContext performBlock:^{
+    NSError *error;
+    [self.managedObjectContext save:&error];
+    if (error) {
+        NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
+    }
+    [self.delegate editDeviceTableViewControllerDidSave:self];
+    //}];
 }
 
 - (NSIndexPath *)indexPathWithView:(UIView *)view {
@@ -58,7 +69,8 @@
     EditLoginCell *loginCell = (EditLoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
-    // TODO: Insert empty login
+    NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:@"logins"];
+    [logins addObject:[Login loginInContext:self.device.managedObjectContext]];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -77,8 +89,13 @@
         NSString *trimmedUsername = [editLoginCell.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *trimmedPassword = [editLoginCell.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if ([trimmedUsername length] == 0 && [trimmedPassword length] == 0) {
-            // TODO: Delete login
-            [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:@"logins"];
+            [logins removeObjectAtIndex:indexPath.row];
+            if ([logins count] == 1) {
+                [self.tableView reloadData];
+            } else {
+                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
         }
     }
 }
@@ -112,32 +129,37 @@
         NSString *cellIdentifier = @"EditableDeviceFieldCell";
         DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
         UITextField *textField = cell.textField;
+        textField.delegate = self;
         switch (indexPath.row) {
             case 0:
                 textField.placeholder = @"Name";
                 textField.keyboardType = UIKeyboardTypeDefault;
                 textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+                textField.text = self.device.name;
                 break;
             case 1:
                 textField.placeholder = @"Hostname";
                 textField.keyboardType = UIKeyboardTypeDefault;
                 textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+                textField.text = self.device.hostname;
                 break;
             case 2:
                 textField.placeholder = @"IP";
                 textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
                 textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                textField.text = self.device.ip;
                 break;
             case 3:
                 textField.placeholder = @"URL";
                 textField.keyboardType = UIKeyboardTypeURL;
                 textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                textField.text = self.device.url;
                 break;
         }
         return cell;
     } else {
         NSString *cellIdentifier = @"EditableLoginFieldCell";
-        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];        
         Login *login = [self loginForIndexPath:indexPath];
         if (login) {
             cell.usernameTextField.text = login.username;
@@ -146,6 +168,7 @@
             cell.usernameTextField.text = @"";
             cell.passwordTextField.text = @"";
         }
+        
         if ([self indexPathIsLastInSection:indexPath]) {
             [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
             [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
@@ -158,7 +181,7 @@
 }
 
 - (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 1;
+    return indexPath.section == 1 && [self.device.logins count] > 1;
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -166,44 +189,48 @@
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < [self.device.logins count]) {
+    if (![self indexPathIsLastInSection:indexPath]) {
         return UITableViewCellEditingStyleDelete;
     }
     return UITableViewCellEditingStyleNone;
-}
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-#pragma mark - Table view delegate
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     */
 }
 
 #pragma mark - Text field delegate
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSIndexPath *indexPath = [self indexPathWithView:textField];
+    switch (indexPath.section) {
+        case 0: {
+            switch (indexPath.row) {
+                case 0:
+                    self.device.name = textField.text;
+                    break;
+                case 1:
+                    self.device.hostname = textField.text;
+                    break;
+                case 2:
+                    self.device.ip = textField.text;
+                    break;
+                case 3:
+                    self.device.url = textField.text;
+                    break;
+            }
+            break;
+        }
+        case 1: {
+            Login *login = self.device.logins[indexPath.row];
+            switch (textField.tag) {
+                case ASLLoginTextFieldUsername:
+                    login.username = textField.text;
+                    break;
+                case ASLLoginTextFieldPassword:
+                    login.password = textField.text;
+                    break;
+            }
+            break;
+        }
+    }
+    
     if (indexPath && ![indexPath isEqual:self.nextEditCellIndexPath]) {
         [self didEndEditingCellAtIndexPath:indexPath];
     }

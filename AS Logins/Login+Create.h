@@ -1,5 +1,5 @@
 //
-//  Login.m
+//  Login+Create.h
 //  AS Logins
 //
 //  Created by Robbie Clarken on 22/03/13.
@@ -7,13 +7,9 @@
 //
 
 #import "Login.h"
-#import "Device.h"
 
+@interface Login (Create)
 
-@implementation Login
-
-@dynamic password;
-@dynamic username;
-@dynamic device;
++ (Login *)loginInContext:(NSManagedObjectContext *)context;
 
 @end

@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Group.h"
 
 @interface DevicesTableViewController : UITableViewController
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (nonatomic, strong) Group *group;
 
 @end
