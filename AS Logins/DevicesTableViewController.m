@@ -12,6 +12,8 @@
 
 @interface DevicesTableViewController () <EditLoginViewControllerDelegate>
 
+@property (nonatomic, strong) NSManagedObjectContext *editManagedObjectContext;
+
 @end
 
 @implementation DevicesTableViewController
@@ -21,19 +23,22 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    Device *device;
-    if ([sender isKindOfClass:[UIBarButtonItem class]]) {
-        device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:self.group.managedObjectContext];
-        NSMutableOrderedSet *devices = [self.group mutableOrderedSetValueForKey:@"devices"];
-        [devices addObject:device];
+    if ([segue.destinationViewController isKindOfClass:[EditDeviceViewController class]]) {
+        [self.group.managedObjectContext save:nil];
+        
+        NSManagedObjectContext *editDeviceManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        editDeviceManagedObjectContext.parentContext = self.group.managedObjectContext;
         NSError *error;
-        [self.group.managedObjectContext save:&error];
+        Group *editDeviceGroup = (Group *)[editDeviceManagedObjectContext existingObjectWithID:self.group.objectID error:&error];
         if (error) {
+            // TODO: Handle error
             NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
         }
-    }
-    if ([segue.destinationViewController isKindOfClass:[EditDeviceViewController class]]) {
+        Device *device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:editDeviceManagedObjectContext];
+        NSMutableOrderedSet *devices = [editDeviceGroup mutableOrderedSetValueForKey:@"devices"];
+        [devices addObject:device];
         EditDeviceViewController *destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
+        destinationViewController.managedObjectContext = editDeviceManagedObjectContext;
         destinationViewController.delegate = self;
         destinationViewController.device = device;
     }
@@ -41,22 +46,20 @@
 
 #pragma mark - Login edit delegate
 
-- (void)editDeviceTableViewControllerDidCancel:(EditDeviceViewController *)editDeviceViewController {
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
-    //TODO: Tidy up added device
-}
-
-- (void)editDeviceTableViewControllerDidSave:(EditDeviceViewController *)editDeviceViewController {
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+- (void)editDeviceTableViewController:(EditDeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save {
+    if (save) {
         NSError *error;
+        [editDeviceViewController.managedObjectContext save:&error];
+        if (error) {
+            NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
+        }
         [self.group.managedObjectContext save:&error];
         if (error) {
             NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
         }
-        //dispatch_async(dispatch_get_main_queue(), ^{
         [self.tableView reloadData];
-        //});
-    }];
+    }
+    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
 #pragma mark - Table view data source

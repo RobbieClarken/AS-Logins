@@ -14,7 +14,6 @@
 @interface EditDeviceViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSIndexPath *nextEditCellIndexPath;
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 @end
 
@@ -22,18 +21,10 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    self.managedObjectContext = [[NSManagedObjectContext alloc] init];
-    self.managedObjectContext.parentContext = self.device.managedObjectContext;
-    NSError *error;
-    Device *device = (Device *)[self.managedObjectContext existingObjectWithID:self.device.objectID error:&error];
-    if (error) {
-        NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
-    }
-    
-    self.device = device;
+    NSLog(@"%@", self.device.managedObjectContext);
     
     if ([self.device.logins count] == 0) {
-        Login *login = [Login loginInContext:self.managedObjectContext];
+        Login *login = [Login loginInContext:self.device.managedObjectContext];
         //self.device.logins = [NSOrderedSet orderedSetWithObject:login];
         [[self.device mutableOrderedSetValueForKey:@"logins"] addObject:login];
     }
@@ -43,19 +34,13 @@
 }
 
 - (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
-    [self.delegate editDeviceTableViewControllerDidCancel:self];
+    [self.view endEditing:YES];
+    [self.delegate editDeviceTableViewController:self didFinishWithSave:NO];
 }
 
 - (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
     [self.view endEditing:YES];
-    //[self.managedObjectContext performBlock:^{
-    NSError *error;
-    [self.managedObjectContext save:&error];
-    if (error) {
-        NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
-    }
-    [self.delegate editDeviceTableViewControllerDidSave:self];
-    //}];
+    [self.delegate editDeviceTableViewController:self didFinishWithSave:YES];
 }
 
 - (NSIndexPath *)indexPathWithView:(UIView *)view {

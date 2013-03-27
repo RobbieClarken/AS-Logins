@@ -13,14 +13,14 @@
 
 @protocol EditLoginViewControllerDelegate <NSObject>
 
-- (void)editDeviceTableViewControllerDidCancel:(EditDeviceViewController *)editDeviceViewController;
-- (void)editDeviceTableViewControllerDidSave:(EditDeviceViewController *)editDeviceViewController;
+- (void)editDeviceTableViewController:(EditDeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save;
 
 @end
 
 @interface EditDeviceViewController : UITableViewController
 
-@property (weak, nonatomic) Device *device;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+@property (strong, nonatomic) Device *device;
 @property (weak, nonatomic) id <EditLoginViewControllerDelegate> delegate;
 
 @end
