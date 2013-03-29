@@ -27,7 +27,6 @@ static NSString *LoginsKey = @"logins";
         Login *login = [Login loginInContext:self.device.managedObjectContext];
         [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
     }
-    
     self.nextEditCellIndexPath = nil;
     [self.tableView setEditing:YES animated:NO];
 }
@@ -57,7 +56,7 @@ static NSString *LoginsKey = @"logins";
     [logins addObject:[Login loginInContext:self.device.managedObjectContext]];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    // Hack to make tableView refresh editing style
+    // Hack to make tableView refresh editing style:
     self.tableView.editing = NO;
     self.tableView.editing = YES;
 }
@@ -116,8 +115,8 @@ static NSString *LoginsKey = @"logins";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        NSString *cellIdentifier = @"EditableDeviceFieldCell";
-        DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];
+        static NSString *DeviceFieldCellIdentifier = @"EditableDeviceFieldCell";
+        DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceFieldCellIdentifier forIndexPath:indexPath];
         UITextField *textField = cell.textField;
         textField.delegate = self;
         switch (indexPath.row) {
@@ -148,17 +147,11 @@ static NSString *LoginsKey = @"logins";
         }
         return cell;
     } else {
-        NSString *cellIdentifier = @"EditableLoginFieldCell";
-        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:cellIdentifier forIndexPath:indexPath];        
+        static NSString *LoginCellIdentifier = @"EditableLoginFieldCell";
+        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];        
         Login *login = [self loginForIndexPath:indexPath];
-        if (login) {
-            cell.usernameTextField.text = login.username;
-            cell.passwordTextField.text = login.password;
-        } else {
-            cell.usernameTextField.text = @"";
-            cell.passwordTextField.text = @"";
-        }
-        
+        cell.usernameTextField.text = login.username;
+        cell.passwordTextField.text = login.password;
         if ([self indexPathIsLastInSection:indexPath]) {
             [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
             [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
