@@ -11,6 +11,8 @@
 #import "DeviceFieldCell.h"
 #import "EditLoginCell.h"
 
+static NSString *LoginsKey = @"logins";
+
 @interface EditDeviceViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSIndexPath *nextEditCellIndexPath;
@@ -20,13 +22,10 @@
 @implementation EditDeviceViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];
-    NSLog(@"%@", self.device.managedObjectContext);
-    
+    [super viewDidLoad];    
     if ([self.device.logins count] == 0) {
         Login *login = [Login loginInContext:self.device.managedObjectContext];
-        //self.device.logins = [NSOrderedSet orderedSetWithObject:login];
-        [[self.device mutableOrderedSetValueForKey:@"logins"] addObject:login];
+        [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
     }
     
     self.nextEditCellIndexPath = nil;
@@ -54,10 +53,13 @@
     EditLoginCell *loginCell = (EditLoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
-    NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:@"logins"];
+    NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
     [logins addObject:[Login loginInContext:self.device.managedObjectContext]];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    // Hack to make tableView refresh editing style
+    self.tableView.editing = NO;
+    self.tableView.editing = YES;
 }
 
 - (BOOL)indexPathIsLastInSection:(NSIndexPath *)indexPath {
@@ -74,14 +76,17 @@
         NSString *trimmedUsername = [editLoginCell.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         NSString *trimmedPassword = [editLoginCell.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
         if ([trimmedUsername length] == 0 && [trimmedPassword length] == 0) {
-            NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:@"logins"];
-            [logins removeObjectAtIndex:indexPath.row];
-            if ([logins count] == 1) {
-                [self.tableView reloadData];
-            } else {
-                [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-            }
+            [self deleteLoginAtIndexPath:indexPath];
         }
+    }
+}
+
+- (void)deleteLoginAtIndexPath:(NSIndexPath *)indexPath {
+    NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
+    [logins removeObjectAtIndex:indexPath.row];
+    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    if ([logins count] == 1) {
+        self.tableView.editing = NO;
     }
 }
 
@@ -100,7 +105,7 @@
 }
 
 - (Login *)loginForIndexPath:(NSIndexPath *)indexPath {
-    NSUInteger loginNumber = indexPath.section - 1;
+    NSUInteger loginNumber = indexPath.row;
     NSOrderedSet *logins = self.device.logins;
     if (loginNumber < [logins count]) {
         return [logins objectAtIndex:loginNumber];
@@ -170,6 +175,9 @@
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self deleteLoginAtIndexPath:indexPath];
+    }
 }
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
