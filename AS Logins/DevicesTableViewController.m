@@ -10,6 +10,8 @@
 #import "EditDeviceViewController.h"
 #import "Device.h"
 
+static NSString *DevicesKey = @"devices";
+
 @interface DevicesTableViewController () <EditLoginViewControllerDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *editManagedObjectContext;
@@ -35,7 +37,7 @@
             NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
         }
         Device *device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:editDeviceManagedObjectContext];
-        NSMutableOrderedSet *devices = [editDeviceGroup mutableOrderedSetValueForKey:@"devices"];
+        NSMutableOrderedSet *devices = [editDeviceGroup mutableOrderedSetValueForKey:DevicesKey];
         [devices addObject:device];
         EditDeviceViewController *destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
         destinationViewController.managedObjectContext = editDeviceManagedObjectContext;
@@ -51,13 +53,16 @@
         NSError *error;
         [editDeviceViewController.managedObjectContext save:&error];
         if (error) {
-            NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
+            NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            abort();
         }
         [self.group.managedObjectContext save:&error];
         if (error) {
-            NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
+            NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            abort();
         }
-        [self.tableView reloadData];
+        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.group.devices count]-1 inSection:0];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
@@ -75,6 +80,20 @@
     cell.textLabel.text = device.name;
     cell.detailTextLabel.text = device.hostname;
     return cell;
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        NSMutableOrderedSet *devices = [self.group mutableOrderedSetValueForKey:DevicesKey];
+        [devices removeObjectAtIndex:indexPath.row];
+        NSError *error;
+        [self.group.managedObjectContext save:&error];
+        if (error) {
+            NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            abort();
+        }
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
 }
 
 @end
