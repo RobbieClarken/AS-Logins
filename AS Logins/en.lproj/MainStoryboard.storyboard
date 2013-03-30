@@ -13,22 +13,32 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" textLabel="gJ2-zO-MAC" style="IBUITableViewCellStyleDefault" id="60H-XZ-cXH">
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="60H-XZ-cXH" customClass="GroupCell">
                                 <rect key="frame" x="0.0" y="22" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="left" text="Title" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gJ2-zO-MAC">
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            <color key="highlightedColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
-                                        </label>
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CJ4-bZ-2sw">
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="43" id="eCf-t8-B2i"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
                                     </subviews>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="CJ4-bZ-2sw" secondAttribute="trailing" constant="20" type="user" id="G2P-xZ-bxb"/>
+                                    <constraint firstItem="CJ4-bZ-2sw" firstAttribute="leading" secondItem="60H-XZ-cXH" secondAttribute="leading" constant="20" type="user" id="dSE-as-owO"/>
+                                    <constraint firstItem="CJ4-bZ-2sw" firstAttribute="top" secondItem="60H-XZ-cXH" secondAttribute="top" type="default" id="yge-Jt-RGr"/>
+                                </constraints>
                                 <connections>
+                                    <outlet property="leftHConstraint" destination="dSE-as-owO" id="cqI-Za-1ld"/>
+                                    <outlet property="rightHConstraint" destination="G2P-xZ-bxb" id="qAc-pC-Gjl"/>
+                                    <outlet property="textField" destination="CJ4-bZ-2sw" id="vfA-Lq-CKM"/>
                                     <segue destination="Kfq-tj-6c8" kind="push" id="l84-ld-OaK"/>
                                 </connections>
                             </tableViewCell>
@@ -243,6 +253,13 @@
                 <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
                 <relationship kind="outlet" name="usernameLeftHConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="usernameTextField" candidateClass="UITextField"/>
+            </relationships>
+        </class>
+        <class className="GroupCell" superclassName="UITableViewCell">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCell.h"/>
+            <relationships>
+                <relationship kind="outlet" name="leftHConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
             </relationships>
         </class>
         <class className="GroupsViewController" superclassName="UITableViewController">

@@ -29,6 +29,7 @@
 		DCB6558716F4F53E00205396 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */; };
 		DCB6559216F4F6B900205396 /* DevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* DevicesTableViewController.m */; };
 		DCB6559516F503C900205396 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* DeviceViewController.m */; };
+		DCDA31DF170713E10051B2D4 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA31DE170713E10051B2D4 /* GroupCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +69,8 @@
 		DCB6559116F4F6B900205396 /* DevicesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicesTableViewController.m; sourceTree = "<group>"; };
 		DCB6559316F503C900205396 /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
 		DCB6559416F503C900205396 /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
+		DCDA31DD170713E10051B2D4 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCell.h; sourceTree = "<group>"; };
+		DCDA31DE170713E10051B2D4 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -171,6 +174,8 @@
 				DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */,
 				DC00B87016FB548800FDA9FC /* GroupsViewController.h */,
 				DC00B87116FB548800FDA9FC /* GroupsViewController.m */,
+				DCDA31DD170713E10051B2D4 /* GroupCell.h */,
+				DCDA31DE170713E10051B2D4 /* GroupCell.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -254,6 +259,7 @@
 				DC00B87816FB608C00FDA9FC /* Group.m in Sources */,
 				DC00B87B16FB608C00FDA9FC /* Login.m in Sources */,
 				DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */,
+				DCDA31DF170713E10051B2D4 /* GroupCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

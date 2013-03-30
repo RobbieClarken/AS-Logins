@@ -35,9 +35,9 @@
     [self removeConstraint:self.passwordRightHConstraint];
     
     // TODO: Get the standard spacing from somewhere smart or use visual format
-    CGFloat standardSpacing = 8.0f;
-    NSLayoutConstraint *newUsernameLeftHConstraint = [NSLayoutConstraint constraintWithItem:self.usernameTextField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:standardSpacing];
-    NSLayoutConstraint *newPasswordRightHConstraint = [NSLayoutConstraint constraintWithItem:self.passwordTextField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:-standardSpacing];
+    static CGFloat StandardSpacing = 8.0f;
+    NSLayoutConstraint *newUsernameLeftHConstraint = [NSLayoutConstraint constraintWithItem:self.usernameTextField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:StandardSpacing];
+    NSLayoutConstraint *newPasswordRightHConstraint = [NSLayoutConstraint constraintWithItem:self.passwordTextField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:-StandardSpacing];
     [self addConstraints:@[newUsernameLeftHConstraint, newPasswordRightHConstraint]];
 }
 

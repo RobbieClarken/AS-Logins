@@ -9,6 +9,7 @@
 #import "GroupsViewController.h"
 #import "Group+Create.h"
 #import "DevicesTableViewController.h"
+#import "GroupCell.h"
 
 @interface GroupsViewController ()
 
@@ -20,12 +21,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self updateGroups];
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    /*
     if ([self.groups count] == 0) {
         [Group groupWithName:@"Operations" inContext:self.managedObjectContext];
         [self updateGroups];
     }
+     */
 }
 
 - (void)updateGroups {
@@ -35,16 +38,29 @@
     self.groups = [self.managedObjectContext executeFetchRequest:request error:&error];
 }
 
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    [self.tableView reloadData];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return [self.groups count];
+    if (self.editing) {
+        return [self.groups count] + 1;
+    } else {
+        return [self.groups count];
+    }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"GroupCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = [self.groups[indexPath.row] name];
+    GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    if (indexPath.row < [self.groups count]) {
+        cell.textField.text = [self.groups[indexPath.row] name];
+    } else {
+        cell.textField.text = @"";
+    }
     return cell;
 }
 
@@ -52,6 +68,14 @@
     NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
     DevicesTableViewController *destinationViewController = (DevicesTableViewController *)segue.destinationViewController;
     destinationViewController.group = [self.groups objectAtIndex:indexPath.row];
+}
+
+- (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (indexPath.row < [self.groups count]) {
+        return UITableViewCellEditingStyleDelete;
+    } else {
+        return UITableViewCellEditingStyleNone;
+    }
 }
 
 @end
