@@ -62,7 +62,7 @@ static NSString *LoginsKey = @"logins";
     if (self.presentingViewController) {
         [self.delegate deviceViewController:self didFinishWithSave:NO];
     } else {
-        [self.managedObjectContext rollback];
+        [self.device.managedObjectContext rollback];
         [self setEditing:NO animated:YES];
     }
 }

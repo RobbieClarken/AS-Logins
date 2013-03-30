@@ -19,7 +19,6 @@
 
 @interface DeviceViewController : UITableViewController
 
-@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 @property (strong, nonatomic) Device *device;
 @property (weak, nonatomic) id <DeviceViewControllerDelegate> delegate;
 
