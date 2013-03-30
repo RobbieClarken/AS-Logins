@@ -17,15 +17,6 @@
 
 @implementation EditLoginCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
-        // Initialization code
-    }
-    return self;
-}
-
 - (void)awakeFromNib {
     
     self.usernameTextField.tag = ASLLoginTextFieldUsername;
@@ -41,11 +32,12 @@
     [self addConstraints:@[newUsernameLeftHConstraint, newPasswordRightHConstraint]];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    if (!self.stayEditable) {
+        self.usernameTextField.enabled = editing;
+        self.passwordTextField.enabled = editing;
+    }
+    [super setEditing:editing animated:animated];
 }
 
 @end

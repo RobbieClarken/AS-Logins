@@ -29,7 +29,7 @@ static NSString *LoginsKey = @"logins";
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     // Resign first responder
-    [self.view endEditing:YES];
+    [self.view endEditing:!editing];
     BOOL save = !editing && self.editing;
     if (save) {
         NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
@@ -88,7 +88,10 @@ static NSString *LoginsKey = @"logins";
     [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    // Hack to update editing style indicators without resigning first responder
+    loginCell.stayEditable = YES;
     [self updateEditingStyleIndicators];
+    loginCell.stayEditable = NO;
 }
 
 - (BOOL)indexPathIsLastInSection:(NSIndexPath *)indexPath {
@@ -110,8 +113,9 @@ static NSString *LoginsKey = @"logins";
 
 - (void)deleteLoginAtIndexPath:(NSIndexPath *)indexPath {
     NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
-    [logins removeObjectAtIndex:indexPath.row];
-    [self.device.managedObjectContext deleteObject:self.device.logins[indexPath.row]];
+    Login *login = logins[indexPath.row];
+    [logins removeObject:login];
+    [self.device.managedObjectContext deleteObject:login];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     if ([self.device.logins count] == 1) {
         [self updateEditingStyleIndicators];
@@ -215,8 +219,6 @@ static NSString *LoginsKey = @"logins";
         } else {
             textField.text = [self deviceFieldValueForRow:indexPath.row];
         }
-        
-        textField.enabled = self.editing;
         return cell;
     } else {
         static NSString *LoginCellIdentifier = @"EditableLoginFieldCell";
@@ -224,9 +226,6 @@ static NSString *LoginsKey = @"logins";
         Login *login = [self loginForIndexPath:indexPath];
         cell.usernameTextField.text = login.username;
         cell.passwordTextField.text = login.password;
-        cell.usernameTextField.enabled = self.editing;
-        cell.passwordTextField.enabled = self.editing;
-        
         if (self.editing && [self indexPathIsLastInSection:indexPath]) {
             [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
             [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
@@ -238,10 +237,6 @@ static NSString *LoginsKey = @"logins";
     }
 }
 
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 1 && [self.device.logins count] > 1;
-}
-
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [self deleteLoginAtIndexPath:indexPath];
@@ -250,10 +245,14 @@ static NSString *LoginsKey = @"logins";
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (![self indexPathIsLastInSection:indexPath]) {
+    if (indexPath.section == 1 && ![self indexPathIsLastInSection:indexPath]) {
         return UITableViewCellEditingStyleDelete;
     }
     return UITableViewCellEditingStyleNone;
+}
+
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.section == 1 && [self.device.logins count] > 1;
 }
 
 #pragma mark - Text field delegate

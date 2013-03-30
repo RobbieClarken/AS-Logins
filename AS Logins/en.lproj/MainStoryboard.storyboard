@@ -20,7 +20,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CJ4-bZ-2sw">
+                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Group Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CJ4-bZ-2sw">
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="43" id="eCf-t8-B2i"/>
                                             </constraints>
@@ -259,6 +259,7 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCell.h"/>
             <relationships>
                 <relationship kind="outlet" name="leftHConstraint" candidateClass="NSLayoutConstraint"/>
+                <relationship kind="outlet" name="rightHConstraint" candidateClass="NSLayoutConstraint"/>
                 <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
             </relationships>
         </class>

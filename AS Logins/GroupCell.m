@@ -19,7 +19,6 @@
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    self.textField.placeholder = @"New Group Name";
     
     static CGFloat StandardSpacing = 8.0f;
     [self removeConstraints:@[self.leftHConstraint, self.rightHConstraint]];
