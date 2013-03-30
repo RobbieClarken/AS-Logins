@@ -10,8 +10,9 @@
 
 @implementation Login (Create)
 
-+ (Login *)loginInContext:(NSManagedObjectContext *)context {
++ (Login *)loginForDevice:(Device *)device inContext:(NSManagedObjectContext *)context {
     Login *login = [NSEntityDescription insertNewObjectForEntityForName:@"Login" inManagedObjectContext:context];
+    login.device = device;
     return login;
 }
 

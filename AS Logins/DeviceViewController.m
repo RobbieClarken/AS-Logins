@@ -36,23 +36,30 @@ static NSString *LoginsKey = @"logins";
         Login *lastLogin = [logins lastObject];
         if (lastLogin.username.length == 0 && lastLogin.password.length == 0) {
             [logins removeObject:lastLogin];
+            [self.device.managedObjectContext deleteObject:lastLogin];
+        }
+        if (self.presentingViewController) {
+            return [self.delegate deviceViewController:self didFinishWithSave:YES];
+        } else {
+            NSError *error;
+            [self.device.managedObjectContext save:&error];
+            if (error) {
+                NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+                abort();
+            }
         }
     }
     if (editing) {
-        Login *login = [Login loginInContext:self.device.managedObjectContext];
-        [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
+        // Add an empty login
+        [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
     }
-    if (save && self.presentingViewController) {
-        return [self.delegate deviceViewController:self didFinishWithSave:YES];
-    } else {
-        [self.navigationItem setHidesBackButton:editing animated:animated];
-        self.navigationItem.hidesBackButton = editing;
-        UIBarButtonItem *leftBarButtonItem;
-        if (editing) {
-            leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
-        }
-        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem animated:animated];
+    [self.navigationItem setHidesBackButton:editing animated:animated];
+    self.navigationItem.hidesBackButton = editing;
+    UIBarButtonItem *leftBarButtonItem;
+    if (editing) {
+        leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
     }
+    [self.navigationItem setLeftBarButtonItem:leftBarButtonItem animated:animated];
     [super setEditing:editing animated:animated];
     [self.tableView reloadData];
 }
@@ -78,8 +85,7 @@ static NSString *LoginsKey = @"logins";
     EditLoginCell *loginCell = (EditLoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
-    NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
-    [logins addObject:[Login loginInContext:self.device.managedObjectContext]];
+    [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     [self updateEditingStyleIndicators];
@@ -105,8 +111,9 @@ static NSString *LoginsKey = @"logins";
 - (void)deleteLoginAtIndexPath:(NSIndexPath *)indexPath {
     NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
     [logins removeObjectAtIndex:indexPath.row];
+    [self.device.managedObjectContext deleteObject:self.device.logins[indexPath.row]];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    if ([logins count] == 1) {
+    if ([self.device.logins count] == 1) {
         [self updateEditingStyleIndicators];
     }
 }
