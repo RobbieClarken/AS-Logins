@@ -22,23 +22,42 @@ static NSString *LoginsKey = @"logins";
 @implementation EditDeviceViewController
 
 - (void)viewDidLoad {
-    [super viewDidLoad];    
+    [super viewDidLoad];
     if ([self.device.logins count] == 0) {
         Login *login = [Login loginInContext:self.device.managedObjectContext];
         [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
     }
+    self.tableView.editing = YES;
+    self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.nextEditCellIndexPath = nil;
-    [self.tableView setEditing:YES animated:NO];
 }
 
-- (IBAction)cancelButtonPressed:(UIBarButtonItem *)sender {
-    [self.view endEditing:YES];
-    [self.delegate editDeviceTableViewController:self didFinishWithSave:NO];
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated {
+    [super setEditing:editing animated:animated];
+    if (!editing && self.presentingViewController) {
+        [self.view endEditing:YES];
+        [self.delegate editDeviceTableViewController:self didFinishWithSave:YES];
+    } else {
+        [self.navigationItem setHidesBackButton:editing animated:animated];
+        self.navigationItem.hidesBackButton = editing;
+        UIBarButtonItem *leftBarButtonItem;
+        if (editing) {
+            leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+        }
+        [self.navigationItem setLeftBarButtonItem:leftBarButtonItem animated:animated];
+        [self.tableView setEditing:editing animated:animated];
+        [self.tableView reloadData];
+    }
 }
 
-- (IBAction)doneButtonPressed:(UIBarButtonItem *)sender {
+- (void)cancelButtonPressed:(UIBarButtonItem *)sender {
     [self.view endEditing:YES];
-    [self.delegate editDeviceTableViewController:self didFinishWithSave:YES];
+    if (self.presentingViewController) {
+        [self.delegate editDeviceTableViewController:self didFinishWithSave:NO];
+    } else {
+        [self.managedObjectContext rollback];
+        [self setEditing:NO animated:YES];
+    }
 }
 
 - (NSIndexPath *)indexPathWithView:(UIView *)view {
@@ -56,9 +75,7 @@ static NSString *LoginsKey = @"logins";
     [logins addObject:[Login loginInContext:self.device.managedObjectContext]];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    // Hack to make tableView refresh editing style:
-    self.tableView.editing = NO;
-    self.tableView.editing = YES;
+    [self updateEditingStyleIndicators];
 }
 
 - (BOOL)indexPathIsLastInSection:(NSIndexPath *)indexPath {
@@ -85,8 +102,13 @@ static NSString *LoginsKey = @"logins";
     [logins removeObjectAtIndex:indexPath.row];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     if ([logins count] == 1) {
-        self.tableView.editing = NO;
+        [self updateEditingStyleIndicators];
     }
+}
+
+- (void)updateEditingStyleIndicators {
+    self.tableView.editing = NO;
+    self.tableView.editing = YES;
 }
 
 #pragma mark - Table view data source

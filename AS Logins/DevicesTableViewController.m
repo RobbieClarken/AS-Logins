@@ -20,35 +20,45 @@ static NSString *DevicesKey = @"devices";
 
 @implementation DevicesTableViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    [self.tableView reloadData];
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.destinationViewController isKindOfClass:[EditDeviceViewController class]]) {
-        [self.group.managedObjectContext save:nil];
-        
-        NSManagedObjectContext *editDeviceManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
-        editDeviceManagedObjectContext.parentContext = self.group.managedObjectContext;
+    EditDeviceViewController *destinationViewController;
+    [self.group.managedObjectContext save:nil];
+    Device *device;
+    NSManagedObjectContext *destinationManagedObjectContext;
+    if ([segue.identifier isEqualToString:@"AddDevice"]) {
+        destinationViewController = (EditDeviceViewController *)[(UINavigationController *)segue.destinationViewController topViewController];
+        destinationManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
+        destinationManagedObjectContext.parentContext = self.group.managedObjectContext;
         NSError *error;
-        Group *editDeviceGroup = (Group *)[editDeviceManagedObjectContext existingObjectWithID:self.group.objectID error:&error];
+        Group *editDeviceGroup = (Group *)[destinationManagedObjectContext existingObjectWithID:self.group.objectID error:&error];
         if (error) {
             // TODO: Handle error
             NSLog(@"%s %@", __PRETTY_FUNCTION__, error.localizedDescription);
         }
-        Device *device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:editDeviceManagedObjectContext];
+        device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:destinationManagedObjectContext];
         NSMutableOrderedSet *devices = [editDeviceGroup mutableOrderedSetValueForKey:DevicesKey];
         [devices addObject:device];
-        EditDeviceViewController *destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
-        destinationViewController.managedObjectContext = editDeviceManagedObjectContext;
-        destinationViewController.delegate = self;
-        destinationViewController.device = device;
+    } else if ([segue.identifier isEqualToString:@"ShowDevice"]) {
+        destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
+        device = self.group.devices[self.tableView.indexPathForSelectedRow.row];
+        destinationManagedObjectContext = device.managedObjectContext;
     }
+    destinationViewController.managedObjectContext = destinationManagedObjectContext;
+    destinationViewController.delegate = self;
+    destinationViewController.device = device;
+    // If adding a new device, default to editing mode
+    [destinationViewController setEditing:[segue.identifier isEqualToString:@"AddDevice"] animated:NO];
 }
 
 #pragma mark - Login edit delegate
 
 - (void)editDeviceTableViewController:(EditDeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save {
+    // TODO: Remove last empty login
     if (save) {
         NSError *error;
         [editDeviceViewController.managedObjectContext save:&error];
