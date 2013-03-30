@@ -23,20 +23,27 @@ static NSString *LoginsKey = @"logins";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    if ([self.device.logins count] == 0) {
-        Login *login = [Login loginInContext:self.device.managedObjectContext];
-        [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
-    }
-    self.tableView.editing = YES;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.nextEditCellIndexPath = nil;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    [super setEditing:editing animated:animated];
-    if (!editing && self.presentingViewController) {
-        [self.view endEditing:YES];
-        [self.delegate editDeviceTableViewController:self didFinishWithSave:YES];
+    // Resign first responder
+    [self.view endEditing:YES];
+    BOOL save = !editing && self.editing;
+    if (save) {
+        NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
+        Login *lastLogin = [logins lastObject];
+        if (lastLogin.username.length == 0 && lastLogin.password.length == 0) {
+            [logins removeObject:lastLogin];
+        }
+    }
+    if (editing) {
+        Login *login = [Login loginInContext:self.device.managedObjectContext];
+        [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
+    }
+    if (save && self.presentingViewController) {
+        return [self.delegate editDeviceTableViewController:self didFinishWithSave:YES];
     } else {
         [self.navigationItem setHidesBackButton:editing animated:animated];
         self.navigationItem.hidesBackButton = editing;
@@ -45,9 +52,9 @@ static NSString *LoginsKey = @"logins";
             leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
         }
         [self.navigationItem setLeftBarButtonItem:leftBarButtonItem animated:animated];
-        [self.tableView setEditing:editing animated:animated];
-        [self.tableView reloadData];
     }
+    [super setEditing:editing animated:animated];
+    [self.tableView reloadData];
 }
 
 - (void)cancelButtonPressed:(UIBarButtonItem *)sender {
@@ -89,9 +96,7 @@ static NSString *LoginsKey = @"logins";
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
     if ([cell isKindOfClass:[EditLoginCell class]]) {
         EditLoginCell *editLoginCell = (EditLoginCell *)cell;
-        NSString *trimmedUsername = [editLoginCell.usernameTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        NSString *trimmedPassword = [editLoginCell.passwordTextField.text stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-        if ([trimmedUsername length] == 0 && [trimmedPassword length] == 0) {
+        if (editLoginCell.usernameTextField.text.length == 0 && editLoginCell.passwordTextField.text.length == 0) {
             [self deleteLoginAtIndexPath:indexPath];
         }
     }
@@ -111,6 +116,21 @@ static NSString *LoginsKey = @"logins";
     self.tableView.editing = YES;
 }
 
+- (NSString *)deviceFieldValueForRow:(NSUInteger)row {
+    NSArray *deviceFieldNames = @[@"name", @"hostname", @"ip", @"url"];
+    NSUInteger nonEmptyFieldCount = 0;
+    for (NSString *name in deviceFieldNames) {
+        NSString *value = [self.device valueForKey:name];
+        if (value.length > 0) {
+            nonEmptyFieldCount += 1;
+        }
+        if (nonEmptyFieldCount > row) {
+            return value;
+        }
+    }
+    return nil;
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -119,7 +139,24 @@ static NSString *LoginsKey = @"logins";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (section == 0) {
-        return 4;
+        if (self.editing) {
+            return 4;
+        } else {
+            NSUInteger numberOfRows = 0;
+            if (self.device.name.length > 0) {
+                numberOfRows += 1;
+            }
+            if (self.device.hostname.length > 0) {
+                numberOfRows += 1;
+            }
+            if (self.device.ip.length > 0) {
+                numberOfRows += 1;
+            }
+            if (self.device.url.length > 0) {
+                numberOfRows += 1;
+            }
+            return numberOfRows;
+        }
     } else {
         return [self.device.logins count];
     }
@@ -141,32 +178,38 @@ static NSString *LoginsKey = @"logins";
         DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceFieldCellIdentifier forIndexPath:indexPath];
         UITextField *textField = cell.textField;
         textField.delegate = self;
-        switch (indexPath.row) {
-            case 0:
-                textField.placeholder = @"Name";
-                textField.keyboardType = UIKeyboardTypeDefault;
-                textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-                textField.text = self.device.name;
-                break;
-            case 1:
-                textField.placeholder = @"Hostname";
-                textField.keyboardType = UIKeyboardTypeDefault;
-                textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-                textField.text = self.device.hostname;
-                break;
-            case 2:
-                textField.placeholder = @"IP";
-                textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-                textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                textField.text = self.device.ip;
-                break;
-            case 3:
-                textField.placeholder = @"URL";
-                textField.keyboardType = UIKeyboardTypeURL;
-                textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                textField.text = self.device.url;
-                break;
+        if (self.editing) {
+            switch (indexPath.row) {
+                case 0:
+                    textField.placeholder = @"Name";
+                    textField.keyboardType = UIKeyboardTypeDefault;
+                    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+                    textField.text = self.device.name;
+                    break;
+                case 1:
+                    textField.placeholder = @"Hostname";
+                    textField.keyboardType = UIKeyboardTypeDefault;
+                    textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+                    textField.text = self.device.hostname;
+                    break;
+                case 2:
+                    textField.placeholder = @"IP";
+                    textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+                    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                    textField.text = self.device.ip;
+                    break;
+                case 3:
+                    textField.placeholder = @"URL";
+                    textField.keyboardType = UIKeyboardTypeURL;
+                    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                    textField.text = self.device.url;
+                    break;
+            }
+        } else {
+            textField.text = [self deviceFieldValueForRow:indexPath.row];
         }
+        
+        textField.enabled = self.editing;
         return cell;
     } else {
         static NSString *LoginCellIdentifier = @"EditableLoginFieldCell";
@@ -174,7 +217,10 @@ static NSString *LoginsKey = @"logins";
         Login *login = [self loginForIndexPath:indexPath];
         cell.usernameTextField.text = login.username;
         cell.passwordTextField.text = login.password;
-        if ([self indexPathIsLastInSection:indexPath]) {
+        cell.usernameTextField.enabled = self.editing;
+        cell.passwordTextField.enabled = self.editing;
+        
+        if (self.editing && [self indexPathIsLastInSection:indexPath]) {
             [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
             [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
         }        

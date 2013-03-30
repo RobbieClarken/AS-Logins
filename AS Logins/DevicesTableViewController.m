@@ -58,7 +58,6 @@ static NSString *DevicesKey = @"devices";
 #pragma mark - Login edit delegate
 
 - (void)editDeviceTableViewController:(EditDeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save {
-    // TODO: Remove last empty login
     if (save) {
         NSError *error;
         [editDeviceViewController.managedObjectContext save:&error];
