@@ -7,12 +7,12 @@
 //
 
 #import "DevicesTableViewController.h"
-#import "EditDeviceViewController.h"
+#import "DeviceViewController.h"
 #import "Device.h"
 
 static NSString *DevicesKey = @"devices";
 
-@interface DevicesTableViewController () <EditLoginViewControllerDelegate>
+@interface DevicesTableViewController () <DeviceViewControllerDelegate>
 
 @property (nonatomic, strong) NSManagedObjectContext *editManagedObjectContext;
 
@@ -26,12 +26,12 @@ static NSString *DevicesKey = @"devices";
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    EditDeviceViewController *destinationViewController;
+    DeviceViewController *destinationViewController;
     [self.group.managedObjectContext save:nil];
     Device *device;
     NSManagedObjectContext *destinationManagedObjectContext;
     if ([segue.identifier isEqualToString:@"AddDevice"]) {
-        destinationViewController = (EditDeviceViewController *)[(UINavigationController *)segue.destinationViewController topViewController];
+        destinationViewController = (DeviceViewController *)[(UINavigationController *)segue.destinationViewController topViewController];
         destinationManagedObjectContext = [[NSManagedObjectContext alloc] initWithConcurrencyType:NSMainQueueConcurrencyType];
         destinationManagedObjectContext.parentContext = self.group.managedObjectContext;
         NSError *error;
@@ -44,7 +44,7 @@ static NSString *DevicesKey = @"devices";
         NSMutableOrderedSet *devices = [editDeviceGroup mutableOrderedSetValueForKey:DevicesKey];
         [devices addObject:device];
     } else if ([segue.identifier isEqualToString:@"ShowDevice"]) {
-        destinationViewController = (EditDeviceViewController *)segue.destinationViewController;
+        destinationViewController = (DeviceViewController *)segue.destinationViewController;
         device = self.group.devices[self.tableView.indexPathForSelectedRow.row];
         destinationManagedObjectContext = device.managedObjectContext;
     }
@@ -55,9 +55,9 @@ static NSString *DevicesKey = @"devices";
     [destinationViewController setEditing:[segue.identifier isEqualToString:@"AddDevice"] animated:NO];
 }
 
-#pragma mark - Login edit delegate
+#pragma mark - device view delegate
 
-- (void)editDeviceTableViewController:(EditDeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save {
+- (void)deviceViewController:(DeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save {
     if (save) {
         NSError *error;
         [editDeviceViewController.managedObjectContext save:&error];
@@ -74,7 +74,7 @@ static NSString *DevicesKey = @"devices";
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         
         Device *device = [self.group.devices lastObject];
-        EditDeviceViewController *newDeviceViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceDetailView"];
+        DeviceViewController *newDeviceViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceDetailView"];
         newDeviceViewController.device = device;
         newDeviceViewController.managedObjectContext = device.managedObjectContext;
         [self.navigationController pushViewController:newDeviceViewController animated:NO];

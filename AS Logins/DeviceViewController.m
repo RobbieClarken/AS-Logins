@@ -6,20 +6,20 @@
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
-#import "EditDeviceViewController.h"
+#import "DeviceViewController.h"
 #import "Login+Create.h"
 #import "DeviceFieldCell.h"
 #import "EditLoginCell.h"
 
 static NSString *LoginsKey = @"logins";
 
-@interface EditDeviceViewController () <UITextFieldDelegate>
+@interface DeviceViewController () <UITextFieldDelegate>
 
 @property (strong, nonatomic) NSIndexPath *nextEditCellIndexPath;
 
 @end
 
-@implementation EditDeviceViewController
+@implementation DeviceViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -43,7 +43,7 @@ static NSString *LoginsKey = @"logins";
         [[self.device mutableOrderedSetValueForKey:LoginsKey] addObject:login];
     }
     if (save && self.presentingViewController) {
-        return [self.delegate editDeviceTableViewController:self didFinishWithSave:YES];
+        return [self.delegate deviceViewController:self didFinishWithSave:YES];
     } else {
         [self.navigationItem setHidesBackButton:editing animated:animated];
         self.navigationItem.hidesBackButton = editing;
@@ -60,7 +60,7 @@ static NSString *LoginsKey = @"logins";
 - (void)cancelButtonPressed:(UIBarButtonItem *)sender {
     [self.view endEditing:YES];
     if (self.presentingViewController) {
-        [self.delegate editDeviceTableViewController:self didFinishWithSave:NO];
+        [self.delegate deviceViewController:self didFinishWithSave:NO];
     } else {
         [self.managedObjectContext rollback];
         [self setEditing:NO animated:YES];

@@ -95,10 +95,10 @@
             </objects>
             <point key="canvasLocation" x="1181" y="72"/>
         </scene>
-        <!--Edit Device View Controller - Device-->
+        <!--Device View Controller - Device-->
         <scene sceneID="VMt-oW-dR9">
             <objects>
-                <tableViewController storyboardIdentifier="DeviceDetailView" id="7IQ-3h-sxY" customClass="EditDeviceViewController" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="DeviceDetailView" id="7IQ-3h-sxY" customClass="DeviceViewController" sceneMemberID="viewController">
                     <tableView key="view" opaque="NO" clipsSubviews="YES" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="singleLineEtched" allowsSelection="NO" rowHeight="44" sectionHeaderHeight="10" sectionFooterHeight="10" id="8n7-V6-7bx">
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -179,9 +179,7 @@
                             <outlet property="delegate" destination="7IQ-3h-sxY" id="lOm-R5-Dk2"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Device" id="stM-Ud-Lop">
-                        <barButtonItem key="leftBarButtonItem" systemItem="cancel" id="S1W-OW-lq2"/>
-                    </navigationItem>
+                    <navigationItem key="navigationItem" title="Device" id="stM-Ud-Lop"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="GZQ-Ta-vrK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -232,11 +230,11 @@
                 <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
             </relationships>
         </class>
+        <class className="DeviceViewController" superclassName="UITableViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/DeviceViewController.h"/>
+        </class>
         <class className="DevicesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DevicesTableViewController.h"/>
-        </class>
-        <class className="EditDeviceViewController" superclassName="UITableViewController">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditDeviceViewController.h"/>
         </class>
         <class className="EditLoginCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/EditLoginCell.h"/>
