@@ -71,7 +71,13 @@ static NSString *DevicesKey = @"devices";
             abort();
         }
         NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self.group.devices count]-1 inSection:0];
-        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+        [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+        
+        Device *device = [self.group.devices lastObject];
+        EditDeviceViewController *newDeviceViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceDetailView"];
+        newDeviceViewController.device = device;
+        newDeviceViewController.managedObjectContext = device.managedObjectContext;
+        [self.navigationController pushViewController:newDeviceViewController animated:NO];
     }
     [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
