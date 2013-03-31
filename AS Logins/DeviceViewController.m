@@ -32,12 +32,6 @@ static NSString *LoginsKey = @"logins";
     [self.view endEditing:!editing];
     BOOL save = !editing && self.editing;
     if (save) {
-        NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
-        Login *lastLogin = [logins lastObject];
-        if (lastLogin.username.length == 0 && lastLogin.password.length == 0) {
-            [logins removeObject:lastLogin];
-            [self.device.managedObjectContext deleteObject:lastLogin];
-        }
         if (self.presentingViewController) {
             return [self.delegate deviceViewController:self didFinishWithSave:YES];
         } else {
@@ -48,10 +42,6 @@ static NSString *LoginsKey = @"logins";
                 abort();
             }
         }
-    }
-    if (editing) {
-        // Add an empty login
-        [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
     }
     [self.navigationItem setHidesBackButton:editing animated:animated];
     self.navigationItem.hidesBackButton = editing;
@@ -117,7 +107,7 @@ static NSString *LoginsKey = @"logins";
     [logins removeObject:login];
     [self.device.managedObjectContext deleteObject:login];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    if ([self.device.logins count] == 1) {
+    if ([self.device.logins count] == 0) {
         [self updateEditingStyleIndicators];
     }
 }
@@ -149,10 +139,14 @@ static NSString *LoginsKey = @"logins";
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    if (section == 0) {
-        if (self.editing) {
+    if (self.editing) {
+        if (section == 0) {
             return 4;
         } else {
+            return [self.device.logins count]+1;
+        }
+    } else {
+        if (section == 0) {
             NSUInteger numberOfRows = 0;
             if (self.device.name.length > 0) {
                 numberOfRows += 1;
@@ -167,17 +161,15 @@ static NSString *LoginsKey = @"logins";
                 numberOfRows += 1;
             }
             return numberOfRows;
+        } else {
+            return [self.device.logins count];
         }
-    } else {
-        return [self.device.logins count];
     }
 }
 
 - (Login *)loginForIndexPath:(NSIndexPath *)indexPath {
-    NSUInteger loginNumber = indexPath.row;
-    NSOrderedSet *logins = self.device.logins;
-    if (loginNumber < [logins count]) {
-        return [logins objectAtIndex:loginNumber];
+    if (indexPath.row < [self.device.logins count]) {
+        return [self.device.logins objectAtIndex:indexPath.row];
     } else {
         return nil;
     }
@@ -222,7 +214,7 @@ static NSString *LoginsKey = @"logins";
         return cell;
     } else {
         static NSString *LoginCellIdentifier = @"EditableLoginFieldCell";
-        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];        
+        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
         Login *login = [self loginForIndexPath:indexPath];
         cell.usernameTextField.text = login.username;
         cell.passwordTextField.text = login.password;
@@ -252,7 +244,7 @@ static NSString *LoginsKey = @"logins";
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 1 && [self.device.logins count] > 1;
+    return indexPath.section == 1 && [self.tableView numberOfRowsInSection:indexPath.section] > 1;
 }
 
 #pragma mark - Text field delegate
