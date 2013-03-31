@@ -10,6 +10,7 @@
     </entity>
     <entity name="Group" representedClassName="Group" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="position" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Device" inverseName="group" inverseEntity="Device" syncable="YES"/>
     </entity>
     <entity name="Login" representedClassName="Login" syncable="YES">
@@ -19,7 +20,7 @@
     </entity>
     <elements>
         <element name="Device" positionX="250" positionY="57" width="128" height="133"/>
-        <element name="Group" positionX="36" positionY="60" width="128" height="73"/>
+        <element name="Group" positionX="36" positionY="60" width="128" height="88"/>
         <element name="Login" positionX="439" positionY="63" width="128" height="88"/>
     </elements>
 </model>

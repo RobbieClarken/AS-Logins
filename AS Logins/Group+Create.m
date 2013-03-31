@@ -10,12 +10,12 @@
 
 @implementation Group (Create)
 
-+ (Group *)groupWithName:(NSString *)name inContext:(NSManagedObjectContext *)context {
++ (Group *)groupWithName:(NSString *)name atPosition:(NSNumber *)position inContext:(NSManagedObjectContext *)context {
     Group *group;
     // TODO: Check if group exists with name already
     group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:context];
     group.name = name;
-    
+    group.position = position;
     return group;
 }
 

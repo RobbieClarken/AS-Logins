@@ -2,7 +2,7 @@
 //  Group.h
 //  AS Logins
 //
-//  Created by Robbie Clarken on 22/03/13.
+//  Created by Robbie Clarken on 31/03/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
@@ -14,6 +14,7 @@
 @interface Group : NSManagedObject
 
 @property (nonatomic, retain) NSString * name;
+@property (nonatomic, retain) NSNumber * position;
 @property (nonatomic, retain) NSOrderedSet *devices;
 @end
 

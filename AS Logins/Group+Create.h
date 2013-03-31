@@ -10,6 +10,6 @@
 
 @interface Group (Create)
 
-+ (Group *)groupWithName:(NSString *)name inContext:(NSManagedObjectContext *)context;
++ (Group *)groupWithName:(NSString *)name atPosition:(NSNumber *)position inContext:(NSManagedObjectContext *)context;
 
 @end
