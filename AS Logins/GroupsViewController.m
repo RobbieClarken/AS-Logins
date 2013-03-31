@@ -104,6 +104,10 @@ static NSUInteger GroupPositionStep = 0x10000;
     destinationViewController.group = [self.groups objectAtIndex:indexPath.row];
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
+    return [self.tableView numberOfRowsInSection:indexPath.section] > 1;
+}
+
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < [self.groups count]) {
         return UITableViewCellEditingStyleDelete;
