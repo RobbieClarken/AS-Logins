@@ -46,8 +46,20 @@ static NSUInteger GroupPositionStep = 0x10000;
             abort();
         }
     }
+    if (editing) {
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];
+    } else {
+        self.navigationItem.leftBarButtonItem = nil;
+    }
     [super setEditing:editing animated:animated];
     [self.tableView reloadData];
+}
+
+- (void)cancelButtonPressed:(UIBarButtonItem *)sender {
+    [self.view endEditing:YES];
+    [self.managedObjectContext rollback];
+    [self updateGroups];
+    [self setEditing:NO animated:YES];
 }
 
 - (void)editedEmptyGroup:(UITextField *)textField {
