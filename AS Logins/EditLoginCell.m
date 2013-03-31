@@ -36,6 +36,14 @@
     if (!self.stayEditable) {
         self.usernameTextField.enabled = editing;
         self.passwordTextField.enabled = editing;
+        if (editing) {
+            self.usernameTextField.placeholder = @"Username";
+            self.passwordTextField.placeholder = @"Password";
+        } else {
+            self.usernameTextField.placeholder = @"";
+            self.passwordTextField.placeholder = @"";
+        }
+        
     }
     [super setEditing:editing animated:animated];
 }

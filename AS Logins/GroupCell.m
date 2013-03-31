@@ -29,6 +29,12 @@
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     self.textField.enabled = editing;
+    if (editing) {
+        self.textField.placeholder = @"Group Name";
+    } else {
+        self.textField.placeholder = @"";
+    }
+    
     [super setEditing:editing animated:animated];
 }
 

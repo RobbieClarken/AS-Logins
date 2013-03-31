@@ -36,7 +36,6 @@ static NSUInteger GroupPositionStep = 0x10000;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
-    NSLog(@"%s", __PRETTY_FUNCTION__);
     [self.view endEditing:!editing];
     BOOL save = !editing && self.editing;
     if (save) {
