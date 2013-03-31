@@ -63,7 +63,16 @@ static NSUInteger GroupPositionStep = 0x10000;
         [Group groupWithName:@"" atPosition:[NSNumber numberWithInt:positionInt] inContext:self.managedObjectContext];
         [self updateGroups];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationAutomatic];
+        GroupCell *cell = (GroupCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+        cell.stayEditable = YES;
+        [self updateEditingStyleIndicators];
+        cell.stayEditable = NO;
     }
+}
+
+- (void)updateEditingStyleIndicators {
+    self.tableView.editing = NO;
+    self.tableView.editing = YES;
 }
 
 #pragma mark - Table view data source

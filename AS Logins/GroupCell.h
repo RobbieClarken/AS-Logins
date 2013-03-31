@@ -11,5 +11,6 @@
 @interface GroupCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (nonatomic) BOOL stayEditable;
 
 @end
