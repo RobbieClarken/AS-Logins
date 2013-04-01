@@ -66,13 +66,13 @@ static NSUInteger GroupPositionStep = 0x10000;
     [textField removeTarget:self action:@selector(editedEmptyGroup:) forControlEvents:UIControlEventEditingChanged];
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[self.tableView convertPoint:CGPointZero fromView:textField]];
     if (indexPath.row == [self.tableView numberOfRowsInSection:indexPath.section]-1) {
-        NSUInteger positionInt;
+        NSUInteger positionInteger;
         if (indexPath.row == 0) {
-            positionInt = GroupPositionStep;
+            positionInteger = GroupPositionStep;
         } else {
-            positionInt = [[(Group *)self.groups.lastObject position] integerValue] + GroupPositionStep;
+            positionInteger = [[(Group *)self.groups.lastObject position] integerValue] + GroupPositionStep;
         }
-        [Group groupWithName:@"" atPosition:[NSNumber numberWithInt:positionInt] inContext:self.managedObjectContext];
+        [Group groupWithName:@"" atPosition:[NSNumber numberWithInt:positionInteger] inContext:self.managedObjectContext];
         [self updateGroups];
         [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationAutomatic];
         GroupCell *cell = (GroupCell *)[self.tableView cellForRowAtIndexPath:indexPath];
@@ -106,6 +106,7 @@ static NSUInteger GroupPositionStep = 0x10000;
         cell.textField.text = @"";
         [cell.textField addTarget:self action:@selector(editedEmptyGroup:) forControlEvents:UIControlEventEditingChanged];
     }
+    cell.showsReorderControl = YES;
     cell.textField.delegate = self;
     return cell;
 }
@@ -120,12 +121,50 @@ static NSUInteger GroupPositionStep = 0x10000;
     return [self.tableView numberOfRowsInSection:indexPath.section] > 1;
 }
 
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.row < [self.groups count];
+}
+
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < [self.groups count]) {
         return UITableViewCellEditingStyleDelete;
     } else {
         return UITableViewCellEditingStyleNone;
     }
+}
+
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        [self.managedObjectContext deleteObject:self.groups[indexPath.row]];
+        [self updateGroups];
+        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    }
+}
+
+- (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+    if (proposedDestinationIndexPath.row == [self.groups count]) {
+        return [NSIndexPath indexPathForRow:[self.groups count]-1 inSection:proposedDestinationIndexPath.section];
+    }
+    return proposedDestinationIndexPath;
+}
+
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
+    if ([sourceIndexPath isEqual:destinationIndexPath]) {
+        return;
+    }
+    Group *movingGroup = self.groups[sourceIndexPath.row];
+    NSUInteger newPositionInteger;
+    if (destinationIndexPath.row == 0) {
+        newPositionInteger = [[(Group *)self.groups[0] position] integerValue]/2;
+    } else if (destinationIndexPath.row == [self.groups count]-1) {
+        newPositionInteger = [[(Group *)[self.groups lastObject] position] integerValue] + GroupPositionStep;
+    } else {
+        Group *earlierGroup = (Group *)self.groups[destinationIndexPath.row];
+        Group *latterGroup = (Group *)self.groups[destinationIndexPath.row+1];
+        newPositionInteger = ([earlierGroup.position integerValue] + [latterGroup.position integerValue])/2;
+    }
+    movingGroup.position = [NSNumber numberWithInteger:newPositionInteger];
+    [self updateGroups];
 }
 
 #pragma mark - TextField delegate

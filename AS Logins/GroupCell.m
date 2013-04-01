@@ -36,7 +36,6 @@
             self.textField.placeholder = @"";
         }
     }
-    
     [super setEditing:editing animated:animated];
 }
 
