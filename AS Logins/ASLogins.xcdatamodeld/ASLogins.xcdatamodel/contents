@@ -6,12 +6,12 @@
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="url" optional="YES" attributeType="String" syncable="YES"/>
         <relationship name="group" optional="YES" minCount="1" maxCount="1" deletionRule="Nullify" destinationEntity="Group" inverseName="devices" inverseEntity="Group" syncable="YES"/>
-        <relationship name="logins" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Login" inverseName="device" inverseEntity="Login" syncable="YES"/>
+        <relationship name="logins" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Login" inverseName="device" inverseEntity="Login" syncable="YES"/>
     </entity>
     <entity name="Group" representedClassName="Group" syncable="YES">
         <attribute name="name" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="position" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Nullify" ordered="YES" destinationEntity="Device" inverseName="group" inverseEntity="Device" syncable="YES"/>
+        <relationship name="devices" optional="YES" toMany="YES" deletionRule="Cascade" ordered="YES" destinationEntity="Device" inverseName="group" inverseEntity="Device" syncable="YES"/>
     </entity>
     <entity name="Login" representedClassName="Login" syncable="YES">
         <attribute name="password" optional="YES" attributeType="String" syncable="YES"/>
