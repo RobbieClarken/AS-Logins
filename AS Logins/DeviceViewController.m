@@ -251,25 +251,25 @@ static NSString *LoginsKey = @"logins";
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSIndexPath *indexPath = [self indexPathWithView:textField];
-    switch (indexPath.section) {
-        case 0: {
-            switch (indexPath.row) {
-                case 0:
-                    self.device.name = textField.text;
-                    break;
-                case 1:
-                    self.device.hostname = textField.text;
-                    break;
-                case 2:
-                    self.device.ip = textField.text;
-                    break;
-                case 3:
-                    self.device.url = textField.text;
-                    break;
-            }
-            break;
+    if (indexPath.section == 0) {
+        switch (indexPath.row) {
+            case 0:
+                self.device.name = textField.text;
+                break;
+            case 1:
+                self.device.hostname = textField.text;
+                break;
+            case 2:
+                self.device.ip = textField.text;
+                break;
+            case 3:
+                self.device.url = textField.text;
+                break;
         }
-        case 1: {
+    } else {
+        // The last row is the template and does not have a Login object (if text had been added
+        // then a Login would have been created and it would no longer be the last object)
+        if (![self indexPathIsLastInSection:indexPath]) {
             Login *login = self.device.logins[indexPath.row];
             switch (textField.tag) {
                 case ASLLoginTextFieldUsername:
@@ -279,7 +279,6 @@ static NSString *LoginsKey = @"logins";
                     login.password = textField.text;
                     break;
             }
-            break;
         }
     }
     
