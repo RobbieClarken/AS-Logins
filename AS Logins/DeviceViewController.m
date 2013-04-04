@@ -89,6 +89,7 @@ static NSString *LoginsKey = @"logins";
 }
 
 - (void)didEndEditingCellAtIndexPath:(NSIndexPath *)indexPath {
+    // Method for deleting login cells when both the username and password are cleared
     if ([self indexPathIsLastInSection:indexPath]) {
         return;
     }

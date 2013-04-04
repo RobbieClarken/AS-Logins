@@ -31,8 +31,11 @@ static NSUInteger GroupPositionStep = 0x10000;
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Group"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES]];
     NSError *error;
-    // TODO: Handle error
     self.groups = [self.managedObjectContext executeFetchRequest:request error:&error];
+    if (error) {
+        NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+        abort();
+    }
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -142,6 +145,7 @@ static NSUInteger GroupPositionStep = 0x10000;
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
+    //[self.view endEditing:YES];
     if (proposedDestinationIndexPath.row == [self.groups count]) {
         return [NSIndexPath indexPathForRow:[self.groups count]-1 inSection:proposedDestinationIndexPath.section];
     }
@@ -159,12 +163,26 @@ static NSUInteger GroupPositionStep = 0x10000;
     } else if (destinationIndexPath.row == [self.groups count]-1) {
         newPositionInteger = [[(Group *)[self.groups lastObject] position] integerValue] + GroupPositionStep;
     } else {
-        Group *earlierGroup = (Group *)self.groups[destinationIndexPath.row];
-        Group *latterGroup = (Group *)self.groups[destinationIndexPath.row+1];
+        // Find the index in self.groups of the group that will be
+        // before the moved group once the move is complete.
+        NSUInteger earlierGroupIndex = destinationIndexPath.row-1;
+        // If we have moved the group from below the destination row will
+        // be one too low because the moved cell is not counted.
+        if (sourceIndexPath.row < destinationIndexPath.row) {
+            earlierGroupIndex += 1;
+        }
+        Group *earlierGroup = (Group *)self.groups[earlierGroupIndex];
+        Group *latterGroup = (Group *)self.groups[earlierGroupIndex+1];
         newPositionInteger = ([earlierGroup.position integerValue] + [latterGroup.position integerValue])/2;
     }
     movingGroup.position = [NSNumber numberWithInteger:newPositionInteger];
     [self updateGroups];
+    // Reindex the groups to prevent position collisions.
+    NSUInteger positionInteger = 0;
+    for (Group *group in self.groups) {
+        positionInteger += GroupPositionStep;
+        group.position = [NSNumber numberWithInteger:positionInteger];
+    }
 }
 
 #pragma mark - TextField delegate
