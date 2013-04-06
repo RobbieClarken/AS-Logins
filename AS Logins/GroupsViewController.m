@@ -90,6 +90,12 @@ static NSUInteger GroupPositionStep = 0x10000;
     self.tableView.editing = YES;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
+    DevicesTableViewController *destinationViewController = (DevicesTableViewController *)segue.destinationViewController;
+    destinationViewController.group = [self.groups objectAtIndex:indexPath.row];
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -112,12 +118,6 @@ static NSUInteger GroupPositionStep = 0x10000;
     cell.showsReorderControl = YES;
     cell.textField.delegate = self;
     return cell;
-}
-
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    DevicesTableViewController *destinationViewController = (DevicesTableViewController *)segue.destinationViewController;
-    destinationViewController.group = [self.groups objectAtIndex:indexPath.row];
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
