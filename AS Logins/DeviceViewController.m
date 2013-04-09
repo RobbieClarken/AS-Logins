@@ -12,6 +12,8 @@
 #import "EditLoginCell.h"
 
 static NSString *LoginsKey = @"logins";
+static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
+static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
 @interface DeviceViewController () <UITextFieldDelegate>
 
@@ -23,6 +25,9 @@ static NSString *LoginsKey = @"logins";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.tableView registerClass:[DeviceFieldCell class] forCellReuseIdentifier:DeviceFieldCellIdentifier];
+    
+    
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.nextEditCellIndexPath = nil;
 }
@@ -178,7 +183,6 @@ static NSString *LoginsKey = @"logins";
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.section == 0) {
-        static NSString *DeviceFieldCellIdentifier = @"EditableDeviceFieldCell";
         DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceFieldCellIdentifier forIndexPath:indexPath];
         UITextField *textField = cell.textField;
         textField.delegate = self;
@@ -214,7 +218,6 @@ static NSString *LoginsKey = @"logins";
         }
         return cell;
     } else {
-        static NSString *LoginCellIdentifier = @"EditableLoginFieldCell";
         EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
         Login *login = [self loginForIndexPath:indexPath];
         cell.usernameTextField.text = login.username;

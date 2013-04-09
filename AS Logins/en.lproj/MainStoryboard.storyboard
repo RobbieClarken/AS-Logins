@@ -114,36 +114,11 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableDeviceFieldCell" id="cRg-PY-LRJ" customClass="DeviceFieldCell">
-                                <rect key="frame" x="0.0" y="46" width="320" height="45"/>
+                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoginCellIdentifier" id="rDp-We-GTd" customClass="EditLoginCell">
+                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="10" y="1" width="300" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="aet-Ey-dpN">
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                        </textField>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="aet-Ey-dpN" secondAttribute="trailing" constant="30" type="user" id="1Cc-1O-PoH"/>
-                                    <constraint firstAttribute="bottom" secondItem="aet-Ey-dpN" secondAttribute="bottom" type="user" id="GO4-eZ-f4H"/>
-                                    <constraint firstItem="aet-Ey-dpN" firstAttribute="centerX" secondItem="cRg-PY-LRJ" secondAttribute="centerX" type="user" id="WKl-rn-irP"/>
-                                    <constraint firstItem="aet-Ey-dpN" firstAttribute="leading" secondItem="cRg-PY-LRJ" secondAttribute="leading" constant="30" type="user" id="ffg-XI-XZ0"/>
-                                    <constraint firstItem="aet-Ey-dpN" firstAttribute="top" secondItem="cRg-PY-LRJ" secondAttribute="top" type="user" id="mEI-gk-2qB"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="textField" destination="aet-Ey-dpN" id="uZt-XX-L1t"/>
-                                </connections>
-                            </tableViewCell>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="EditableLoginFieldCell" id="rDp-We-GTd" customClass="EditLoginCell">
-                                <rect key="frame" x="0.0" y="91" width="320" height="45"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="0.0" width="300" height="43"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fgk-I6-azh">
@@ -164,17 +139,17 @@
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <constraints>
+                                    <constraint firstItem="fgk-I6-azh" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="default" id="0YN-B9-GZ5"/>
                                     <constraint firstItem="fgk-I6-azh" firstAttribute="leading" secondItem="gKA-dR-ISQ" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="6TR-aT-ghK"/>
                                     <constraint firstAttribute="trailing" secondItem="2xD-Xc-S2X" secondAttribute="trailing" constant="29" type="user" id="9Ne-y6-Y6E"/>
                                     <constraint firstItem="2xD-Xc-S2X" firstAttribute="leading" secondItem="fgk-I6-azh" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="Ddc-G5-SKs"/>
+                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="default" id="L0r-B1-y4U"/>
+                                    <constraint firstItem="fgk-I6-azh" firstAttribute="centerY" secondItem="rDp-We-GTd" secondAttribute="centerY" type="default" id="Oce-11-bhn"/>
                                     <constraint firstItem="2xD-Xc-S2X" firstAttribute="width" secondItem="gKA-dR-ISQ" secondAttribute="width" type="user" id="RDa-1H-gYo"/>
-                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="top" secondItem="rDp-We-GTd" secondAttribute="top" type="user" id="Rx3-1f-sAd"/>
-                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="top" secondItem="rDp-We-GTd" secondAttribute="top" type="user" id="TJy-dr-Tjz"/>
-                                    <constraint firstItem="fgk-I6-azh" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="dkW-sZ-MzO"/>
-                                    <constraint firstItem="fgk-I6-azh" firstAttribute="top" secondItem="rDp-We-GTd" secondAttribute="top" type="user" id="hP8-pq-kkb"/>
-                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="rMH-wo-ghR"/>
+                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="top" secondItem="fgk-I6-azh" secondAttribute="top" type="default" id="gfb-qE-jbT"/>
                                     <constraint firstItem="gKA-dR-ISQ" firstAttribute="leading" secondItem="rDp-We-GTd" secondAttribute="leading" constant="30" type="user" id="vGw-Ar-SMh"/>
                                     <constraint firstItem="2xD-Xc-S2X" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="wFG-pP-8Iw"/>
+                                    <constraint firstItem="fgk-I6-azh" firstAttribute="top" secondItem="gKA-dR-ISQ" secondAttribute="top" type="default" id="zMv-uw-zQu"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="passwordRightHConstraint" destination="9Ne-y6-Y6E" id="8bS-a9-0uI"/>
@@ -234,12 +209,6 @@
         </scene>
     </scenes>
     <classes>
-        <class className="DeviceFieldCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/DeviceFieldCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
         <class className="DeviceViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DeviceViewController.h"/>
         </class>
