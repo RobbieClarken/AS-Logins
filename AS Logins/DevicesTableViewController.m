@@ -20,27 +20,27 @@ static NSString *DevicesKey = @"devices";
 
 @implementation DevicesTableViewController
 
+- (void)viewDidLoad {
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showNewDeviceViewController)];
+}
+
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.tableView reloadData];
 }
 
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    DeviceViewController *destinationViewController;
+- (void)showNewDeviceViewController {
     [self.group.managedObjectContext save:nil];
-    Device *device;
-    if ([segue.identifier isEqualToString:@"AddDevice"]) {
-        destinationViewController = (DeviceViewController *)[(UINavigationController *)segue.destinationViewController topViewController];
-        device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:self.group.managedObjectContext];
-        device.group = self.group;
-        destinationViewController.delegate = self;
-    } else if ([segue.identifier isEqualToString:@"ShowDevice"]) {
-        destinationViewController = (DeviceViewController *)segue.destinationViewController;
-        device = self.group.devices[self.tableView.indexPathForSelectedRow.row];
-    }
-    destinationViewController.device = device;
-    // If adding a new device, default to editing mode
-    [destinationViewController setEditing:[segue.identifier isEqualToString:@"AddDevice"] animated:NO];
+    
+    Device *device = (Device *)[NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:self.group.managedObjectContext];
+    device.group = self.group;
+    DeviceViewController *deviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    deviceViewController.device = device;
+    [deviceViewController setEditing:YES animated:NO];
+    deviceViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    deviceViewController.delegate = self;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:deviceViewController];
+    [self presentViewController:navigationController animated:YES completion:^{}];
 }
 
 #pragma mark - device view delegate
@@ -57,7 +57,8 @@ static NSString *DevicesKey = @"devices";
         [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
         
         Device *device = [self.group.devices lastObject];
-        DeviceViewController *newDeviceViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"DeviceDetailView"];
+        
+        DeviceViewController *newDeviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
         newDeviceViewController.device = device;
         [self.navigationController pushViewController:newDeviceViewController animated:NO];
     } else {
@@ -93,6 +94,14 @@ static NSString *DevicesKey = @"devices";
         }
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    [self.group.managedObjectContext save:nil];
+    Device *device = self.group.devices[self.tableView.indexPathForSelectedRow.row];
+    DeviceViewController *destinationViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    destinationViewController.device = device;
+    [self.navigationController pushViewController:destinationViewController animated:YES];
 }
 
 @end

@@ -62,7 +62,7 @@
     UITextField *textField = [[UITextField alloc] init];
     textField.font = [UIFont boldSystemFontOfSize:17.0f];
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    textField.tag = ASLLoginTextFieldUsername;
+    textField.tag = tag;
     textField.translatesAutoresizingMaskIntoConstraints = NO;
     return textField;
 }
