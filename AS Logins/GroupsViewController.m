@@ -24,6 +24,7 @@ static NSString *CellIdentifier = @"GroupCell";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"Groups";
     [self.tableView registerClass:[GroupCell class] forCellReuseIdentifier:CellIdentifier];
     [self updateGroups];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;

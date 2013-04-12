@@ -23,6 +23,8 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 @implementation DevicesTableViewController
 
 - (void)viewDidLoad {
+    [super viewDidLoad];
+    self.title = @"Devices";
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showNewDeviceViewController)];
     [self.tableView registerClass:[DeviceCell class] forCellReuseIdentifier:DeviceCellIdentifier];
 }

@@ -25,6 +25,7 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    self.title = @"Device";
     [self.tableView registerClass:[DeviceFieldCell class] forCellReuseIdentifier:DeviceFieldCellIdentifier];
     [self.tableView registerClass:[LoginCell class] forCellReuseIdentifier:LoginCellIdentifier];
     
