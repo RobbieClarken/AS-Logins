@@ -9,7 +9,7 @@
 #import "DeviceViewController.h"
 #import "Login+Create.h"
 #import "DeviceFieldCell.h"
-#import "EditLoginCell.h"
+#import "LoginCell.h"
 
 static NSString *LoginsKey = @"logins";
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
@@ -26,7 +26,7 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self.tableView registerClass:[DeviceFieldCell class] forCellReuseIdentifier:DeviceFieldCellIdentifier];
-    
+    [self.tableView registerClass:[LoginCell class] forCellReuseIdentifier:LoginCellIdentifier];
     
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.nextEditCellIndexPath = nil;
@@ -77,7 +77,7 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
 - (void)editedLastLogin:(UITextField *)textField {
     NSIndexPath *indexPath = [self indexPathWithView:textField];
-    EditLoginCell *loginCell = (EditLoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    LoginCell *loginCell = (LoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
@@ -99,8 +99,8 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
         return;
     }
     UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:indexPath];
-    if ([cell isKindOfClass:[EditLoginCell class]]) {
-        EditLoginCell *editLoginCell = (EditLoginCell *)cell;
+    if ([cell isKindOfClass:[LoginCell class]]) {
+        LoginCell *editLoginCell = (LoginCell *)cell;
         if (editLoginCell.usernameTextField.text.length == 0 && editLoginCell.passwordTextField.text.length == 0) {
             [self deleteLoginAtIndexPath:indexPath];
         }
@@ -218,7 +218,7 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
         }
         return cell;
     } else {
-        EditLoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
+        LoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
         Login *login = [self loginForIndexPath:indexPath];
         cell.usernameTextField.text = login.username;
         cell.passwordTextField.text = login.password;

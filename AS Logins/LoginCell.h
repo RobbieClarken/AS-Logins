@@ -1,5 +1,5 @@
 //
-//  EditLoginCell.h
+//  LoginCell.h
 //  AS Logins
 //
 //  Created by Robbie Clarken on 21/03/13.
@@ -13,10 +13,10 @@ typedef NS_ENUM(NSInteger, ASLLoginTextField) {
     ASLLoginTextFieldPassword
 };
 
-@interface EditLoginCell : UITableViewCell
+@interface LoginCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UITextField *usernameTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
+@property (strong, nonatomic) UITextField *usernameTextField;
+@property (strong, nonatomic) UITextField *passwordTextField;
 @property (nonatomic) BOOL stayEditable;
 
 @end

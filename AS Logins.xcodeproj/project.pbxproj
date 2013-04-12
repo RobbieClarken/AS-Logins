@@ -13,7 +13,7 @@
 		DC5E5F0A16F64CF700FC84EC /* ASLogins.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */; };
 		DC5E5F2B16F6578100FC84EC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC5E5F2A16F6578100FC84EC /* CoreData.framework */; };
 		DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */; };
-		DC5E5FA116FA2B0E00FC84EC /* EditLoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */; };
+		DC5E5FA116FA2B0E00FC84EC /* LoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5FA016FA2B0E00FC84EC /* LoginCell.m */; };
 		DC9EFCB41709337400F50128 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EFCB31709337400F50128 /* Device.m */; };
 		DC9EFCB71709337400F50128 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EFCB61709337400F50128 /* Login.m */; };
 		DC9EFCBA1709337400F50128 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EFCB91709337400F50128 /* Group.m */; };
@@ -43,8 +43,8 @@
 		DC5E5F2A16F6578100FC84EC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		DC5E5F9C16FA111600FC84EC /* DeviceFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceFieldCell.h; sourceTree = "<group>"; };
 		DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceFieldCell.m; sourceTree = "<group>"; };
-		DC5E5F9F16FA2B0E00FC84EC /* EditLoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditLoginCell.h; sourceTree = "<group>"; };
-		DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditLoginCell.m; sourceTree = "<group>"; };
+		DC5E5F9F16FA2B0E00FC84EC /* LoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCell.h; sourceTree = "<group>"; };
+		DC5E5FA016FA2B0E00FC84EC /* LoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCell.m; sourceTree = "<group>"; };
 		DC9EFCB21709337400F50128 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
 		DC9EFCB31709337400F50128 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
 		DC9EFCB51709337400F50128 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
@@ -170,8 +170,8 @@
 				DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */,
 				DCB6559016F4F6B900205396 /* DevicesTableViewController.h */,
 				DCB6559116F4F6B900205396 /* DevicesTableViewController.m */,
-				DC5E5F9F16FA2B0E00FC84EC /* EditLoginCell.h */,
-				DC5E5FA016FA2B0E00FC84EC /* EditLoginCell.m */,
+				DC5E5F9F16FA2B0E00FC84EC /* LoginCell.h */,
+				DC5E5FA016FA2B0E00FC84EC /* LoginCell.m */,
 				DC00B87016FB548800FDA9FC /* GroupsViewController.h */,
 				DC00B87116FB548800FDA9FC /* GroupsViewController.m */,
 				DCDA31DD170713E10051B2D4 /* GroupCell.h */,
@@ -252,7 +252,7 @@
 				DCB6559516F503C900205396 /* DeviceViewController.m in Sources */,
 				DC5E5F0A16F64CF700FC84EC /* ASLogins.xcdatamodeld in Sources */,
 				DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */,
-				DC5E5FA116FA2B0E00FC84EC /* EditLoginCell.m in Sources */,
+				DC5E5FA116FA2B0E00FC84EC /* LoginCell.m in Sources */,
 				DC00B86F16FB517E00FDA9FC /* Group+Create.m in Sources */,
 				DC00B87216FB548800FDA9FC /* GroupsViewController.m in Sources */,
 				DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */,

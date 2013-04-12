@@ -23,16 +23,16 @@
         textField.font = [UIFont boldSystemFontOfSize:17.0f];
         [self.contentView addSubview:textField];
         NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(textField);
-        NSArray *horizontalConstrains = [NSLayoutConstraint constraintsWithVisualFormat:@"|-[textField]-|"
+        NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-[textField]-|"
                                                                                 options:0
                                                                                 metrics:nil
                                                                                   views:viewsDictionary];
-        NSArray *verticalConstrains = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|"
+        NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|"
                                                                                 options:0
                                                                                 metrics:nil
                                                                                   views:viewsDictionary];
-        [self.contentView addConstraints:horizontalConstrains];
-        [self.contentView addConstraints:verticalConstrains];
+        [self.contentView addConstraints:horizontalConstraints];
+        [self.contentView addConstraints:verticalConstraints];
         self.textField = textField;
     }
     return self;

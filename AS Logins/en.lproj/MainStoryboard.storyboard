@@ -113,52 +113,6 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LoginCellIdentifier" id="rDp-We-GTd" customClass="EditLoginCell">
-                                <rect key="frame" x="0.0" y="46" width="320" height="46"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="10" y="1" width="300" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fgk-I6-azh">
-                                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="1" type="user" id="I6W-TK-bBf"/>
-                                            </constraints>
-                                        </view>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Username" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="gKA-dR-ISQ">
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                        </textField>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Password" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="2xD-Xc-S2X">
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits"/>
-                                        </textField>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstItem="fgk-I6-azh" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="default" id="0YN-B9-GZ5"/>
-                                    <constraint firstItem="fgk-I6-azh" firstAttribute="leading" secondItem="gKA-dR-ISQ" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="6TR-aT-ghK"/>
-                                    <constraint firstAttribute="trailing" secondItem="2xD-Xc-S2X" secondAttribute="trailing" constant="29" type="user" id="9Ne-y6-Y6E"/>
-                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="leading" secondItem="fgk-I6-azh" secondAttribute="trailing" constant="8" symbolic="YES" type="user" id="Ddc-G5-SKs"/>
-                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="default" id="L0r-B1-y4U"/>
-                                    <constraint firstItem="fgk-I6-azh" firstAttribute="centerY" secondItem="rDp-We-GTd" secondAttribute="centerY" type="default" id="Oce-11-bhn"/>
-                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="width" secondItem="gKA-dR-ISQ" secondAttribute="width" type="user" id="RDa-1H-gYo"/>
-                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="top" secondItem="fgk-I6-azh" secondAttribute="top" type="default" id="gfb-qE-jbT"/>
-                                    <constraint firstItem="gKA-dR-ISQ" firstAttribute="leading" secondItem="rDp-We-GTd" secondAttribute="leading" constant="30" type="user" id="vGw-Ar-SMh"/>
-                                    <constraint firstItem="2xD-Xc-S2X" firstAttribute="bottom" secondItem="rDp-We-GTd" secondAttribute="bottom" type="user" id="wFG-pP-8Iw"/>
-                                    <constraint firstItem="fgk-I6-azh" firstAttribute="top" secondItem="gKA-dR-ISQ" secondAttribute="top" type="default" id="zMv-uw-zQu"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="passwordRightHConstraint" destination="9Ne-y6-Y6E" id="8bS-a9-0uI"/>
-                                    <outlet property="passwordTextField" destination="2xD-Xc-S2X" id="WFU-1g-QGc"/>
-                                    <outlet property="usernameLeftHConstraint" destination="vGw-Ar-SMh" id="MGd-9Q-8be"/>
-                                    <outlet property="usernameTextField" destination="gKA-dR-ISQ" id="0NS-xH-mWJ"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="7IQ-3h-sxY" id="iKb-Zq-6uB"/>
                             <outlet property="delegate" destination="7IQ-3h-sxY" id="lOm-R5-Dk2"/>
@@ -214,15 +168,6 @@
         </class>
         <class className="DevicesTableViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/DevicesTableViewController.h"/>
-        </class>
-        <class className="EditLoginCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditLoginCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="passwordRightHConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="passwordTextField" candidateClass="UITextField"/>
-                <relationship kind="outlet" name="usernameLeftHConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="usernameTextField" candidateClass="UITextField"/>
-            </relationships>
         </class>
         <class className="GroupCell" superclassName="UITableViewCell">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCell.h"/>

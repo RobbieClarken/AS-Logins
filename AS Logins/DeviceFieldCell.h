@@ -10,6 +10,6 @@
 
 @interface DeviceFieldCell : UITableViewCell
 
-@property (weak, nonatomic) IBOutlet UITextField *textField;
+@property (strong, nonatomic) UITextField *textField;
 
 @end
