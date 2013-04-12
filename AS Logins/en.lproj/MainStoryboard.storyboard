@@ -12,36 +12,6 @@
                         <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <prototypes>
-                            <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="disclosureIndicator" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="GroupCell" id="60H-XZ-cXH" customClass="GroupCell">
-                                <rect key="frame" x="0.0" y="22" width="320" height="44"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                                    <rect key="frame" x="0.0" y="0.0" width="300" height="43"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Group Name" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="CJ4-bZ-2sw">
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="43" id="eCf-t8-B2i"/>
-                                            </constraints>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                            <textInputTraits key="textInputTraits" autocapitalizationType="words"/>
-                                        </textField>
-                                    </subviews>
-                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                </view>
-                                <constraints>
-                                    <constraint firstAttribute="trailing" secondItem="CJ4-bZ-2sw" secondAttribute="trailing" constant="20" type="user" id="G2P-xZ-bxb"/>
-                                    <constraint firstItem="CJ4-bZ-2sw" firstAttribute="leading" secondItem="60H-XZ-cXH" secondAttribute="leading" constant="20" type="user" id="dSE-as-owO"/>
-                                    <constraint firstItem="CJ4-bZ-2sw" firstAttribute="top" secondItem="60H-XZ-cXH" secondAttribute="top" type="default" id="yge-Jt-RGr"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="leftHConstraint" destination="dSE-as-owO" id="cqI-Za-1ld"/>
-                                    <outlet property="rightHConstraint" destination="G2P-xZ-bxb" id="qAc-pC-Gjl"/>
-                                    <outlet property="textField" destination="CJ4-bZ-2sw" id="vfA-Lq-CKM"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="IKO-9r-ovK" id="bSl-hU-mAU"/>
                             <outlet property="delegate" destination="IKO-9r-ovK" id="xBQ-vm-zaO"/>
@@ -73,19 +43,8 @@
         </scene>
     </scenes>
     <classes>
-        <class className="GroupCell" superclassName="UITableViewCell">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupCell.h"/>
-            <relationships>
-                <relationship kind="outlet" name="leftHConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="rightHConstraint" candidateClass="NSLayoutConstraint"/>
-                <relationship kind="outlet" name="textField" candidateClass="UITextField"/>
-            </relationships>
-        </class>
         <class className="GroupsViewController" superclassName="UITableViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/GroupsViewController.h"/>
-        </class>
-        <class className="NSLayoutConstraint" superclassName="NSObject">
-            <source key="sourceIdentifier" type="project" relativePath="./Classes/NSLayoutConstraint.h"/>
         </class>
     </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -12,6 +12,7 @@
 #import "GroupCell.h"
 
 static NSUInteger GroupPositionStep = 0x10000;
+static NSString *CellIdentifier = @"GroupCell";
 
 @interface GroupsViewController () <UITextFieldDelegate>
 
@@ -23,6 +24,7 @@ static NSUInteger GroupPositionStep = 0x10000;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self.tableView registerClass:[GroupCell class] forCellReuseIdentifier:CellIdentifier];
     [self updateGroups];
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
 }
@@ -90,14 +92,6 @@ static NSUInteger GroupPositionStep = 0x10000;
     self.tableView.editing = YES;
 }
 
-/*
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSIndexPath *indexPath = [self.tableView indexPathForSelectedRow];
-    DevicesTableViewController *destinationViewController = (DevicesTableViewController *)segue.destinationViewController;
-    destinationViewController.group = [self.groups objectAtIndex:indexPath.row];
-}
- */
-
 #pragma mark - Table view data source
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
@@ -109,7 +103,6 @@ static NSUInteger GroupPositionStep = 0x10000;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"GroupCell";
     GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
     if (indexPath.row < [self.groups count]) {
         cell.textField.text = [self.groups[indexPath.row] name];

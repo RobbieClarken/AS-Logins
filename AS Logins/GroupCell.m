@@ -10,21 +10,27 @@
 
 @interface GroupCell()
 
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *leftHConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *rightHConstraint;
-
 @end
 
 @implementation GroupCell
 
-- (void)awakeFromNib {
-    [super awakeFromNib];
-    
-    static CGFloat StandardSpacing = 8.0f;
-    [self removeConstraints:@[self.leftHConstraint, self.rightHConstraint]];
-    self.leftHConstraint = [NSLayoutConstraint constraintWithItem:self.textField attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0f constant:StandardSpacing];
-    self.rightHConstraint = [NSLayoutConstraint constraintWithItem:self.textField attribute:NSLayoutAttributeRight relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeRight multiplier:1.0f constant:-StandardSpacing];
-    [self addConstraints:@[self.leftHConstraint, self.rightHConstraint]];
+- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
+    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    if (self) {
+        UITextField *textField = [[UITextField alloc] init];
+        textField.font = [UIFont boldSystemFontOfSize:17.0f];
+        textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+        textField.translatesAutoresizingMaskIntoConstraints = NO;
+        
+        [self.contentView addSubview:textField];
+        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(textField);
+        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-[textField]-|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary];
+        [self.contentView addConstraints:constraints];
+        constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary];
+        [self.contentView addConstraints:constraints];
+        self.textField = textField;
+    }
+    return self;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
