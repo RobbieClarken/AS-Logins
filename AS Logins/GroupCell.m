@@ -24,7 +24,8 @@
         
         [self.contentView addSubview:textField];
         NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(textField);
-        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-[textField]-|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary];
+        NSDictionary *metrics = @{@"spacing": @8.0f};
+        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-spacing-[textField]-spacing-|" options:NSLayoutFormatAlignAllTop metrics:metrics views:viewsDictionary];
         [self.contentView addConstraints:constraints];
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary];
         [self.contentView addConstraints:constraints];

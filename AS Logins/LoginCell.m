@@ -23,10 +23,11 @@
         [self.contentView addSubview:usernameTextField];
         [self.contentView addSubview:passwordTextField];
         [self.contentView addSubview:separatorView];
+        NSDictionary *metrics = @{@"spacing": @8.0f};
         NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(usernameTextField,passwordTextField,separatorView);
-        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-[usernameTextField(==passwordTextField)]-[separatorView(1)]-[passwordTextField]-|"
+        NSArray *constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-spacing-[usernameTextField(==passwordTextField)]-[separatorView(1)]-[passwordTextField]-spacing-|"
                                                                                  options:NSLayoutFormatAlignAllTop
-                                                                                 metrics:nil
+                                                                                 metrics:metrics
                                                                                    views:viewsDictionary];
         [self.contentView addConstraints:constraints];
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[usernameTextField]|"

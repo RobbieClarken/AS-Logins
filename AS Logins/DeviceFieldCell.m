@@ -22,10 +22,11 @@
         textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
         textField.font = [UIFont boldSystemFontOfSize:17.0f];
         [self.contentView addSubview:textField];
+        NSDictionary *metrics = @{@"spacing": @8.0f};
         NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(textField);
-        NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-[textField]-|"
+        NSArray *horizontalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"|-spacing-[textField]-spacing-|"
                                                                                 options:0
-                                                                                metrics:nil
+                                                                                metrics:metrics
                                                                                   views:viewsDictionary];
         NSArray *verticalConstraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|"
                                                                                 options:0
