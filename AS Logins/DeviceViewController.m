@@ -252,6 +252,10 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     return indexPath.section == 1 && [self.tableView numberOfRowsInSection:indexPath.section] > 1;
 }
 
+- (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
+    return NO;
+}
+
 #pragma mark - Text field delegate
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
