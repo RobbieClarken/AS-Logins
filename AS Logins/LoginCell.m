@@ -8,13 +8,6 @@
 
 #import "LoginCell.h"
 
-@interface LoginCell()
-
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *usernameLeftHConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *passwordRightHConstraint;
-
-@end
-
 @implementation LoginCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
