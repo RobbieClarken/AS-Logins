@@ -14,6 +14,7 @@
 		DC5E5F2B16F6578100FC84EC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC5E5F2A16F6578100FC84EC /* CoreData.framework */; };
 		DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */; };
 		DC5E5FA116FA2B0E00FC84EC /* LoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5FA016FA2B0E00FC84EC /* LoginCell.m */; };
+		DC86C3C817183A8E001BD154 /* DeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC86C3C717183A8E001BD154 /* DeviceCell.m */; };
 		DC9EFCB41709337400F50128 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EFCB31709337400F50128 /* Device.m */; };
 		DC9EFCB71709337400F50128 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EFCB61709337400F50128 /* Login.m */; };
 		DC9EFCBA1709337400F50128 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = DC9EFCB91709337400F50128 /* Group.m */; };
@@ -45,6 +46,8 @@
 		DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceFieldCell.m; sourceTree = "<group>"; };
 		DC5E5F9F16FA2B0E00FC84EC /* LoginCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoginCell.h; sourceTree = "<group>"; };
 		DC5E5FA016FA2B0E00FC84EC /* LoginCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoginCell.m; sourceTree = "<group>"; };
+		DC86C3C617183A8E001BD154 /* DeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceCell.h; sourceTree = "<group>"; };
+		DC86C3C717183A8E001BD154 /* DeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceCell.m; sourceTree = "<group>"; };
 		DC9EFCB21709337400F50128 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
 		DC9EFCB31709337400F50128 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
 		DC9EFCB51709337400F50128 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
@@ -166,6 +169,8 @@
 			children = (
 				DCB6559316F503C900205396 /* DeviceViewController.h */,
 				DCB6559416F503C900205396 /* DeviceViewController.m */,
+				DC86C3C617183A8E001BD154 /* DeviceCell.h */,
+				DC86C3C717183A8E001BD154 /* DeviceCell.m */,
 				DC5E5F9C16FA111600FC84EC /* DeviceFieldCell.h */,
 				DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */,
 				DCB6559016F4F6B900205396 /* DevicesTableViewController.h */,
@@ -260,6 +265,7 @@
 				DC9EFCB41709337400F50128 /* Device.m in Sources */,
 				DC9EFCB71709337400F50128 /* Login.m in Sources */,
 				DC9EFCBA1709337400F50128 /* Group.m in Sources */,
+				DC86C3C817183A8E001BD154 /* DeviceCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

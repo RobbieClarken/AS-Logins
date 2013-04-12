@@ -8,9 +8,11 @@
 
 #import "DevicesTableViewController.h"
 #import "DeviceViewController.h"
+#import "DeviceCell.h"
 #import "Device.h"
 
 static NSString *DevicesKey = @"devices";
+static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 
 @interface DevicesTableViewController () <DeviceViewControllerDelegate>
 
@@ -22,6 +24,7 @@ static NSString *DevicesKey = @"devices";
 
 - (void)viewDidLoad {
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(showNewDeviceViewController)];
+    [self.tableView registerClass:[DeviceCell class] forCellReuseIdentifier:DeviceCellIdentifier];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -74,8 +77,7 @@ static NSString *DevicesKey = @"devices";
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    static NSString *CellIdentifier = @"LoginCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    DeviceCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceCellIdentifier forIndexPath:indexPath];
     Device *device = [self.group.devices objectAtIndex:indexPath.row];
     cell.textLabel.text = device.name;
     cell.detailTextLabel.text = device.hostname;
