@@ -27,7 +27,6 @@
 		DCB6558016F4F53E00205396 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6557F16F4F53E00205396 /* Default.png */; };
 		DCB6558216F4F53E00205396 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558116F4F53E00205396 /* Default@2x.png */; };
 		DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558316F4F53E00205396 /* Default-568h@2x.png */; };
-		DCB6558716F4F53E00205396 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */; };
 		DCB6559216F4F6B900205396 /* DevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* DevicesTableViewController.m */; };
 		DCB6559516F503C900205396 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* DeviceViewController.m */; };
 		DCDA31DF170713E10051B2D4 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA31DE170713E10051B2D4 /* GroupCell.m */; };
@@ -67,7 +66,6 @@
 		DCB6557F16F4F53E00205396 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		DCB6558116F4F53E00205396 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		DCB6558316F4F53E00205396 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
-		DCB6558616F4F53E00205396 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
 		DCB6559016F4F6B900205396 /* DevicesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DevicesTableViewController.h; sourceTree = "<group>"; };
 		DCB6559116F4F6B900205396 /* DevicesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicesTableViewController.m; sourceTree = "<group>"; };
 		DCB6559316F503C900205396 /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
@@ -141,7 +139,6 @@
 			children = (
 				DCB6559616F503D600205396 /* View Controllers */,
 				DC5E5F1D16F64F2800FC84EC /* Managed Objects */,
-				DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */,
 				DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */,
 				DCB6557416F4F53E00205396 /* Supporting Files */,
 			);
@@ -240,7 +237,6 @@
 				DCB6558016F4F53E00205396 /* Default.png in Resources */,
 				DCB6558216F4F53E00205396 /* Default@2x.png in Resources */,
 				DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */,
-				DCB6558716F4F53E00205396 /* MainStoryboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -278,14 +274,6 @@
 				DCB6557716F4F53E00205396 /* en */,
 			);
 			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		DCB6558516F4F53E00205396 /* MainStoryboard.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				DCB6558616F4F53E00205396 /* en */,
-			);
-			name = MainStoryboard.storyboard;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

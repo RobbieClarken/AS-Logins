@@ -16,9 +16,13 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    UINavigationController *navigationController = (UINavigationController *)self.window.rootViewController;
-    GroupsViewController *topViewController = (GroupsViewController *)navigationController.topViewController;
-    topViewController.managedObjectContext = self.managedObjectContext;
+    
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    GroupsViewController *groupsViewController = [[GroupsViewController alloc] initWithStyle:UITableViewStylePlain];
+    groupsViewController.managedObjectContext = self.managedObjectContext;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupsViewController];
+    self.window.rootViewController = navigationController;
+    [self.window makeKeyAndVisible];
     return YES;
 }
 							
