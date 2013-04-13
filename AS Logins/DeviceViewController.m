@@ -77,6 +77,7 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 }
 
 - (void)editedLastLogin:(UITextField *)textField {
+    ASLLoginTextField textFieldBeingEdited = textField.tag;
     NSIndexPath *indexPath = [self indexPathWithView:textField];
     LoginCell *loginCell = (LoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
@@ -84,10 +85,14 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
     NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
     [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    // Hack to update editing style indicators without resigning first responder
-    loginCell.stayEditable = YES;
-    [self updateEditingStyleIndicators];
-    loginCell.stayEditable = NO;
+    // Reload cell being edited to update Editing Style Indicator
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+    LoginCell *replacementLoginCell = (LoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
+    if (textFieldBeingEdited == ASLLoginTextFieldUsername) {
+        [replacementLoginCell.usernameTextField becomeFirstResponder];
+    } else if (textFieldBeingEdited == ASLLoginTextFieldPassword) {
+        [replacementLoginCell.passwordTextField becomeFirstResponder];
+    }
 }
 
 - (BOOL)indexPathIsLastInSection:(NSIndexPath *)indexPath {
@@ -115,13 +120,9 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     [self.device.managedObjectContext deleteObject:login];
     [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     if ([self.device.logins count] == 0) {
-        [self updateEditingStyleIndicators];
+        NSIndexPath *remainingIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
+        [self.tableView reloadRowsAtIndexPaths:@[remainingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
-}
-
-- (void)updateEditingStyleIndicators {
-    self.tableView.editing = NO;
-    self.tableView.editing = YES;
 }
 
 - (NSString *)deviceFieldValueForRow:(NSUInteger)row {
@@ -223,10 +224,13 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
         Login *login = [self loginForIndexPath:indexPath];
         cell.usernameTextField.text = login.username;
         cell.passwordTextField.text = login.password;
-        if (self.editing && [self indexPathIsLastInSection:indexPath]) {
+        if (self.editing && [self indexPathIsLastInSection:indexPath]) {            
             [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
             [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
-        }        
+        } else {
+            [cell.usernameTextField removeTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+            [cell.passwordTextField removeTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+        }
         cell.usernameTextField.delegate = self;
         cell.passwordTextField.delegate = self;
         

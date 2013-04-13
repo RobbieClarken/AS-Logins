@@ -17,6 +17,5 @@ typedef NS_ENUM(NSInteger, ASLLoginTextField) {
 
 @property (strong, nonatomic) UITextField *usernameTextField;
 @property (strong, nonatomic) UITextField *passwordTextField;
-@property (nonatomic) BOOL stayEditable;
 
 @end
