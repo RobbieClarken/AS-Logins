@@ -13,9 +13,9 @@
 + (Device *)deviceForGroup:(Group *)group inContext:(NSManagedObjectContext *)context {
     Device *device = [NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:context];
     device.group = group;
-    device.modifiedDate = [NSDate date];
+    device.lastModifiedDate = [NSDate date];
     device.uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    device.deleted = @NO;
+    device.toDelete = @NO;
     return device;
 }
 

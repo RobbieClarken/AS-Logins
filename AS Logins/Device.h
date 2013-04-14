@@ -13,13 +13,13 @@
 
 @interface Device : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * toDelete;
 @property (nonatomic, retain) NSString * hostname;
 @property (nonatomic, retain) NSString * ip;
+@property (nonatomic, retain) NSDate * lastModifiedDate;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * url;
 @property (nonatomic, retain) NSString * uuid;
-@property (nonatomic, retain) NSDate * modifiedDate;
-@property (nonatomic, retain) NSNumber * deleted;
 @property (nonatomic, retain) Group *group;
 @property (nonatomic, retain) NSOrderedSet *logins;
 @end

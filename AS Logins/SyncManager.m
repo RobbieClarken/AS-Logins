@@ -28,8 +28,18 @@
         lastSyncDate = [NSDate dateWithTimeIntervalSince1970:0.0f];
         [[NSUserDefaults standardUserDefaults] setObject:lastSyncDate forKey:LastSyncDateKey];
     }
-    
-    
+}
+
+- (NSArray *)groupsModifiedAfterDate:(NSDate *)date {
+    return @[];
+}
+
+- (NSArray *)devicesModifiedAfterDate:(NSDate *)date {
+    return @[];
+}
+
+- (NSArray *)loginsModifiedAfterDate:(NSDate *)date {
+    return @[];
 }
 
 @end

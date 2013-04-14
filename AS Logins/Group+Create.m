@@ -16,9 +16,9 @@
     group = [NSEntityDescription insertNewObjectForEntityForName:@"Group" inManagedObjectContext:context];
     group.name = name;
     group.position = position;
-    group.modifiedDate = [NSDate date];
+    group.lastModifiedDate = [NSDate date];
     group.uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    group.deleted = @NO;
+    group.toDelete = @NO;
     return group;
 }
 

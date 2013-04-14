@@ -13,13 +13,13 @@
 
 @implementation Device
 
+@dynamic toDelete;
 @dynamic hostname;
 @dynamic ip;
+@dynamic lastModifiedDate;
 @dynamic name;
 @dynamic url;
 @dynamic uuid;
-@dynamic modifiedDate;
-@dynamic deleted;
 @dynamic group;
 @dynamic logins;
 

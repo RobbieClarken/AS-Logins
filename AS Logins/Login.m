@@ -12,11 +12,11 @@
 
 @implementation Login
 
+@dynamic toDelete;
+@dynamic lastModifiedDate;
 @dynamic password;
 @dynamic username;
 @dynamic uuid;
-@dynamic modifiedDate;
-@dynamic deleted;
 @dynamic device;
 
 @end

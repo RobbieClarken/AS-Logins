@@ -12,11 +12,11 @@
 
 @implementation Group
 
+@dynamic toDelete;
+@dynamic lastModifiedDate;
 @dynamic name;
 @dynamic position;
 @dynamic uuid;
-@dynamic modifiedDate;
-@dynamic deleted;
 @dynamic devices;
 
 @end

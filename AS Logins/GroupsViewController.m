@@ -55,7 +55,9 @@ static NSString *CellIdentifier = @"GroupCell";
     if (_fetchedResultsController) {
         return _fetchedResultsController;
     }
+    
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Group"];
+    request.predicate = [NSPredicate predicateWithFormat:@"toDelete == NO"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES]];
     _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     NSError *error;
@@ -206,7 +208,9 @@ static NSString *CellIdentifier = @"GroupCell";
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.managedObjectContext deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        Group *group = (Group *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+        group.toDelete = @YES;
+        group.lastModifiedDate = [NSDate date];
     }
 }
 
@@ -254,6 +258,7 @@ static NSString *CellIdentifier = @"GroupCell";
         newPositionInteger = ([earlierGroup.position integerValue] + [latterGroup.position integerValue])/2;
     }
     movingGroup.position = [NSNumber numberWithInteger:newPositionInteger];
+    movingGroup.lastModifiedDate = [NSDate date];
 }
 
 #pragma mark - TextField delegate
@@ -263,6 +268,7 @@ static NSString *CellIdentifier = @"GroupCell";
     if (indexPath.row < [self numberOfGroups]) {
         Group *group = (Group *)[self.fetchedResultsController objectAtIndexPath:indexPath];
         group.name = textField.text;
+        group.lastModifiedDate = [NSDate date];
     }
 }
 

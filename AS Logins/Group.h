@@ -13,11 +13,11 @@
 
 @interface Group : NSManagedObject
 
+@property (nonatomic, retain) NSNumber * toDelete;
+@property (nonatomic, retain) NSDate * lastModifiedDate;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * position;
 @property (nonatomic, retain) NSString * uuid;
-@property (nonatomic, retain) NSDate * modifiedDate;
-@property (nonatomic, retain) NSNumber * deleted;
 @property (nonatomic, retain) NSOrderedSet *devices;
 @end
 
