@@ -123,7 +123,7 @@ static NSString *CellIdentifier = @"GroupCell";
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
-    if (self.indexPathOfEditingCell) {
+    if (self.cellInsertedDueToEditOfEmptyGroup) {
         GroupCell *cell = (GroupCell *)[self.tableView cellForRowAtIndexPath:self.indexPathOfEditingCell];
         [cell.textField becomeFirstResponder];
         self.indexPathOfEditingCell = nil;
@@ -207,8 +207,6 @@ static NSString *CellIdentifier = @"GroupCell";
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
         [self.managedObjectContext deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
-        [self.fetchedResultsController performFetch:nil];
-        [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
