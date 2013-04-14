@@ -143,7 +143,6 @@ static NSString *CellIdentifier = @"GroupCell";
                 [tableView insertRowsAtIndexPaths:@[insertedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 self.indexPathOfEditingCell = newIndexPath;
-                self.cellInsertedDueToEditOfEmptyGroup = YES;
             } else {
                 [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
@@ -153,7 +152,15 @@ static NSString *CellIdentifier = @"GroupCell";
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
         case NSFetchedResultsChangeUpdate:
-            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            // If cellInsertedDueToEditOfEmptyGroup is YES then this is only
+            // being called because the textField was dismissed in what was
+            // the empty group cell. The update of this cell will have already
+            // have been triggered by the NSFetchedResultsChangeInsert change.
+            if (self.cellInsertedDueToEditOfEmptyGroup) {
+                self.cellInsertedDueToEditOfEmptyGroup = NO;
+            } else {
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];                
+            }
             break;
         case NSFetchedResultsChangeMove:
             [tableView reloadRowsAtIndexPaths:@[indexPath, newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -212,7 +219,6 @@ static NSString *CellIdentifier = @"GroupCell";
 }
 
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
-    //[self.view endEditing:YES];
     if (proposedDestinationIndexPath.row == [self numberOfGroups]) {
         return [NSIndexPath indexPathForRow:[self numberOfGroups]-1 inSection:proposedDestinationIndexPath.section];
     }
