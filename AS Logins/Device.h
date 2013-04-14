@@ -2,7 +2,7 @@
 //  Device.h
 //  AS Logins
 //
-//  Created by Robbie Clarken on 1/04/13.
+//  Created by Robbie Clarken on 15/04/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
@@ -17,6 +17,9 @@
 @property (nonatomic, retain) NSString * ip;
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSString * url;
+@property (nonatomic, retain) NSString * uuid;
+@property (nonatomic, retain) NSDate * modifiedDate;
+@property (nonatomic, retain) NSNumber * deleted;
 @property (nonatomic, retain) Group *group;
 @property (nonatomic, retain) NSOrderedSet *logins;
 @end

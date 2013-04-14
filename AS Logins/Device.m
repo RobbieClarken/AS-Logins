@@ -2,7 +2,7 @@
 //  Device.m
 //  AS Logins
 //
-//  Created by Robbie Clarken on 1/04/13.
+//  Created by Robbie Clarken on 15/04/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
@@ -17,6 +17,9 @@
 @dynamic ip;
 @dynamic name;
 @dynamic url;
+@dynamic uuid;
+@dynamic modifiedDate;
+@dynamic deleted;
 @dynamic group;
 @dynamic logins;
 

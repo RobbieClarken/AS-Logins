@@ -2,7 +2,7 @@
 //  Group.h
 //  AS Logins
 //
-//  Created by Robbie Clarken on 1/04/13.
+//  Created by Robbie Clarken on 15/04/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
@@ -15,6 +15,9 @@
 
 @property (nonatomic, retain) NSString * name;
 @property (nonatomic, retain) NSNumber * position;
+@property (nonatomic, retain) NSNumber * uuid;
+@property (nonatomic, retain) NSDate * modifiedDate;
+@property (nonatomic, retain) NSNumber * deleted;
 @property (nonatomic, retain) NSOrderedSet *devices;
 @end
 
