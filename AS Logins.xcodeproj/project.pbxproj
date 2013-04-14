@@ -11,9 +11,10 @@
 		DC00B87216FB548800FDA9FC /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87116FB548800FDA9FC /* GroupsViewController.m */; };
 		DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87D16FB616900FDA9FC /* Login+Create.m */; };
 		DC295BA7171B05A10064A8D7 /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BA6171B05A10064A8D7 /* SyncManager.m */; };
-		DC295BAC171B275F0064A8D7 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BAB171B275F0064A8D7 /* Group.m */; };
 		DC295BAF171B275F0064A8D7 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BAE171B275F0064A8D7 /* Login.m */; };
 		DC295BB2171B275F0064A8D7 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BB1171B275F0064A8D7 /* Device.m */; };
+		DC295BB5171B28540064A8D7 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BB4171B28540064A8D7 /* Group.m */; };
+		DC295BB8171B28AC0064A8D7 /* Device+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BB7171B28AC0064A8D7 /* Device+Create.m */; };
 		DC5E5F0A16F64CF700FC84EC /* ASLogins.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */; };
 		DC5E5F2B16F6578100FC84EC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC5E5F2A16F6578100FC84EC /* CoreData.framework */; };
 		DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */; };
@@ -42,12 +43,14 @@
 		DC00B87D16FB616900FDA9FC /* Login+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Create.m"; sourceTree = "<group>"; };
 		DC295BA5171B05A10064A8D7 /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		DC295BA6171B05A10064A8D7 /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
-		DC295BAA171B275F0064A8D7 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
-		DC295BAB171B275F0064A8D7 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
 		DC295BAD171B275F0064A8D7 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
 		DC295BAE171B275F0064A8D7 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
 		DC295BB0171B275F0064A8D7 /* Device.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Device.h; sourceTree = "<group>"; };
 		DC295BB1171B275F0064A8D7 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
+		DC295BB3171B28540064A8D7 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
+		DC295BB4171B28540064A8D7 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
+		DC295BB6171B28AC0064A8D7 /* Device+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Device+Create.h"; sourceTree = "<group>"; };
+		DC295BB7171B28AC0064A8D7 /* Device+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Device+Create.m"; sourceTree = "<group>"; };
 		DC5E5F0916F64CF700FC84EC /* ASLogins.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ASLogins.xcdatamodel; sourceTree = "<group>"; };
 		DC5E5F2A16F6578100FC84EC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		DC5E5F9C16FA111600FC84EC /* DeviceFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceFieldCell.h; sourceTree = "<group>"; };
@@ -95,12 +98,14 @@
 		DC5E5F1D16F64F2800FC84EC /* Managed Objects */ = {
 			isa = PBXGroup;
 			children = (
+				DC295BB3171B28540064A8D7 /* Group.h */,
+				DC295BB4171B28540064A8D7 /* Group.m */,
 				DC295BB0171B275F0064A8D7 /* Device.h */,
 				DC295BB1171B275F0064A8D7 /* Device.m */,
 				DC295BAD171B275F0064A8D7 /* Login.h */,
 				DC295BAE171B275F0064A8D7 /* Login.m */,
-				DC295BAA171B275F0064A8D7 /* Group.h */,
-				DC295BAB171B275F0064A8D7 /* Group.m */,
+				DC295BB6171B28AC0064A8D7 /* Device+Create.h */,
+				DC295BB7171B28AC0064A8D7 /* Device+Create.m */,
 				DC00B86D16FB517E00FDA9FC /* Group+Create.h */,
 				DC00B86E16FB517E00FDA9FC /* Group+Create.m */,
 				DC00B87C16FB616900FDA9FC /* Login+Create.h */,
@@ -265,9 +270,10 @@
 				DCDA31DF170713E10051B2D4 /* GroupCell.m in Sources */,
 				DC86C3C817183A8E001BD154 /* DeviceCell.m in Sources */,
 				DC295BA7171B05A10064A8D7 /* SyncManager.m in Sources */,
-				DC295BAC171B275F0064A8D7 /* Group.m in Sources */,
 				DC295BAF171B275F0064A8D7 /* Login.m in Sources */,
 				DC295BB2171B275F0064A8D7 /* Device.m in Sources */,
+				DC295BB5171B28540064A8D7 /* Group.m in Sources */,
+				DC295BB8171B28AC0064A8D7 /* Device+Create.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

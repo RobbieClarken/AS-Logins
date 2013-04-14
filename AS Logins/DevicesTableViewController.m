@@ -9,7 +9,7 @@
 #import "DevicesTableViewController.h"
 #import "DeviceViewController.h"
 #import "DeviceCell.h"
-#import "Device.h"
+#import "Device+Create.h"
 
 static NSString *DevicesKey = @"devices";
 static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
@@ -36,9 +36,7 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 
 - (void)showNewDeviceViewController {
     [self.group.managedObjectContext save:nil];
-    
-    Device *device = (Device *)[NSEntityDescription insertNewObjectForEntityForName:@"Device" inManagedObjectContext:self.group.managedObjectContext];
-    device.group = self.group;
+    Device *device = [Device deviceForGroup:self.group inContext:self.group.managedObjectContext];
     DeviceViewController *deviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
     deviceViewController.device = device;
     [deviceViewController setEditing:YES animated:NO];

@@ -13,6 +13,9 @@
 + (Login *)loginForDevice:(Device *)device inContext:(NSManagedObjectContext *)context {
     Login *login = [NSEntityDescription insertNewObjectForEntityForName:@"Login" inManagedObjectContext:context];
     login.device = device;
+    login.modifiedDate = [NSDate date];
+    login.uuid = [[NSProcessInfo processInfo] globallyUniqueString];
+    login.deleted = NO;
     return login;
 }
 
