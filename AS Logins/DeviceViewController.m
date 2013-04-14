@@ -279,6 +279,7 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
                 self.device.url = textField.text;
                 break;
         }
+        self.device.lastModifiedDate = [NSDate date];
     } else {
         // The last row is the template and does not have a Login object (if text had been added
         // then a Login would have been created and it would no longer be the last object)
@@ -294,7 +295,6 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
             }
         }
     }
-    
     if (indexPath && ![indexPath isEqual:self.nextEditCellIndexPath]) {
         [self didEndEditingCellAtIndexPath:indexPath];
     }

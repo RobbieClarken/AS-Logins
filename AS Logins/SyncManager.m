@@ -39,7 +39,11 @@
     NSArray *changedGroups = [self objectsWithEntityName:@"Group" modifiedAfterDate:date inManagedObjectContext:context];
     NSArray *changedGroupsForJSON = [self changedObjectsForJSONFromArray:changedGroups forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"name", @"position"]];
     
+    NSArray *changedDevices = [self objectsWithEntityName:@"Device" modifiedAfterDate:date inManagedObjectContext:context];
+    NSArray *changedDevicesForJSON = [self changedObjectsForJSONFromArray:changedDevices forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"name", @"hostname", @"ip", @"url", @"group"]];
+    
     [dictionaryForJSON setValue:changedGroupsForJSON forKey:@"groups"];
+    [dictionaryForJSON setValue:changedDevicesForJSON forKey:@"devices"];
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionaryForJSON options:kNilOptions error:nil];
     return jsonData;
@@ -56,6 +60,8 @@
             NSObject *value = [object valueForKey:key];
             if ([value isKindOfClass:[NSDate class]]) {
                 value = [formatter stringFromDate:(NSDate *)value];
+            } else if ([value isKindOfClass:[NSManagedObject class]]) {
+                value = [value valueForKey:@"uuid"];
             }
             [dictionaryForJSON setValue:value forKey:key];
         }
