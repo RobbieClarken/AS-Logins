@@ -15,7 +15,7 @@
     device.group = group;
     device.modifiedDate = [NSDate date];
     device.uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    device.deleted = NO;
+    device.deleted = @NO;
     return device;
 }
 

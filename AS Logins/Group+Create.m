@@ -18,7 +18,7 @@
     group.position = position;
     group.modifiedDate = [NSDate date];
     group.uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    group.deleted = NO;
+    group.deleted = @NO;
     return group;
 }
 

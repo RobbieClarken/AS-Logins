@@ -15,7 +15,7 @@
     login.device = device;
     login.modifiedDate = [NSDate date];
     login.uuid = [[NSProcessInfo processInfo] globallyUniqueString];
-    login.deleted = NO;
+    login.deleted = @NO;
     return login;
 }
 
