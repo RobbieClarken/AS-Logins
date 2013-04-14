@@ -14,9 +14,11 @@
 static NSUInteger GroupPositionStep = 0x10000;
 static NSString *CellIdentifier = @"GroupCell";
 
-@interface GroupsViewController () <UITextFieldDelegate>
+@interface GroupsViewController () <UITextFieldDelegate, NSFetchedResultsControllerDelegate>
 
-@property (nonatomic, strong) NSArray *groups;
+@property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
+@property (nonatomic) BOOL cellInsertedDueToEditOfEmptyGroup;
+@property (nonatomic, strong) NSIndexPath *indexPathOfEditingCell;
 
 @end
 
@@ -26,19 +28,25 @@ static NSString *CellIdentifier = @"GroupCell";
     [super viewDidLoad];
     self.title = @"Groups";
     [self.tableView registerClass:[GroupCell class] forCellReuseIdentifier:CellIdentifier];
-    [self updateGroups];
+    self.fetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.cellInsertedDueToEditOfEmptyGroup = NO;
 }
 
-- (void)updateGroups {
+- (NSFetchedResultsController *)fetchedResultsController {
+    if (_fetchedResultsController) {
+        return _fetchedResultsController;
+    }
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Group"];
     request.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"position" ascending:YES]];
+    _fetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
     NSError *error;
-    self.groups = [self.managedObjectContext executeFetchRequest:request error:&error];
+    [_fetchedResultsController performFetch:&error];
     if (error) {
         NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
         abort();
     }
+    return _fetchedResultsController;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -64,7 +72,6 @@ static NSString *CellIdentifier = @"GroupCell";
 - (void)cancelButtonPressed:(UIBarButtonItem *)sender {
     [self.view endEditing:YES];
     [self.managedObjectContext rollback];
-    [self updateGroups];
     [self setEditing:NO animated:YES];
 }
 
@@ -76,37 +83,81 @@ static NSString *CellIdentifier = @"GroupCell";
         if (indexPath.row == 0) {
             positionInteger = GroupPositionStep;
         } else {
-            positionInteger = [[(Group *)self.groups.lastObject position] integerValue] + GroupPositionStep;
+            NSIndexPath *lastGroupIndexPath = [NSIndexPath indexPathForRow:indexPath.row-1 inSection:indexPath.section];
+            Group *group = [self.fetchedResultsController objectAtIndexPath:lastGroupIndexPath];
+            positionInteger = [group.position integerValue] + GroupPositionStep;
         }
+        self.cellInsertedDueToEditOfEmptyGroup = YES;
         [Group groupWithName:@"" atPosition:[NSNumber numberWithInt:positionInteger] inContext:self.managedObjectContext];
-        [self updateGroups];
-        [self.tableView insertRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section]] withRowAnimation:UITableViewRowAnimationAutomatic];
-        GroupCell *cell = (GroupCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-        cell.stayEditable = YES;
-        [self updateEditingStyleIndicators];
-        cell.stayEditable = NO;
     }
 }
 
-- (void)updateEditingStyleIndicators {
-    self.tableView.editing = NO;
-    self.tableView.editing = YES;
+- (NSUInteger)numberOfGroups {
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.fetchedResultsController.sections[0];
+    return [sectionInfo numberOfObjects];
+}
+
+#pragma mark - Fetched results controller delegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+    if (self.indexPathOfEditingCell) {
+        GroupCell *cell = (GroupCell *)[self.tableView cellForRowAtIndexPath:self.indexPathOfEditingCell];
+        [cell.textField becomeFirstResponder];
+        self.indexPathOfEditingCell = nil;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    UITableView *tableView = self.tableView;
+    switch(type) {
+        case NSFetchedResultsChangeInsert: {
+            if (self.cellInsertedDueToEditOfEmptyGroup) {
+                NSIndexPath *insertedIndexPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:newIndexPath.section] inSection:newIndexPath.section];
+                [tableView insertRowsAtIndexPaths:@[insertedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                self.indexPathOfEditingCell = newIndexPath;
+                self.cellInsertedDueToEditOfEmptyGroup = YES;
+            } else {
+                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+        }
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeUpdate:
+            [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+        case NSFetchedResultsChangeMove:
+            [tableView reloadRowsAtIndexPaths:@[indexPath, newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {    
     if (self.editing) {
-        return [self.groups count] + 1;
+        return [self numberOfGroups] + 1;
     } else {
-        return [self.groups count];
+        return [self numberOfGroups];
     }
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     GroupCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    if (indexPath.row < [self.groups count]) {
-        cell.textField.text = [self.groups[indexPath.row] name];
+    if (indexPath.row < [self numberOfGroups]) {
+        Group *group = (Group *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+        cell.textField.text = group.name;
     } else {
         cell.textField.text = @"";
         [cell.textField addTarget:self action:@selector(editedEmptyGroup:) forControlEvents:UIControlEventEditingChanged];
@@ -120,44 +171,51 @@ static NSString *CellIdentifier = @"GroupCell";
     return [self.tableView numberOfRowsInSection:indexPath.section] > 1;
 }
 
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.row < [self.groups count];
-}
-
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < [self.groups count]) {
+    if (indexPath.row < [self numberOfGroups]) {
         return UITableViewCellEditingStyleDelete;
     } else {
-        return UITableViewCellEditingStyleNone;
+        return UITableViewCellEditingStyleInsert;
     }
 }
 
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
-        [self.managedObjectContext deleteObject:self.groups[indexPath.row]];
-        [self updateGroups];
+        [self.managedObjectContext deleteObject:[self.fetchedResultsController objectAtIndexPath:indexPath]];
+        [self.fetchedResultsController performFetch:nil];
         [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
     }
 }
 
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    DevicesTableViewController *devicesTableViewController = [[DevicesTableViewController alloc] initWithStyle:UITableViewStylePlain];
+    devicesTableViewController.group = (Group *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    [self.navigationController pushViewController:devicesTableViewController animated:YES];
+}
+
 - (NSIndexPath *)tableView:(UITableView *)tableView targetIndexPathForMoveFromRowAtIndexPath:(NSIndexPath *)sourceIndexPath toProposedIndexPath:(NSIndexPath *)proposedDestinationIndexPath {
     //[self.view endEditing:YES];
-    if (proposedDestinationIndexPath.row == [self.groups count]) {
-        return [NSIndexPath indexPathForRow:[self.groups count]-1 inSection:proposedDestinationIndexPath.section];
+    if (proposedDestinationIndexPath.row == [self numberOfGroups]) {
+        return [NSIndexPath indexPathForRow:[self numberOfGroups]-1 inSection:proposedDestinationIndexPath.section];
     }
     return proposedDestinationIndexPath;
+}
+
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
+    return indexPath.row < [self numberOfGroups];
 }
 
 - (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)sourceIndexPath toIndexPath:(NSIndexPath *)destinationIndexPath {
     if ([sourceIndexPath isEqual:destinationIndexPath]) {
         return;
     }
-    Group *movingGroup = self.groups[sourceIndexPath.row];
+    Group *movingGroup = (Group *)[self.fetchedResultsController objectAtIndexPath:sourceIndexPath];
+    Group *destinationGroup = (Group *)[self.fetchedResultsController objectAtIndexPath:destinationIndexPath];
     NSUInteger newPositionInteger;
     if (destinationIndexPath.row == 0) {
-        newPositionInteger = [[(Group *)self.groups[0] position] integerValue]/2;
-    } else if (destinationIndexPath.row == [self.groups count]-1) {
-        newPositionInteger = [[(Group *)[self.groups lastObject] position] integerValue] + GroupPositionStep;
+        newPositionInteger = [destinationGroup.position integerValue]/2;
+    } else if (destinationIndexPath.row == [self numberOfGroups]-1) {
+        newPositionInteger = [destinationGroup.position integerValue] + GroupPositionStep;
     } else {
         // Find the index in self.groups of the group that will be
         // before the moved group once the move is complete.
@@ -167,32 +225,21 @@ static NSString *CellIdentifier = @"GroupCell";
         if (sourceIndexPath.row < destinationIndexPath.row) {
             earlierGroupIndex += 1;
         }
-        Group *earlierGroup = (Group *)self.groups[earlierGroupIndex];
-        Group *latterGroup = (Group *)self.groups[earlierGroupIndex+1];
+        NSIndexPath *earlierIndexPath = [NSIndexPath indexPathForRow:earlierGroupIndex inSection:sourceIndexPath.section];
+        NSIndexPath *latterIndexPath = [NSIndexPath indexPathForRow:earlierGroupIndex+1 inSection:sourceIndexPath.section];
+        Group *earlierGroup = (Group *)[self.fetchedResultsController objectAtIndexPath:earlierIndexPath];
+        Group *latterGroup = (Group *)[self.fetchedResultsController objectAtIndexPath:latterIndexPath];
         newPositionInteger = ([earlierGroup.position integerValue] + [latterGroup.position integerValue])/2;
     }
     movingGroup.position = [NSNumber numberWithInteger:newPositionInteger];
-    [self updateGroups];
-    // Reindex the groups to prevent position collisions.
-    NSUInteger positionInteger = 0;
-    for (Group *group in self.groups) {
-        positionInteger += GroupPositionStep;
-        group.position = [NSNumber numberWithInteger:positionInteger];
-    }
-}
-
-- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
-    DevicesTableViewController *devicesTableViewController = [[DevicesTableViewController alloc] initWithStyle:UITableViewStylePlain];
-    devicesTableViewController.group = [self.groups objectAtIndex:indexPath.row];
-    [self.navigationController pushViewController:devicesTableViewController animated:YES];
 }
 
 #pragma mark - TextField delegate
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSIndexPath *indexPath = [self.tableView indexPathForRowAtPoint:[self.tableView convertPoint:CGPointZero fromView:textField]];
-    if (indexPath.row < [self.groups count]) {
-        Group *group = self.groups[indexPath.row];
+    if (indexPath.row < [self numberOfGroups]) {
+        Group *group = (Group *)[self.fetchedResultsController objectAtIndexPath:indexPath];
         group.name = textField.text;
     }
 }
