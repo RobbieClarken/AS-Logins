@@ -8,6 +8,13 @@
 
 #import "AppDelegate.h"
 #import "GroupsViewController.h"
+#import "SyncManager.h"
+
+@interface AppDelegate()
+
+@property (nonatomic, strong) SyncManager *syncManager;
+
+@end
 
 @implementation AppDelegate
 
@@ -16,6 +23,7 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    self.syncManager = [[SyncManager alloc] init];
     
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     GroupsViewController *groupsViewController = [[GroupsViewController alloc] initWithStyle:UITableViewStylePlain];
@@ -48,6 +56,9 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
+- (void)initiateSync {
+    [self.syncManager syncManagedObjectContext:self.managedObjectContext];
+}
 
 - (void)saveContext {
     NSError *error = nil;

@@ -18,5 +18,6 @@
 
 - (NSURL *)applicationDocumentsDirectory;
 - (void)saveContext;
+- (void)initiateSync;
 
 @end

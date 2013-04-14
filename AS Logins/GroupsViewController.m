@@ -10,6 +10,7 @@
 #import "Group+Create.h"
 #import "DevicesTableViewController.h"
 #import "GroupCell.h"
+#import "AppDelegate.h"
 
 static NSUInteger GroupPositionStep = 0x10000;
 static NSString *CellIdentifier = @"GroupCell";
@@ -31,6 +32,23 @@ static NSString *CellIdentifier = @"GroupCell";
     self.fetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.cellInsertedDueToEditOfEmptyGroup = NO;
+    [self addRefreshControl];
+}
+
+- (void)addRefreshControl {
+    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
+    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Sync"];
+    [refreshControl addTarget:self action:@selector(synchronizeWithServer) forControlEvents:UIControlEventValueChanged];
+    self.refreshControl = refreshControl;
+}
+
+- (void)synchronizeWithServer {
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Syncing..."];
+
+    [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync];
+    
+    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Sync"];
+    [self.refreshControl endRefreshing];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
