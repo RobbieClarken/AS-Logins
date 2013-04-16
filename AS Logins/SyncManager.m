@@ -42,8 +42,12 @@
     NSArray *changedDevices = [self objectsWithEntityName:@"Device" modifiedAfterDate:date inManagedObjectContext:context];
     NSArray *changedDevicesForJSON = [self changedObjectsForJSONFromArray:changedDevices forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"name", @"hostname", @"ip", @"url", @"group"]];
     
+    NSArray *changedLogins = [self objectsWithEntityName:@"Login" modifiedAfterDate:date inManagedObjectContext:context];
+    NSArray *changedLoginForJSON = [self changedObjectsForJSONFromArray:changedLogins forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"username", @"password", @"createdDate", @"device"]];
+    
     [dictionaryForJSON setValue:changedGroupsForJSON forKey:@"groups"];
     [dictionaryForJSON setValue:changedDevicesForJSON forKey:@"devices"];
+    [dictionaryForJSON setValue:changedLoginForJSON forKey:@"logins"];
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionaryForJSON options:kNilOptions error:nil];
     return jsonData;
