@@ -2,7 +2,7 @@
 //  Login.m
 //  AS Logins
 //
-//  Created by Robbie Clarken on 15/04/13.
+//  Created by Robbie Clarken on 16/04/13.
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
@@ -12,11 +12,12 @@
 
 @implementation Login
 
-@dynamic toDelete;
 @dynamic lastModifiedDate;
 @dynamic password;
+@dynamic toDelete;
 @dynamic username;
 @dynamic uuid;
+@dynamic createdDate;
 @dynamic device;
 
 @end

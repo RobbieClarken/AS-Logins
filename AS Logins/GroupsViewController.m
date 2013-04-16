@@ -18,7 +18,7 @@ static NSString *CellIdentifier = @"GroupCell";
 @interface GroupsViewController () <UITextFieldDelegate, NSFetchedResultsControllerDelegate>
 
 @property (nonatomic, strong) NSFetchedResultsController *fetchedResultsController;
-@property (nonatomic) BOOL cellInsertedDueToEditOfEmptyGroup;
+@property (nonatomic) BOOL cellInsertedDueToEditOfEmptyTextField;
 @property (nonatomic, strong) NSIndexPath *indexPathOfEditingCell;
 
 @end
@@ -31,7 +31,7 @@ static NSString *CellIdentifier = @"GroupCell";
     [self.tableView registerClass:[GroupCell class] forCellReuseIdentifier:CellIdentifier];
     self.fetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
-    self.cellInsertedDueToEditOfEmptyGroup = NO;
+    self.cellInsertedDueToEditOfEmptyTextField = NO;
     [self addRefreshControl];
 }
 
@@ -107,7 +107,7 @@ static NSString *CellIdentifier = @"GroupCell";
             Group *group = [self.fetchedResultsController objectAtIndexPath:lastGroupIndexPath];
             positionInteger = [group.position integerValue] + GroupPositionStep;
         }
-        self.cellInsertedDueToEditOfEmptyGroup = YES;
+        self.cellInsertedDueToEditOfEmptyTextField = YES;
         [Group groupWithName:@"" atPosition:[NSNumber numberWithInt:positionInteger] inContext:self.managedObjectContext];
     }
 }
@@ -125,7 +125,7 @@ static NSString *CellIdentifier = @"GroupCell";
 
 - (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
     [self.tableView endUpdates];
-    if (self.cellInsertedDueToEditOfEmptyGroup) {
+    if (self.cellInsertedDueToEditOfEmptyTextField) {
         GroupCell *cell = (GroupCell *)[self.tableView cellForRowAtIndexPath:self.indexPathOfEditingCell];
         [cell.textField becomeFirstResponder];
         self.indexPathOfEditingCell = nil;
@@ -140,7 +140,7 @@ static NSString *CellIdentifier = @"GroupCell";
     UITableView *tableView = self.tableView;
     switch(type) {
         case NSFetchedResultsChangeInsert: {
-            if (self.cellInsertedDueToEditOfEmptyGroup) {
+            if (self.cellInsertedDueToEditOfEmptyTextField) {
                 NSIndexPath *insertedIndexPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:newIndexPath.section] inSection:newIndexPath.section];
                 [tableView insertRowsAtIndexPaths:@[insertedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 [tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
@@ -154,12 +154,12 @@ static NSString *CellIdentifier = @"GroupCell";
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
             break;
         case NSFetchedResultsChangeUpdate:
-            // If cellInsertedDueToEditOfEmptyGroup is YES then this is only
+            // If cellInsertedDueToEditOfEmptyTextField is YES then this is only
             // being called because the textField was dismissed in what was
             // the empty group cell. The update of this cell will have already
             // have been triggered by the NSFetchedResultsChangeInsert change.
-            if (self.cellInsertedDueToEditOfEmptyGroup) {
-                self.cellInsertedDueToEditOfEmptyGroup = NO;
+            if (self.cellInsertedDueToEditOfEmptyTextField) {
+                self.cellInsertedDueToEditOfEmptyTextField = NO;
             } else {
                 [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];                
             }

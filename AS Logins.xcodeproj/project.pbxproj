@@ -14,7 +14,7 @@
 		DC295BB8171B28AC0064A8D7 /* Device+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BB7171B28AC0064A8D7 /* Device+Create.m */; };
 		DC295BD0171B4AA10064A8D7 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BCF171B4AA10064A8D7 /* Device.m */; };
 		DC295BD3171B4AA10064A8D7 /* Group.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BD2171B4AA10064A8D7 /* Group.m */; };
-		DC295BD6171B4AA20064A8D7 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BD5171B4AA20064A8D7 /* Login.m */; };
+		DC295BD9171CE44A0064A8D7 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BD8171CE44A0064A8D7 /* Login.m */; };
 		DC5E5F0A16F64CF700FC84EC /* ASLogins.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */; };
 		DC5E5F2B16F6578100FC84EC /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC5E5F2A16F6578100FC84EC /* CoreData.framework */; };
 		DC5E5F9E16FA111600FC84EC /* DeviceFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5F9D16FA111600FC84EC /* DeviceFieldCell.m */; };
@@ -49,8 +49,8 @@
 		DC295BCF171B4AA10064A8D7 /* Device.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Device.m; sourceTree = "<group>"; };
 		DC295BD1171B4AA10064A8D7 /* Group.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Group.h; sourceTree = "<group>"; };
 		DC295BD2171B4AA10064A8D7 /* Group.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Group.m; sourceTree = "<group>"; };
-		DC295BD4171B4AA20064A8D7 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
-		DC295BD5171B4AA20064A8D7 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
+		DC295BD7171CE44A0064A8D7 /* Login.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Login.h; sourceTree = "<group>"; };
+		DC295BD8171CE44A0064A8D7 /* Login.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Login.m; sourceTree = "<group>"; };
 		DC5E5F0916F64CF700FC84EC /* ASLogins.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ASLogins.xcdatamodel; sourceTree = "<group>"; };
 		DC5E5F2A16F6578100FC84EC /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		DC5E5F9C16FA111600FC84EC /* DeviceFieldCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceFieldCell.h; sourceTree = "<group>"; };
@@ -98,8 +98,8 @@
 		DC5E5F1D16F64F2800FC84EC /* Managed Objects */ = {
 			isa = PBXGroup;
 			children = (
-				DC295BD4171B4AA20064A8D7 /* Login.h */,
-				DC295BD5171B4AA20064A8D7 /* Login.m */,
+				DC295BD7171CE44A0064A8D7 /* Login.h */,
+				DC295BD8171CE44A0064A8D7 /* Login.m */,
 				DC295BD1171B4AA10064A8D7 /* Group.h */,
 				DC295BD2171B4AA10064A8D7 /* Group.m */,
 				DC295BCE171B4AA10064A8D7 /* Device.h */,
@@ -273,7 +273,7 @@
 				DC295BB8171B28AC0064A8D7 /* Device+Create.m in Sources */,
 				DC295BD0171B4AA10064A8D7 /* Device.m in Sources */,
 				DC295BD3171B4AA10064A8D7 /* Group.m in Sources */,
-				DC295BD6171B4AA20064A8D7 /* Login.m in Sources */,
+				DC295BD9171CE44A0064A8D7 /* Login.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

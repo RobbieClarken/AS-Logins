@@ -15,9 +15,18 @@ static NSString *LoginsKey = @"logins";
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
 static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
-@interface DeviceViewController () <UITextFieldDelegate>
+typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
+    ASLTableViewSectionDeviceInfo = 0,
+    ASLTableViewSectionLogins = 1
+};
+
+@interface DeviceViewController () <UITextFieldDelegate, NSFetchedResultsControllerDelegate>
 
 @property (strong, nonatomic) NSIndexPath *nextEditCellIndexPath;
+@property (strong, nonatomic) NSFetchedResultsController *loginsFetchedResultsController;
+@property (nonatomic) BOOL cellReloadedDueToTextFieldChange;
+@property (strong, nonatomic) NSIndexPath *indexPathOfEditingCell;
+@property (nonatomic) ASLLoginTextField textFieldToBecomeFirstResponder;
 
 @end
 
@@ -28,9 +37,34 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     self.title = @"Device";
     [self.tableView registerClass:[DeviceFieldCell class] forCellReuseIdentifier:DeviceFieldCellIdentifier];
     [self.tableView registerClass:[LoginCell class] forCellReuseIdentifier:LoginCellIdentifier];
-    
+
+    self.loginsFetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.cellReloadedDueToTextFieldChange = NO;
     self.nextEditCellIndexPath = nil;
+}
+
+- (NSFetchedResultsController *)loginsFetchedResultsController {
+    if (_loginsFetchedResultsController) {
+        return _loginsFetchedResultsController;
+    }
+    
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Login"];
+    request.predicate = [NSPredicate predicateWithFormat:@"device = %@ AND toDelete == NO", self.device];
+    request.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"createdDate" ascending:YES] ];
+    _loginsFetchedResultsController = [[NSFetchedResultsController alloc] initWithFetchRequest:request managedObjectContext:self.device.managedObjectContext sectionNameKeyPath:nil cacheName:nil];
+    NSError *error;
+    [_loginsFetchedResultsController performFetch:&error];
+    if (error) {
+        NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+        abort();
+    }
+    return _loginsFetchedResultsController;
+}
+
+- (NSUInteger)numberOfLogins {
+    id <NSFetchedResultsSectionInfo> sectionInfo = self.loginsFetchedResultsController.sections[0];
+    return sectionInfo.numberOfObjects;
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
@@ -77,22 +111,13 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 }
 
 - (void)editedLastLogin:(UITextField *)textField {
-    ASLLoginTextField textFieldBeingEdited = textField.tag;
     NSIndexPath *indexPath = [self indexPathWithView:textField];
     LoginCell *loginCell = (LoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
     [loginCell.usernameTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
     [loginCell.passwordTextField removeTarget:self action:@selector(editedEmptyLogin:) forControlEvents:UIControlEventEditingChanged];
+    self.cellReloadedDueToTextFieldChange = YES;
+    self.textFieldToBecomeFirstResponder = textField.tag;
     [Login loginForDevice:self.device inContext:self.device.managedObjectContext];
-    NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row+1 inSection:indexPath.section];
-    [self.tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    // Reload cell being edited to update Editing Style Indicator
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    LoginCell *replacementLoginCell = (LoginCell *)[self.tableView cellForRowAtIndexPath:indexPath];
-    if (textFieldBeingEdited == ASLLoginTextFieldUsername) {
-        [replacementLoginCell.usernameTextField becomeFirstResponder];
-    } else if (textFieldBeingEdited == ASLLoginTextFieldPassword) {
-        [replacementLoginCell.passwordTextField becomeFirstResponder];
-    }
 }
 
 - (BOOL)indexPathIsLastInSection:(NSIndexPath *)indexPath {
@@ -118,11 +143,6 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     Login *login = logins[indexPath.row];
     [logins removeObject:login];
     [self.device.managedObjectContext deleteObject:login];
-    [self.tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    if ([self.device.logins count] == 0) {
-        NSIndexPath *remainingIndexPath = [NSIndexPath indexPathForRow:0 inSection:indexPath.section];
-        [self.tableView reloadRowsAtIndexPaths:@[remainingIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
-    }
 }
 
 - (NSString *)deviceFieldValueForRow:(NSUInteger)row {
@@ -140,6 +160,74 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     return nil;
 }
 
+#pragma mark - Fetched results controller delegate
+
+- (void)controllerWillChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView beginUpdates];
+}
+
+- (void)controllerDidChangeContent:(NSFetchedResultsController *)controller {
+    [self.tableView endUpdates];
+    if (self.indexPathOfEditingCell) {
+        LoginCell *cell = (LoginCell *)[self.tableView cellForRowAtIndexPath:self.indexPathOfEditingCell];
+        switch (self.textFieldToBecomeFirstResponder) {
+            case ASLLoginTextFieldUsername:
+                [cell.usernameTextField becomeFirstResponder];
+                break;
+            case ASLLoginTextFieldPassword:
+                [cell.passwordTextField becomeFirstResponder];
+                break;
+        }
+        self.indexPathOfEditingCell = nil;
+    }
+}
+
+- (void)controller:(NSFetchedResultsController *)controller
+   didChangeObject:(id)anObject
+       atIndexPath:(NSIndexPath *)indexPath
+     forChangeType:(NSFetchedResultsChangeType)type
+      newIndexPath:(NSIndexPath *)newIndexPath {
+    UITableView *tableView = self.tableView;
+    
+    indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:ASLTableViewSectionLogins];
+    if (newIndexPath) {
+        newIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row inSection:ASLTableViewSectionLogins];
+    }
+    switch(type) {
+        case NSFetchedResultsChangeInsert: {
+            if (self.cellReloadedDueToTextFieldChange) {
+                NSIndexPath *insertedIndexPath = [NSIndexPath indexPathForRow:[self.tableView numberOfRowsInSection:newIndexPath.section] inSection:newIndexPath.section];
+                [tableView insertRowsAtIndexPaths:@[insertedIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [tableView reloadRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                self.indexPathOfEditingCell = newIndexPath;
+            } else {
+                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+        }
+        case NSFetchedResultsChangeDelete:
+            [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            if (self.editing && [self numberOfLogins] == 0) {
+                [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:ASLTableViewSectionLogins]] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+        case NSFetchedResultsChangeUpdate:
+            // If cellReloadedDueToTextFieldChange is YES then this is only
+            // being called because the textField was dismissed in what was
+            // the empty group cell. The update of this cell will have already
+            // have been triggered by the NSFetchedResultsChangeInsert change.
+            if (self.cellReloadedDueToTextFieldChange) {
+                self.cellReloadedDueToTextFieldChange = NO;
+            } else {
+                [tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            }
+            break;
+        case NSFetchedResultsChangeMove:
+            [tableView reloadRowsAtIndexPaths:@[indexPath, newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            break;
+    }
+}
+
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
@@ -148,13 +236,13 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.editing) {
-        if (section == 0) {
+        if (section == ASLTableViewSectionDeviceInfo) {
             return 4;
         } else {
-            return [self.device.logins count]+1;
+            return [self numberOfLogins]+1;
         }
     } else {
-        if (section == 0) {
+        if (section == ASLTableViewSectionDeviceInfo) {
             NSUInteger numberOfRows = 0;
             if (self.device.name.length > 0) {
                 numberOfRows += 1;
@@ -170,14 +258,14 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
             }
             return numberOfRows;
         } else {
-            return [self.device.logins count];
+            return [self numberOfLogins];
         }
     }
 }
 
 - (Login *)loginForIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.row < [self.device.logins count]) {
-        return [self.device.logins objectAtIndex:indexPath.row];
+    if (indexPath.row < [self numberOfLogins]) {
+        return [self.loginsFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
     } else {
         return nil;
     }
@@ -246,14 +334,14 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
 - (UITableViewCellEditingStyle)tableView:(UITableView *)tableView
            editingStyleForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 1 && ![self indexPathIsLastInSection:indexPath]) {
+    if (indexPath.section == ASLTableViewSectionLogins && ![self indexPathIsLastInSection:indexPath]) {
         return UITableViewCellEditingStyleDelete;
     }
     return UITableViewCellEditingStyleNone;
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldIndentWhileEditingRowAtIndexPath:(NSIndexPath *)indexPath {
-    return indexPath.section == 1 && [self.tableView numberOfRowsInSection:indexPath.section] > 1;
+    return indexPath.section == ASLTableViewSectionLogins && [self.tableView numberOfRowsInSection:indexPath.section] > 1;
 }
 
 - (BOOL)tableView:(UITableView *)tableView shouldHighlightRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -280,20 +368,24 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
                 break;
         }
         self.device.lastModifiedDate = [NSDate date];
-    } else {
+    } else if (![self indexPathIsLastInSection:indexPath]) {
         // The last row is the template and does not have a Login object (if text had been added
         // then a Login would have been created and it would no longer be the last object)
-        if (![self indexPathIsLastInSection:indexPath]) {
-            Login *login = self.device.logins[indexPath.row];
-            switch (textField.tag) {
-                case ASLLoginTextFieldUsername:
-                    login.username = textField.text;
-                    break;
-                case ASLLoginTextFieldPassword:
-                    login.password = textField.text;
-                    break;
-            }
+        
+        if ([indexPath isEqual:self.nextEditCellIndexPath]) {
+            self.cellReloadedDueToTextFieldChange = YES;
         }
+        
+        Login *login = [self loginForIndexPath:indexPath];
+        switch (textField.tag) {
+            case ASLLoginTextFieldUsername:
+                login.username = textField.text;
+                break;
+            case ASLLoginTextFieldPassword:
+                login.password = textField.text;
+                break;
+        }
+        login.lastModifiedDate = [NSDate date];
     }
     if (indexPath && ![indexPath isEqual:self.nextEditCellIndexPath]) {
         [self didEndEditingCellAtIndexPath:indexPath];
@@ -301,7 +393,8 @@ static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
     self.nextEditCellIndexPath = nil;
 }
 
-- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {    
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
+    self.textFieldToBecomeFirstResponder = textField.tag;
     self.nextEditCellIndexPath = [self indexPathWithView:textField];
     return YES;
 }
