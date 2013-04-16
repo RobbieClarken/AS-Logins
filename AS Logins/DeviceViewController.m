@@ -394,7 +394,9 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField {
-    self.textFieldToBecomeFirstResponder = textField.tag;
+    // This is used to avoid calling didEndEditingCellAtIndexPath
+    // when the user clicks from the username textfield to the
+    // password textfield (or vice versa) within the same cell.
     self.nextEditCellIndexPath = [self indexPathWithView:textField];
     return YES;
 }
