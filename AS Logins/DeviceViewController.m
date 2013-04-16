@@ -11,7 +11,6 @@
 #import "DeviceFieldCell.h"
 #import "LoginCell.h"
 
-static NSString *LoginsKey = @"logins";
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
 static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
 
@@ -139,10 +138,9 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 }
 
 - (void)deleteLoginAtIndexPath:(NSIndexPath *)indexPath {
-    NSMutableOrderedSet *logins = [self.device mutableOrderedSetValueForKey:LoginsKey];
-    Login *login = logins[indexPath.row];
-    [logins removeObject:login];
-    [self.device.managedObjectContext deleteObject:login];
+    Login *login = [self loginForIndexPath:indexPath];
+    login.toDelete = @YES;
+    login.lastModifiedDate = [NSDate date];
 }
 
 - (NSString *)deviceFieldValueForRow:(NSUInteger)row {
@@ -352,7 +350,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     NSIndexPath *indexPath = [self indexPathWithView:textField];
-    if (indexPath.section == 0) {
+    if (indexPath.section == ASLTableViewSectionDeviceInfo) {
         switch (indexPath.row) {
             case 0:
                 self.device.name = textField.text;
