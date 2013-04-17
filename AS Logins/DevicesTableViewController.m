@@ -16,8 +16,6 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 
 @interface DevicesTableViewController () <DeviceViewControllerDelegate>
 
-@property (nonatomic, strong) NSManagedObjectContext *editManagedObjectContext;
-
 @end
 
 @implementation DevicesTableViewController

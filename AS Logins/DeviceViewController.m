@@ -1,5 +1,5 @@
 //
-//  EditDeviceViewController.m
+//  DeviceViewController.m
 //  AS Logins
 //
 //  Created by Robbie Clarken on 17/03/13.
