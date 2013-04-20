@@ -113,10 +113,8 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             abort();
         }
-        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:[self numberOfDevices]-1 inSection:0];
-        Device *device = [self deviceForIndexPath:indexPath];
         DeviceViewController *newDeviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
-        newDeviceViewController.device = device;
+        newDeviceViewController.device = editDeviceViewController.device;
         [self.navigationController pushViewController:newDeviceViewController animated:NO];
     } else {
         [self.group.managedObjectContext rollback];
