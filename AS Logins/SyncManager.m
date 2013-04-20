@@ -35,6 +35,7 @@
 
 - (NSData *)JSONDataOfLocalChangesAfterDate:(NSDate *)date inManagedObjectContext:(NSManagedObjectContext *)context {
     NSMutableDictionary *dictionaryForJSON = [NSMutableDictionary dictionary];
+    NSMutableDictionary *changesDictionaryForJSON = [NSMutableDictionary dictionary];
     
     NSArray *changedGroups = [self objectsWithEntityName:@"Group" modifiedAfterDate:date inManagedObjectContext:context];
     NSArray *changedGroupsForJSON = [self changedObjectsForJSONFromArray:changedGroups forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"name", @"position"]];
@@ -45,25 +46,25 @@
     NSArray *changedLogins = [self objectsWithEntityName:@"Login" modifiedAfterDate:date inManagedObjectContext:context];
     NSArray *changedLoginForJSON = [self changedObjectsForJSONFromArray:changedLogins forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"username", @"password", @"createdDate", @"device"]];
     
-    [dictionaryForJSON setValue:changedGroupsForJSON forKey:@"groups"];
-    [dictionaryForJSON setValue:changedDevicesForJSON forKey:@"devices"];
-    [dictionaryForJSON setValue:changedLoginForJSON forKey:@"logins"];
+    [changesDictionaryForJSON setValue:changedGroupsForJSON forKey:@"groups"];
+    [changesDictionaryForJSON setValue:changedDevicesForJSON forKey:@"devices"];
+    [changesDictionaryForJSON setValue:changedLoginForJSON forKey:@"logins"];
+    
+    [dictionaryForJSON setValue:changesDictionaryForJSON forKey:@"changes"];
+    [dictionaryForJSON setValue:[self formatAsISODate:date] forKey:@"lastSyncDate"];
     
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dictionaryForJSON options:kNilOptions error:nil];
     return jsonData;
 }
 
 - (NSArray *)changedObjectsForJSONFromArray:(NSArray *)array forKeys:(NSArray *)keys {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
     NSMutableArray *changedObjectsForJSON = [NSMutableArray arrayWithCapacity:[array count]];
     for (NSManagedObject *object in array) {
         NSMutableDictionary *dictionaryForJSON = [NSMutableDictionary dictionaryWithCapacity:[keys count]];
         for (NSString *key in keys) {
             NSObject *value = [object valueForKey:key];
             if ([value isKindOfClass:[NSDate class]]) {
-                value = [formatter stringFromDate:(NSDate *)value];
+                value = [self formatAsISODate:(NSDate *)value];
             } else if ([value isKindOfClass:[NSManagedObject class]]) {
                 value = [value valueForKey:@"uuid"];
             }
@@ -79,6 +80,13 @@
     request.predicate = [NSPredicate predicateWithFormat:@"lastModifiedDate > %@", date];
     NSArray *results = [context executeFetchRequest:request error:nil];
     return results;
+}
+
+- (NSString *)formatAsISODate:(NSDate *)date {
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'Z'"];
+    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
+    return [formatter stringFromDate:date];
 }
 
 @end
