@@ -8,6 +8,13 @@
 
 #import "SyncManager.h"
 #import "Group+Create.h"
+#import "ISODateFormatter.h"
+
+@interface SyncManager()
+
+@property (strong, nonatomic) ISODateFormatter *dateFormatter;
+
+@end
 
 @implementation SyncManager
 
@@ -20,6 +27,20 @@
     return manager;
 }
 
+- (ISODateFormatter *)dateFormatter {
+    if (!_dateFormatter) {
+        _dateFormatter = [[ISODateFormatter alloc] init];
+    }
+    return _dateFormatter;
+}
+
+- (void)updateChangesFromServer:(NSDictionary *)changes inContext:(NSManagedObjectContext *)context{    
+    for (NSDictionary *changedGroupValues in changes[@"groups"]) {
+        [Group syncGroupWithPropertyValues:changedGroupValues inContext:context];
+    }
+    [context save:nil];
+}
+
 - (void)syncManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
     static NSString *LastSyncDateKey = @"lastSyncDate";
     NSDate *lastSyncDate = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
@@ -27,10 +48,29 @@
         lastSyncDate = [NSDate dateWithTimeIntervalSince1970:0.0f];
         [[NSUserDefaults standardUserDefaults] setObject:lastSyncDate forKey:LastSyncDateKey];
     }
-    NSData *data = [self JSONDataOfLocalChangesAfterDate:lastSyncDate inManagedObjectContext:managedObjectContext];
-    NSString *jsonString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
-    NSLog(@"%@", jsonString);
-    [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LastSyncDateKey];
+    
+    NSData *postData = [self JSONDataOfLocalChangesAfterDate:lastSyncDate inManagedObjectContext:managedObjectContext];
+    
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:5051"]];
+    request.HTTPMethod = @"POST";
+    [request setValue:[NSString stringWithFormat:@"%i", [postData length]] forHTTPHeaderField:@"Content-Length"];
+    [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    request.HTTPBody = postData;
+    [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
+        if (error) {
+            NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            return;
+        }
+        NSDictionary *changes = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
+        if (error) {
+            NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+            abort();
+        }
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LastSyncDateKey];
+            [self updateChangesFromServer:changes inContext:managedObjectContext];
+        });
+    }];
 }
 
 - (NSData *)JSONDataOfLocalChangesAfterDate:(NSDate *)date inManagedObjectContext:(NSManagedObjectContext *)context {
@@ -83,10 +123,7 @@
 }
 
 - (NSString *)formatAsISODate:(NSDate *)date {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setDateFormat:@"yyyy'-'MM'-'dd'T'HH':'mm':'ss'.'SSS'Z'"];
-    [formatter setTimeZone:[NSTimeZone timeZoneWithAbbreviation:@"UTC"]];
-    return [formatter stringFromDate:date];
+    return [self.dateFormatter stringFromDate:date];
 }
 
 @end

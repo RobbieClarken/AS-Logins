@@ -11,5 +11,6 @@
 @interface Group (Create)
 
 + (Group *)groupWithName:(NSString *)name atPosition:(NSNumber *)position inContext:(NSManagedObjectContext *)context;
++ (Group *)syncGroupWithPropertyValues:(NSDictionary *)values inContext:(NSManagedObjectContext *)context;
 
 @end

@@ -21,6 +21,8 @@ static NSString *CellIdentifier = @"GroupCell";
 @property (nonatomic) BOOL cellInsertedDueToEditOfEmptyTextField;
 @property (nonatomic, strong) NSIndexPath *indexPathOfEditingCell;
 
+@property (nonatomic) BOOL changeIsUserDriven;
+
 @end
 
 @implementation GroupsViewController
@@ -165,7 +167,12 @@ static NSString *CellIdentifier = @"GroupCell";
             }
             break;
         case NSFetchedResultsChangeMove:
-            [tableView reloadRowsAtIndexPaths:@[indexPath, newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            if (!self.changeIsUserDriven) {
+                [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                [tableView insertRowsAtIndexPaths:@[newIndexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            } else {
+                self.changeIsUserDriven = NO;
+            }
             break;
     }
 }
@@ -257,8 +264,9 @@ static NSString *CellIdentifier = @"GroupCell";
         Group *latterGroup = (Group *)[self.fetchedResultsController objectAtIndexPath:latterIndexPath];
         newPositionInteger = ([earlierGroup.position integerValue] + [latterGroup.position integerValue])/2;
     }
-    movingGroup.position = [NSNumber numberWithInteger:newPositionInteger];
+    self.changeIsUserDriven = YES;
     movingGroup.lastModifiedDate = [NSDate date];
+    movingGroup.position = [NSNumber numberWithInteger:newPositionInteger];
 }
 
 #pragma mark - TextField delegate
