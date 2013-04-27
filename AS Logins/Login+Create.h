@@ -7,10 +7,12 @@
 //
 
 #import "Login.h"
-#import "Device.h"
+#import "Device+Create.h"
 
 @interface Login (Create)
 
++ (Login *)loginWithUuid:(NSString *)uuid inContext:(NSManagedObjectContext *)context;
 + (Login *)loginForDevice:(Device *)device inContext:(NSManagedObjectContext *)context;
++ (Login *)syncLoginWithPropertyValues:(NSDictionary *)values inContext:(NSManagedObjectContext *)context;
 
 @end

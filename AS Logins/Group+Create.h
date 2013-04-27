@@ -10,6 +10,7 @@
 
 @interface Group (Create)
 
++ (Group *)groupWithUuid:(NSString *)uuid inContext:(NSManagedObjectContext *)context;
 + (Group *)groupWithName:(NSString *)name atPosition:(NSNumber *)position inContext:(NSManagedObjectContext *)context;
 + (Group *)syncGroupWithPropertyValues:(NSDictionary *)values inContext:(NSManagedObjectContext *)context;
 

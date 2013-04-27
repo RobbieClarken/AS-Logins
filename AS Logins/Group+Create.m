@@ -27,6 +27,7 @@ static NSString *EntityName = @"Group";
             group = (Group *)matches[0];
         } else {
             group = (Group *)[NSEntityDescription insertNewObjectForEntityForName:EntityName inManagedObjectContext:context];
+            group.uuid = uuid;
         }
     }
     return group;

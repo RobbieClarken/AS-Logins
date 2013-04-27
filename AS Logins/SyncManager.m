@@ -8,7 +8,11 @@
 
 #import "SyncManager.h"
 #import "Group+Create.h"
+#import "Device+Create.h"
+#import "Login+Create.h"
 #import "ISODateFormatter.h"
+
+#define kURLString @"http://localhost:5051"
 
 @interface SyncManager()
 
@@ -38,6 +42,12 @@
     for (NSDictionary *changedGroupValues in changes[@"groups"]) {
         [Group syncGroupWithPropertyValues:changedGroupValues inContext:context];
     }
+    for (NSDictionary *changedDeviceValues in changes[@"devices"]) {
+        [Device syncDeviceWithPropertyValues:changedDeviceValues inContext:context];
+    }
+    for (NSDictionary *changedLoginValues in changes[@"logins"]) {
+        [Login syncLoginWithPropertyValues:changedLoginValues inContext:context];
+    }
     [context save:nil];
 }
 
@@ -51,7 +61,7 @@
     
     NSData *postData = [self JSONDataOfLocalChangesAfterDate:lastSyncDate inManagedObjectContext:managedObjectContext];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:@"http://localhost:5051"]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kURLString]];
     request.HTTPMethod = @"POST";
     [request setValue:[NSString stringWithFormat:@"%i", [postData length]] forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];

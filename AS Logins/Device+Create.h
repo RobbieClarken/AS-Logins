@@ -7,10 +7,12 @@
 //
 
 #import "Device.h"
-#import "Group.h"
+#import "Group+Create.h"
 
 @interface Device (Create)
 
++ (Device *)deviceWithUuid:(NSString *)uuid inContext:(NSManagedObjectContext *)context;
 + (Device *)deviceForGroup:(Group *)group inContext:(NSManagedObjectContext *)context;
++ (Device *)syncDeviceWithPropertyValues:(NSDictionary *)values inContext:(NSManagedObjectContext *)context;
 
 @end
