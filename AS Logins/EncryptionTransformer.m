@@ -8,6 +8,8 @@
 
 #import "EncryptionTransformer.h"
 #import "NSData+AES256.h"
+#import "NSData+Base64.h"
+#import "SiteSettings.h"
 
 @implementation EncryptionTransformer
 
@@ -21,16 +23,22 @@
 
 - (NSString *)key {
     // TODO: Import this from a header file not in git
-    return @"secret key";
+    return kSecretKey;
 }
 
 - (id)transformedValue:(NSString *)value {
+    NSData *salt = [NSData randomDataOfLength:32];
     NSData *dataForEncryption = [value dataUsingEncoding:NSUTF8StringEncoding];
-    return [dataForEncryption AES256EncryptWithKey:[self key]];
+    NSData *encryptedData = [dataForEncryption AES256EncryptWithKey:[self key] andSalt:salt];
+    NSMutableData *mutableEncryptedData = [NSMutableData dataWithData:salt];
+    [mutableEncryptedData appendData:encryptedData];
+    return mutableEncryptedData;
 }
 
-- (id)reverseTransformedValue:(NSData *)value {
-    NSData *decryptedData = [value AES256DecryptWithKey:[self key]];
+- (id)reverseTransformedValue:(NSData *)data {
+    NSData *salt = [data subdataWithRange:NSMakeRange(0, 32)];
+    NSData *encrypedData = [data subdataWithRange:NSMakeRange(32, [data length] - [salt length])];
+    NSData *decryptedData = [encrypedData AES256DecryptWithKey:[self key] andSalt:salt];
     return [[NSString alloc] initWithData:decryptedData encoding:NSUTF8StringEncoding];
 }
 

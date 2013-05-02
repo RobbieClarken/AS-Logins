@@ -11,8 +11,7 @@
 #import "Device+Create.h"
 #import "Login+Create.h"
 #import "ISODateFormatter.h"
-
-#define kURLString @"http://localhost:5051"
+#import "SiteSettings.h"
 
 @interface SyncManager()
 
@@ -22,13 +21,10 @@
 
 @implementation SyncManager
 
-+ (SyncManager *)sharedSyncManager {
-    static SyncManager *manager;
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        manager = [[SyncManager alloc] init];
-    });
-    return manager;
++ (SyncManager *)syncManagerForManagedObjectContext:(NSManagedObjectContext *)context {
+    SyncManager *syncManager = [[SyncManager alloc] init];
+    syncManager.managedObjectContext = context;
+    return syncManager;
 }
 
 - (ISODateFormatter *)dateFormatter {
@@ -38,20 +34,22 @@
     return _dateFormatter;
 }
 
-- (void)updateChangesFromServer:(NSDictionary *)changes inContext:(NSManagedObjectContext *)context{    
-    for (NSDictionary *changedGroupValues in changes[@"groups"]) {
-        [Group syncGroupWithPropertyValues:changedGroupValues inContext:context];
-    }
-    for (NSDictionary *changedDeviceValues in changes[@"devices"]) {
-        [Device syncDeviceWithPropertyValues:changedDeviceValues inContext:context];
-    }
-    for (NSDictionary *changedLoginValues in changes[@"logins"]) {
-        [Login syncLoginWithPropertyValues:changedLoginValues inContext:context];
-    }
-    [context save:nil];
+- (void)updateChangesFromServer:(NSDictionary *)changes {
+    [self.managedObjectContext performBlock:^{
+        for (NSDictionary *changedGroupValues in changes[@"groups"]) {
+            [Group syncGroupWithPropertyValues:changedGroupValues inContext:self.managedObjectContext];
+        }
+        for (NSDictionary *changedDeviceValues in changes[@"devices"]) {
+            [Device syncDeviceWithPropertyValues:changedDeviceValues inContext:self.managedObjectContext];
+        }
+        for (NSDictionary *changedLoginValues in changes[@"logins"]) {
+            [Login syncLoginWithPropertyValues:changedLoginValues inContext:self.managedObjectContext];
+        }
+        [self.managedObjectContext save:nil];
+    }];
 }
 
-- (void)syncManagedObjectContext:(NSManagedObjectContext *)managedObjectContext {
+- (void)sync {
     static NSString *LastSyncDateKey = @"lastSyncDate";
     NSDate *lastSyncDate = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
     if (!lastSyncDate) {
@@ -59,9 +57,9 @@
         [[NSUserDefaults standardUserDefaults] setObject:lastSyncDate forKey:LastSyncDateKey];
     }
     
-    NSData *postData = [self JSONDataOfLocalChangesAfterDate:lastSyncDate inManagedObjectContext:managedObjectContext];
+    NSData *postData = [self JSONDataOfLocalChangesAfterDate:lastSyncDate];
     
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kURLString]];
+    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kSyncServerURL]];
     request.HTTPMethod = @"POST";
     [request setValue:[NSString stringWithFormat:@"%i", [postData length]] forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -74,26 +72,24 @@
         NSDictionary *changes = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         if (error) {
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
-            abort();
+            return;
         }
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LastSyncDateKey];
-            [self updateChangesFromServer:changes inContext:managedObjectContext];
-        });
+        [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LastSyncDateKey];
+        [self updateChangesFromServer:changes];
     }];
 }
 
-- (NSData *)JSONDataOfLocalChangesAfterDate:(NSDate *)date inManagedObjectContext:(NSManagedObjectContext *)context {
+- (NSData *)JSONDataOfLocalChangesAfterDate:(NSDate *)date {
     NSMutableDictionary *dictionaryForJSON = [NSMutableDictionary dictionary];
     NSMutableDictionary *changesDictionaryForJSON = [NSMutableDictionary dictionary];
     
-    NSArray *changedGroups = [self objectsWithEntityName:@"Group" modifiedAfterDate:date inManagedObjectContext:context];
+    NSArray *changedGroups = [self objectsWithEntityName:@"Group" modifiedAfterDate:date];
     NSArray *changedGroupsForJSON = [self changedObjectsForJSONFromArray:changedGroups forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"name", @"position"]];
     
-    NSArray *changedDevices = [self objectsWithEntityName:@"Device" modifiedAfterDate:date inManagedObjectContext:context];
+    NSArray *changedDevices = [self objectsWithEntityName:@"Device" modifiedAfterDate:date];
     NSArray *changedDevicesForJSON = [self changedObjectsForJSONFromArray:changedDevices forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"name", @"hostname", @"ip", @"url", @"group"]];
     
-    NSArray *changedLogins = [self objectsWithEntityName:@"Login" modifiedAfterDate:date inManagedObjectContext:context];
+    NSArray *changedLogins = [self objectsWithEntityName:@"Login" modifiedAfterDate:date];
     NSArray *changedLoginForJSON = [self changedObjectsForJSONFromArray:changedLogins forKeys:@[@"uuid", @"lastModifiedDate", @"toDelete", @"username", @"password", @"createdDate", @"device"]];
     
     [changesDictionaryForJSON setValue:changedGroupsForJSON forKey:@"groups"];
@@ -125,10 +121,10 @@
     return changedObjectsForJSON;
 }
 
-- (NSArray *)objectsWithEntityName:(NSString *)entityName modifiedAfterDate:(NSDate *)date inManagedObjectContext:(NSManagedObjectContext *)context {
+- (NSArray *)objectsWithEntityName:(NSString *)entityName modifiedAfterDate:(NSDate *)date {
     NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:entityName];
     request.predicate = [NSPredicate predicateWithFormat:@"lastModifiedDate > %@", date];
-    NSArray *results = [context executeFetchRequest:request error:nil];
+    NSArray *results = [self.managedObjectContext executeFetchRequest:request error:nil];
     return results;
 }
 

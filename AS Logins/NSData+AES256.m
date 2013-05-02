@@ -10,7 +10,7 @@
 
 @implementation NSData (AES256)
 
-- (NSData *)AES256EncryptWithKey:(NSString *)key {
+- (NSData *)AES256EncryptWithKey:(NSString *)key andSalt:(NSData *)salt {
 	// 'key' should be 32 bytes for AES256, will be null-padded otherwise
 	char keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
 	bzero(keyPtr, sizeof(keyPtr)); // fill with zeroes (for padding)
@@ -29,7 +29,7 @@
 	size_t numBytesEncrypted = 0;
 	CCCryptorStatus cryptStatus = CCCrypt(kCCEncrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
                                           keyPtr, kCCKeySizeAES256,
-                                          NULL /* initialization vector (optional) */,
+                                          [salt bytes] /* initialization vector */,
                                           [self bytes], dataLength, /* input */
                                           buffer, bufferSize, /* output */
                                           &numBytesEncrypted);
@@ -42,7 +42,7 @@
 	return nil;
 }
 
-- (NSData *)AES256DecryptWithKey:(NSString *)key {
+- (NSData *)AES256DecryptWithKey:(NSString *)key andSalt:(NSData *)salt {
 	// 'key' should be 32 bytes for AES256, will be null-padded otherwise
 	char keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
 	bzero(keyPtr, sizeof(keyPtr)); // fill with zeroes (for padding)
@@ -61,7 +61,7 @@
 	size_t numBytesDecrypted = 0;
 	CCCryptorStatus cryptStatus = CCCrypt(kCCDecrypt, kCCAlgorithmAES128, kCCOptionPKCS7Padding,
                                           keyPtr, kCCKeySizeAES256,
-                                          NULL /* initialization vector (optional) */,
+                                          [salt bytes] /* initialization vector */,
                                           [self bytes], dataLength, /* input */
                                           buffer, bufferSize, /* output */
                                           &numBytesDecrypted);
@@ -73,6 +73,15 @@
 	
 	free(buffer); //free the buffer;
 	return nil;
+}
+
++ (NSData *)randomDataOfLength:(NSUInteger)length {
+    NSMutableData *data = [NSMutableData dataWithCapacity:length];
+    for (NSUInteger i = 0; i < length; i++) {
+        NSInteger randomBits = arc4random();
+        [data appendBytes:(void *)&randomBits length:1];
+    }
+    return data;
 }
 
 @end

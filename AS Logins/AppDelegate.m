@@ -23,11 +23,10 @@
 @synthesize persistentStoreCoordinator = _persistentStoreCoordinator;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    self.syncManager = [[SyncManager alloc] init];
-    
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     GroupsViewController *groupsViewController = [[GroupsViewController alloc] initWithStyle:UITableViewStylePlain];
     groupsViewController.managedObjectContext = self.managedObjectContext;
+    self.syncManager = [SyncManager syncManagerForManagedObjectContext:self.managedObjectContext];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupsViewController];
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
@@ -57,7 +56,7 @@
 }
 
 - (void)initiateSync {
-    [self.syncManager syncManagedObjectContext:self.managedObjectContext];
+    [self.syncManager sync];
 }
 
 - (void)saveContext {

@@ -10,7 +10,9 @@
 
 @interface SyncManager : NSObject
 
-+ (SyncManager *)sharedSyncManager;
-- (void)syncManagedObjectContext:(NSManagedObjectContext *)managedObjectContext;
+@property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
+
++ (SyncManager *)syncManagerForManagedObjectContext:(NSManagedObjectContext *)context;
+- (void)sync;
 
 @end
