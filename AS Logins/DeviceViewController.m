@@ -10,6 +10,8 @@
 #import "Login+Create.h"
 #import "DeviceFieldCell.h"
 #import "LoginCell.h"
+#import "EncryptionTransformer.h"
+#import "NSData+Base64.h"
 
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
 static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
@@ -26,6 +28,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 @property (nonatomic) BOOL cellReloadedDueToTextFieldChange;
 @property (strong, nonatomic) NSIndexPath *indexPathOfEditingCell;
 @property (nonatomic) ASLLoginTextField textFieldToBecomeFirstResponder;
+@property (strong, nonatomic) EncryptionTransformer *encryptionTransformer;
 
 @end
 
@@ -41,6 +44,16 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.cellReloadedDueToTextFieldChange = NO;
     self.nextEditCellIndexPath = nil;
+    
+    self.encryptionTransformer = [[EncryptionTransformer alloc] init];
+}
+
+- (NSString *)encryptString:(NSString *)string {
+    return [NSData encodeBase64WithData:[self.encryptionTransformer transformedValue:string]];
+}
+
+- (NSString *)decryptString:(NSString *)string {
+    return (NSString *)[self.encryptionTransformer reverseTransformedValue:[NSData decodeBase64WithString:string]];
 }
 
 - (NSFetchedResultsController *)loginsFetchedResultsController {
@@ -309,8 +322,8 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     } else {
         LoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
         Login *login = [self loginForIndexPath:indexPath];
-        cell.usernameTextField.text = login.username;
-        cell.passwordTextField.text = login.password;
+        cell.usernameTextField.text = [self decryptString:login.username];
+        cell.passwordTextField.text = [self decryptString:login.password];
         if (self.editing && [self indexPathIsLastInSection:indexPath]) {            
             [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
             [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
@@ -378,10 +391,10 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
         Login *login = [self loginForIndexPath:indexPath];
         switch (textField.tag) {
             case ASLLoginTextFieldUsername:
-                login.username = textField.text;
+                login.username = [self encryptString:textField.text];
                 break;
             case ASLLoginTextFieldPassword:
-                login.password = textField.text;
+                login.password = [self encryptString:textField.text];
                 break;
         }
         login.lastModifiedDate = [NSDate date];

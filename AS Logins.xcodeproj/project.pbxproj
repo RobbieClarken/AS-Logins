@@ -130,6 +130,19 @@
 			name = "Managed Objects";
 			sourceTree = "<group>";
 		};
+		DCAA7D181732A5010083EF5B /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				DCAA7D151732A4470083EF5B /* NSData+Random.h */,
+				DCAA7D161732A4470083EF5B /* NSData+Random.m */,
+				DCE1396B17327D810028605C /* NSData+Base64.h */,
+				DCE1396C17327D810028605C /* NSData+Base64.m */,
+				DCB4E0B91723DB050052A1C0 /* NSData+AES256.h */,
+				DCB4E0BA1723DB050052A1C0 /* NSData+AES256.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		DCB6556116F4F53E00205396 = {
 			isa = PBXGroup;
 			children = (
@@ -162,14 +175,9 @@
 			isa = PBXGroup;
 			children = (
 				DCE1396E1732993A0028605C /* SiteSettings.h */,
-				DCB4E0B91723DB050052A1C0 /* NSData+AES256.h */,
-				DCB4E0BA1723DB050052A1C0 /* NSData+AES256.m */,
 				DCB4E0B31723D44A0052A1C0 /* EncryptionTransformer.h */,
 				DCB4E0B41723D44A0052A1C0 /* EncryptionTransformer.m */,
-				DCAA7D151732A4470083EF5B /* NSData+Random.h */,
-				DCAA7D161732A4470083EF5B /* NSData+Random.m */,
-				DCE1396B17327D810028605C /* NSData+Base64.h */,
-				DCE1396C17327D810028605C /* NSData+Base64.m */,
+				DCAA7D181732A5010083EF5B /* Categories */,
 				DCB6559616F503D600205396 /* View Controllers */,
 				DC5E5F1D16F64F2800FC84EC /* Managed Objects */,
 				DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */,
