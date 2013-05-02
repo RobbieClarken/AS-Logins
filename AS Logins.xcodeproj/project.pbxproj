@@ -20,6 +20,7 @@
 		DC5E5FA116FA2B0E00FC84EC /* LoginCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC5E5FA016FA2B0E00FC84EC /* LoginCell.m */; };
 		DC7E72BC172AA9AA0015E975 /* ISODateFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = DC7E72BB172AA9AA0015E975 /* ISODateFormatter.m */; };
 		DC86C3C817183A8E001BD154 /* DeviceCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DC86C3C717183A8E001BD154 /* DeviceCell.m */; };
+		DCAA7D171732A4470083EF5B /* NSData+Random.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAA7D161732A4470083EF5B /* NSData+Random.m */; };
 		DCB4E0B51723D44A0052A1C0 /* EncryptionTransformer.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB4E0B41723D44A0052A1C0 /* EncryptionTransformer.m */; };
 		DCB4E0BB1723DB050052A1C0 /* NSData+AES256.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB4E0BA1723DB050052A1C0 /* NSData+AES256.m */; };
 		DCB4E0BE1726797A0052A1C0 /* Login.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB4E0BD1726797A0052A1C0 /* Login.m */; };
@@ -63,6 +64,8 @@
 		DC7E72BB172AA9AA0015E975 /* ISODateFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ISODateFormatter.m; sourceTree = "<group>"; };
 		DC86C3C617183A8E001BD154 /* DeviceCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceCell.h; sourceTree = "<group>"; };
 		DC86C3C717183A8E001BD154 /* DeviceCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceCell.m; sourceTree = "<group>"; };
+		DCAA7D151732A4470083EF5B /* NSData+Random.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Random.h"; sourceTree = "<group>"; };
+		DCAA7D161732A4470083EF5B /* NSData+Random.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Random.m"; sourceTree = "<group>"; };
 		DCB4E0B31723D44A0052A1C0 /* EncryptionTransformer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EncryptionTransformer.h; sourceTree = "<group>"; };
 		DCB4E0B41723D44A0052A1C0 /* EncryptionTransformer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EncryptionTransformer.m; sourceTree = "<group>"; };
 		DCB4E0B91723DB050052A1C0 /* NSData+AES256.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+AES256.h"; sourceTree = "<group>"; };
@@ -163,6 +166,8 @@
 				DCB4E0BA1723DB050052A1C0 /* NSData+AES256.m */,
 				DCB4E0B31723D44A0052A1C0 /* EncryptionTransformer.h */,
 				DCB4E0B41723D44A0052A1C0 /* EncryptionTransformer.m */,
+				DCAA7D151732A4470083EF5B /* NSData+Random.h */,
+				DCAA7D161732A4470083EF5B /* NSData+Random.m */,
 				DCE1396B17327D810028605C /* NSData+Base64.h */,
 				DCE1396C17327D810028605C /* NSData+Base64.m */,
 				DCB6559616F503D600205396 /* View Controllers */,
@@ -300,6 +305,7 @@
 				DCB4E0BE1726797A0052A1C0 /* Login.m in Sources */,
 				DC7E72BC172AA9AA0015E975 /* ISODateFormatter.m in Sources */,
 				DCE1396D17327D810028605C /* NSData+Base64.m in Sources */,
+				DCAA7D171732A4470083EF5B /* NSData+Random.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

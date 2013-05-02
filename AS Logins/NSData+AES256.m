@@ -75,13 +75,4 @@
 	return nil;
 }
 
-+ (NSData *)randomDataOfLength:(NSUInteger)length {
-    NSMutableData *data = [NSMutableData dataWithCapacity:length];
-    for (NSUInteger i = 0; i < length; i++) {
-        NSInteger randomBits = arc4random();
-        [data appendBytes:(void *)&randomBits length:1];
-    }
-    return data;
-}
-
 @end

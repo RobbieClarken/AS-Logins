@@ -9,7 +9,6 @@
 
 @interface NSData (AES256)
 
-+ (NSData *)randomDataOfLength:(NSUInteger)length;
 - (NSData *)AES256EncryptWithKey:(NSString *)key andSalt:(NSData *)salt;
 - (NSData *)AES256DecryptWithKey:(NSString *)key andSalt:(NSData *)salt;
 

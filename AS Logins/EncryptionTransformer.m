@@ -9,6 +9,7 @@
 #import "EncryptionTransformer.h"
 #import "NSData+AES256.h"
 #import "NSData+Base64.h"
+#import "NSData+Random.h"
 #import "SiteSettings.h"
 
 @implementation EncryptionTransformer
@@ -22,7 +23,6 @@
 }
 
 - (NSString *)key {
-    // TODO: Import this from a header file not in git
     return kSecretKey;
 }
 
