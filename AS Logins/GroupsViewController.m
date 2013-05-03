@@ -34,24 +34,6 @@ static NSString *CellIdentifier = @"GroupCell";
     self.fetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.cellInsertedDueToEditOfEmptyTextField = NO;
-    [self addRefreshControl];
-}
-
-- (void)addRefreshControl {
-    UIRefreshControl *refreshControl = [[UIRefreshControl alloc] init];
-    refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Sync"];
-    [refreshControl addTarget:self action:@selector(synchronizeWithServer) forControlEvents:UIControlEventValueChanged];
-    self.refreshControl = refreshControl;
-}
-
-- (void)synchronizeWithServer {
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Syncing..."];
-    [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Sync"];
-            [self.refreshControl endRefreshing];
-        });
-    }];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -82,6 +64,7 @@ static NSString *CellIdentifier = @"GroupCell";
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             abort();
         }
+        [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
     }
     if (editing) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];

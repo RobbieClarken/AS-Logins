@@ -48,6 +48,7 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+    [self initiateSync:^(BOOL success) {}];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
@@ -55,7 +56,11 @@
 }
 
 - (void)initiateSync:(SyncCompletionBlock)completionBlock {
-    [self.syncManager syncWithCompetionBlock:completionBlock];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [self.syncManager syncWithCompetionBlock:^(BOOL success) {
+        completionBlock(success);
+        [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+    }];
 }
 
 - (void)saveContext {

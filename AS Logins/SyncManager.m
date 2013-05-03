@@ -16,6 +16,7 @@
 @interface SyncManager()
 
 @property (strong, nonatomic) ISODateFormatter *dateFormatter;
+@property (nonatomic) BOOL syncing;
 
 @end
 
@@ -50,6 +51,7 @@
 }
 
 - (void)syncWithCompetionBlock:(SyncCompletionBlock)completionBlock {
+    self.syncing = YES;
     static NSString *LastSyncDateKey = @"lastSyncDate";
     NSDate *lastSyncDate = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
     if (!lastSyncDate) {
@@ -68,17 +70,20 @@
         if (error) {
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             completionBlock(NO);
+            self.syncing = NO;
             return;
         }
         NSDictionary *changes = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         if (error) {
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             completionBlock(NO);
+            self.syncing = NO;
             return;
         }
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LastSyncDateKey];
         [self updateChangesFromServer:changes];
         completionBlock(YES);
+        self.syncing = NO;
     }];
 }
 

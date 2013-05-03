@@ -12,6 +12,7 @@
 #import "LoginCell.h"
 #import "EncryptionTransformer.h"
 #import "NSData+Base64.h"
+#import "AppDelegate.h"
 
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
 static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
@@ -93,6 +94,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
                 NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
                 abort();
             }
+            [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
         }
     }
     [self.navigationItem setHidesBackButton:editing animated:animated];
