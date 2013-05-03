@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SyncManager.h"
 
 @interface AppDelegate : UIResponder <UIApplicationDelegate>
 
@@ -18,6 +19,6 @@
 
 - (NSURL *)applicationDocumentsDirectory;
 - (void)saveContext;
-- (void)initiateSync;
+- (void)initiateSync:(SyncCompletionBlock)completionBlock;
 
 @end

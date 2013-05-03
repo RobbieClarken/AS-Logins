@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "GroupsViewController.h"
-#import "SyncManager.h"
 
 @interface AppDelegate()
 
@@ -55,8 +54,8 @@
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)initiateSync {
-    [self.syncManager sync];
+- (void)initiateSync:(SyncCompletionBlock)completionBlock {
+    [self.syncManager syncWithCompetionBlock:completionBlock];
 }
 
 - (void)saveContext {

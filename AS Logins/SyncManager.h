@@ -8,11 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
+typedef void (^SyncCompletionBlock)(BOOL success);
+
 @interface SyncManager : NSObject
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
 + (SyncManager *)syncManagerForManagedObjectContext:(NSManagedObjectContext *)context;
-- (void)sync;
+- (void)syncWithCompetionBlock:(SyncCompletionBlock)completionBlock;
 
 @end

@@ -46,11 +46,12 @@ static NSString *CellIdentifier = @"GroupCell";
 
 - (void)synchronizeWithServer {
     self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Syncing..."];
-
-    [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync];
-    
-    self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Sync"];
-    [self.refreshControl endRefreshing];
+    [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            self.refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:@"Sync"];
+            [self.refreshControl endRefreshing];
+        });
+    }];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
