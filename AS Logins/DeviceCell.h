@@ -7,13 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "TDBadgedCell.h"
 
-@interface DeviceCell : UITableViewCell
+@interface DeviceCell : TDBadgedCell
 
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *hostname;
 @property (strong, nonatomic) NSString *username;
 @property (strong, nonatomic) NSString *password;
-@property (nonatomic) NSUInteger additionalLogins;
+@property (nonatomic) NSUInteger loginCount;
 
 @end

@@ -23,18 +23,41 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         
-        UILabel *nameLabel = [self labelInContentView];
-        UILabel *hostnameLabel = [self labelInContentView];
-        UILabel *usernameLabel = [self labelInContentView];
-        UILabel *passwordLabel = [self labelInContentView];
+        UIView *leftView = [[UIView alloc] init];
+        leftView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:leftView];
         
-        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(nameLabel, hostnameLabel, usernameLabel,passwordLabel);
+        UIView *rightView = [[UIView alloc] init];
+        rightView.translatesAutoresizingMaskIntoConstraints = NO;
+        [self.contentView addSubview:rightView];
+        
+        UILabel *nameLabel = [self labelInView:leftView];
+        UILabel *hostnameLabel = [self labelInView:leftView];
+        UILabel *usernameLabel = [self labelInView:leftView];
+        UILabel *passwordLabel = [self labelInView:leftView];
+        
+        NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(leftView,
+                                                                       rightView,
+                                                                       nameLabel,
+                                                                       hostnameLabel,
+                                                                       usernameLabel,
+                                                                       passwordLabel);
         NSDictionary *metrics = @{@"sideSpacing": @8.0f};
         
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[nameLabel(==usernameLabel)][usernameLabel]-sideSpacing-|" options:kNilOptions metrics:metrics views:viewsDictionary]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[hostnameLabel(==passwordLabel)][passwordLabel]-sideSpacing-|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[nameLabel(==usernameLabel)][usernameLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[hostnameLabel(==passwordLabel)][passwordLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[nameLabel(==hostnameLabel)][hostnameLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[usernameLabel(==passwordLabel)][passwordLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[leftView][rightView(50)]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[leftView]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[rightView]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        
+        //[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|[loginCountLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        //[self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[loginCountLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        
+
+        //loginCountLabel.backgroundColor = [UIColor blueColor];
         
         nameLabel.font = [UIFont boldSystemFontOfSize:18.0f];
         hostnameLabel.font = [UIFont systemFontOfSize:14.0f];
@@ -54,6 +77,12 @@
         self.hostnameLabel = hostnameLabel;
         self.usernameLabel = usernameLabel;
         self.passwordLabel = passwordLabel;
+        
+        self.badge.fontSize = 14.0f;
+        self.badge.radius = 10;
+        
+        
+        self.accessoryType =UITableViewCellAccessoryDisclosureIndicator;
     }
     
     return self;
@@ -87,10 +116,17 @@
     }
 }
 
-- (UILabel *)labelInContentView {
+- (void)setLoginCount:(NSUInteger)loginCount {
+    if (_loginCount != loginCount) {
+        _loginCount = loginCount;
+        self.badgeString = [NSString stringWithFormat:@"%i", loginCount];
+    }
+}
+
+- (UILabel *)labelInView:(UIView *)view {
     UILabel *label = [[UILabel alloc] init];
     label.translatesAutoresizingMaskIntoConstraints = NO;
-    [self.contentView addSubview:label];
+    [view addSubview:label];
     return label;
 }
 

@@ -30,6 +30,7 @@
         constraints = [NSLayoutConstraint constraintsWithVisualFormat:@"V:|[textField]|" options:NSLayoutFormatAlignAllTop metrics:nil views:viewsDictionary];
         [self.contentView addConstraints:constraints];
         self.textField = textField;
+        self.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     }
     return self;
 }

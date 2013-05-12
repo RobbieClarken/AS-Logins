@@ -41,6 +41,8 @@
 		DCEF9D3D173F8EDE0041D991 /* red_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3B173F8EDE0041D991 /* red_button.png */; };
 		DCEF9D3E173F8EDE0041D991 /* red_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */; };
 		DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D40173FC0B40041D991 /* Login+Encryption.m */; };
+		DCEF9D44173FDC910041D991 /* TDBadgedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D43173FDC910041D991 /* TDBadgedCell.m */; };
+		DCEF9D46173FDCB00041D991 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEF9D45173FDCB00041D991 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -104,6 +106,9 @@
 		DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_button@2x.png"; sourceTree = "<group>"; };
 		DCEF9D3F173FC0B40041D991 /* Login+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login+Encryption.h"; sourceTree = "<group>"; };
 		DCEF9D40173FC0B40041D991 /* Login+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Encryption.m"; sourceTree = "<group>"; };
+		DCEF9D42173FDC900041D991 /* TDBadgedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDBadgedCell.h; sourceTree = "<group>"; };
+		DCEF9D43173FDC910041D991 /* TDBadgedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDBadgedCell.m; sourceTree = "<group>"; };
+		DCEF9D45173FDCB00041D991 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +116,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DCEF9D46173FDCB00041D991 /* QuartzCore.framework in Frameworks */,
 				DC5E5F2B16F6578100FC84EC /* CoreData.framework in Frameworks */,
 				DCB6556E16F4F53E00205396 /* UIKit.framework in Frameworks */,
 				DCB6557016F4F53E00205396 /* Foundation.framework in Frameworks */,
@@ -179,6 +185,7 @@
 				DCB6556D16F4F53E00205396 /* UIKit.framework */,
 				DCB6556F16F4F53E00205396 /* Foundation.framework */,
 				DCB6557116F4F53E00205396 /* CoreGraphics.framework */,
+				DCEF9D45173FDCB00041D991 /* QuartzCore.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -221,6 +228,8 @@
 		DCB6559616F503D600205396 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				DCEF9D42173FDC900041D991 /* TDBadgedCell.h */,
+				DCEF9D43173FDC910041D991 /* TDBadgedCell.m */,
 				DCB6559316F503C900205396 /* DeviceViewController.h */,
 				DCB6559416F503C900205396 /* DeviceViewController.m */,
 				DCEF9D38173F8A940041D991 /* DeleteCell.h */,
@@ -334,6 +343,7 @@
 				DCAA7D171732A4470083EF5B /* NSData+Random.m in Sources */,
 				DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */,
 				DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */,
+				DCEF9D44173FDC910041D991 /* TDBadgedCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -54,11 +54,12 @@
 
 - (UITextField *)loginTextFieldWithTag:(ASLLoginTextField)tag {
     UITextField *textField = [[UITextField alloc] init];
-    textField.font = [UIFont boldSystemFontOfSize:17.0f];
+    textField.translatesAutoresizingMaskIntoConstraints = NO;
+    textField.tag = tag;
+    textField.font = [UIFont fontWithName:@"Courier-Bold" size:17.0f];
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
-    textField.tag = tag;
-    textField.translatesAutoresizingMaskIntoConstraints = NO;
+    textField.adjustsFontSizeToFitWidth = YES;
     return textField;
 }
 

@@ -148,12 +148,11 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
         Login *login = device.logins[0];
         cell.username = login.decryptedUsername;
         cell.password = login.decryptedPassword;
-        cell.additionalLogins = [device.logins count]-1;
     } else {
         cell.username = @"";
         cell.password = @"";
-        cell.additionalLogins = 0;
     }
+    cell.loginCount = [device.logins count];
     
     return cell;
 }
