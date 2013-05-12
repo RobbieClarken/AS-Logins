@@ -62,6 +62,8 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 - (void)showNewDeviceViewController {
     [self.group.managedObjectContext save:nil];
     Device *device = [Device deviceForGroup:self.group inContext:self.group.managedObjectContext];
+    // HACK: Flag as deleted so the login doesn't appear straight away
+    device.toDelete = @YES;
     DeviceViewController *deviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
     deviceViewController.device = device;
     [deviceViewController setEditing:YES animated:NO];
@@ -110,6 +112,7 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 - (void)deviceViewController:(DeviceViewController *)editDeviceViewController didFinishWithSave:(BOOL)save {
     if (save) {
         NSError *error;
+        editDeviceViewController.device.toDelete = @NO;
         [self.group.managedObjectContext save:&error];
         if (error) {
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
