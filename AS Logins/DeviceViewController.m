@@ -10,19 +10,22 @@
 #import "Login+Create.h"
 #import "DeviceFieldCell.h"
 #import "LoginCell.h"
+#import "DeleteCell.h"
 #import "EncryptionTransformer.h"
 #import "NSData+Base64.h"
 #import "AppDelegate.h"
 
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
 static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
+static NSString *DeleteCellIdentifier = @"DeleteCellIdentifier";
 
 typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     ASLTableViewSectionDeviceInfo = 0,
-    ASLTableViewSectionLogins = 1
+    ASLTableViewSectionLogins = 1,
+    ASLTableViewSectionDelete = 2
 };
 
-@interface DeviceViewController () <UITextFieldDelegate, NSFetchedResultsControllerDelegate>
+@interface DeviceViewController () <UITextFieldDelegate, NSFetchedResultsControllerDelegate, UIActionSheetDelegate>
 
 @property (strong, nonatomic) NSIndexPath *nextEditCellIndexPath;
 @property (strong, nonatomic) NSFetchedResultsController *loginsFetchedResultsController;
@@ -42,6 +45,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     self.title = @"Device";
     [self.tableView registerClass:[DeviceFieldCell class] forCellReuseIdentifier:DeviceFieldCellIdentifier];
     [self.tableView registerClass:[LoginCell class] forCellReuseIdentifier:LoginCellIdentifier];
+    [self.tableView registerClass:[DeleteCell class] forCellReuseIdentifier:DeleteCellIdentifier];
 
     self.loginsFetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
@@ -49,6 +53,13 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     self.nextEditCellIndexPath = nil;
     
     self.encryptionTransformer = [[EncryptionTransformer alloc] init];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    // HACK: Force a table view reload to remove the Delete Device section in the case of a
+    // a new device
+    [self.tableView reloadData];
 }
 
 - (NSString *)encryptString:(NSString *)string {
@@ -82,6 +93,16 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     return sectionInfo.numberOfObjects;
 }
 
+- (void)saveDevice {
+    NSError *error;
+    [self.device.managedObjectContext save:&error];
+    if (error) {
+        NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
+        abort();
+    }
+    [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
+}
+
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
     // Resign first responder
     [self.view endEditing:!editing];
@@ -90,13 +111,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
         if (self.presentingViewController) {
             return [self.delegate deviceViewController:self didFinishWithSave:YES];
         } else {
-            NSError *error;
-            [self.device.managedObjectContext save:&error];
-            if (error) {
-                NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
-                abort();
-            }
-            [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
+            [self saveDevice];
         }
     }
     [self.navigationItem setHidesBackButton:editing animated:animated];
@@ -118,6 +133,14 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
         [self.device.managedObjectContext rollback];
         [self setEditing:NO animated:YES];
     }
+}
+
+- (void)deleteDeviceButtonPressed:(id)sender {
+    [self.view endEditing:YES];
+    // TODO: Confirmation
+    
+    UIActionSheet *deleteDeviceConfirmationView = [[UIActionSheet alloc] initWithTitle:@"" delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:@"Delete Device" otherButtonTitles:nil];
+    [deleteDeviceConfirmationView showInView:self.view];
 }
 
 - (NSIndexPath *)indexPathWithView:(UIView *)view {
@@ -254,15 +277,24 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-    return 2;
+    if (self.presentingViewController) {
+        // Don't display the Delete button section
+        return 2;
+    } else {
+        return 3;
+    }
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     if (self.editing) {
         if (section == ASLTableViewSectionDeviceInfo) {
             return 4;
-        } else {
+        } else if (section == ASLTableViewSectionLogins) {
             return [self numberOfLogins]+1;
+        } else if (section == ASLTableViewSectionDelete) {
+            return 1;
+        } else {
+            return 0;
         }
     } else {
         if (section == ASLTableViewSectionDeviceInfo) {
@@ -280,8 +312,12 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
                 numberOfRows += 1;
             }
             return numberOfRows;
-        } else {
+        } else if (section == ASLTableViewSectionLogins) {
             return [self numberOfLogins];
+        } else if (section == ASLTableViewSectionDelete) {
+            return 0;
+        } else {
+            return 0;
         }
     }
 }
@@ -295,7 +331,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 }
 
 - (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
-    if (section == 1) {
+    if (section == ASLTableViewSectionLogins) {
         return @"Logins";
     } else {
         return nil;
@@ -303,57 +339,66 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (indexPath.section == 0) {
-        DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceFieldCellIdentifier forIndexPath:indexPath];
-        UITextField *textField = cell.textField;
-        textField.delegate = self;
-        if (self.editing) {
-            switch (indexPath.row) {
-                case 0:
-                    textField.placeholder = @"Name";
-                    textField.keyboardType = UIKeyboardTypeDefault;
-                    textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
-                    textField.text = self.device.name;
-                    break;
-                case 1:
-                    textField.placeholder = @"Hostname";
-                    textField.keyboardType = UIKeyboardTypeDefault;
-                    textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
-                    textField.text = self.device.hostname;
-                    break;
-                case 2:
-                    textField.placeholder = @"IP";
-                    textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
-                    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                    textField.text = self.device.ip;
-                    break;
-                case 3:
-                    textField.placeholder = @"URL";
-                    textField.keyboardType = UIKeyboardTypeURL;
-                    textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-                    textField.text = self.device.url;
-                    break;
+    switch (indexPath.section) {
+        case ASLTableViewSectionDeviceInfo: {
+            DeviceFieldCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceFieldCellIdentifier forIndexPath:indexPath];
+            UITextField *textField = cell.textField;
+            textField.delegate = self;
+            if (self.editing) {
+                switch (indexPath.row) {
+                    case 0:
+                        textField.placeholder = @"Name";
+                        textField.keyboardType = UIKeyboardTypeDefault;
+                        textField.autocapitalizationType = UITextAutocapitalizationTypeWords;
+                        textField.text = self.device.name;
+                        break;
+                    case 1:
+                        textField.placeholder = @"Hostname";
+                        textField.keyboardType = UIKeyboardTypeDefault;
+                        textField.autocapitalizationType = UITextAutocapitalizationTypeAllCharacters;
+                        textField.text = self.device.hostname;
+                        break;
+                    case 2:
+                        textField.placeholder = @"IP";
+                        textField.keyboardType = UIKeyboardTypeNumbersAndPunctuation;
+                        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                        textField.text = self.device.ip;
+                        break;
+                    case 3:
+                        textField.placeholder = @"URL";
+                        textField.keyboardType = UIKeyboardTypeURL;
+                        textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+                        textField.text = self.device.url;
+                        break;
+                }
+            } else {
+                textField.text = [self deviceFieldValueForRow:indexPath.row];
             }
-        } else {
-            textField.text = [self deviceFieldValueForRow:indexPath.row];
+            return cell;
         }
-        return cell;
-    } else {
-        LoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
-        Login *login = [self loginForIndexPath:indexPath];
-        cell.usernameTextField.text = [self decryptString:login.username];
-        cell.passwordTextField.text = [self decryptString:login.password];
-        if (self.editing && [self indexPathIsLastInSection:indexPath]) {            
-            [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
-            [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
-        } else {
-            [cell.usernameTextField removeTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
-            [cell.passwordTextField removeTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+        case ASLTableViewSectionLogins: {
+            LoginCell *cell = [tableView dequeueReusableCellWithIdentifier:LoginCellIdentifier forIndexPath:indexPath];
+            Login *login = [self loginForIndexPath:indexPath];
+            cell.usernameTextField.text = [self decryptString:login.username];
+            cell.passwordTextField.text = [self decryptString:login.password];
+            if (self.editing && [self indexPathIsLastInSection:indexPath]) {
+                [cell.usernameTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+                [cell.passwordTextField addTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+            } else {
+                [cell.usernameTextField removeTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+                [cell.passwordTextField removeTarget:self action:@selector(editedLastLogin:) forControlEvents:UIControlEventEditingChanged];
+            }
+            cell.usernameTextField.delegate = self;
+            cell.passwordTextField.delegate = self;
+            
+            return cell;
         }
-        cell.usernameTextField.delegate = self;
-        cell.passwordTextField.delegate = self;
-        
-        return cell;
+        default: {
+            DeleteCell *cell = (DeleteCell *)[tableView dequeueReusableCellWithIdentifier:DeleteCellIdentifier forIndexPath:indexPath];
+            [cell.deleteButton setTitle:@"Delete Device" forState:UIControlStateNormal];
+            [cell.deleteButton addTarget:self action:@selector(deleteDeviceButtonPressed:) forControlEvents:UIControlEventTouchUpInside];
+            return cell;
+        }
     }
 }
 
@@ -432,6 +477,18 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
     // password textfield (or vice versa) within the same cell.
     self.nextEditCellIndexPath = [self indexPathWithView:textField];
     return YES;
+}
+
+
+#pragma mark - Action Sheet Delegate
+
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex {
+    if (buttonIndex == 0) {
+        self.device.toDelete = @YES;
+        self.device.lastModifiedDate = [NSDate date];
+        [self saveDevice];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
 }
 
 @end
