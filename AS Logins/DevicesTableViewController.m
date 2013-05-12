@@ -141,8 +141,8 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     DeviceCell *cell = [tableView dequeueReusableCellWithIdentifier:DeviceCellIdentifier forIndexPath:indexPath];
     Device *device = [self deviceForIndexPath:indexPath];
-    cell.textLabel.text = device.name;
-    cell.detailTextLabel.text = device.hostname;
+    cell.name = device.name;
+    cell.hostname = device.hostname;
     return cell;
 }
 
