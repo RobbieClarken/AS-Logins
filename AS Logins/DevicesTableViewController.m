@@ -119,10 +119,14 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
         DeviceViewController *newDeviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
         newDeviceViewController.device = editDeviceViewController.device;
         [self.navigationController pushViewController:newDeviceViewController animated:NO];
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
     } else {
-        [self.group.managedObjectContext rollback];
+        [self.presentedViewController dismissViewControllerAnimated:YES completion:^{
+            [self.group.managedObjectContext performBlock:^{
+                [self.group.managedObjectContext rollback];
+            }];
+        }];
     }
-    [self.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
 #pragma mark - Table view data source

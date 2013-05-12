@@ -31,6 +31,8 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 @property (nonatomic) ASLLoginTextField textFieldToBecomeFirstResponder;
 @property (strong, nonatomic) EncryptionTransformer *encryptionTransformer;
 
+@property (nonatomic) BOOL changeIsUserDriven;
+
 @end
 
 @implementation DeviceViewController
@@ -202,6 +204,11 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
       newIndexPath:(NSIndexPath *)newIndexPath {
     UITableView *tableView = self.tableView;
     
+    if (self.changeIsUserDriven) {
+        self.changeIsUserDriven = NO;
+        return;
+    }
+    
     indexPath = [NSIndexPath indexPathForRow:indexPath.row inSection:ASLTableViewSectionLogins];
     if (newIndexPath) {
         newIndexPath = [NSIndexPath indexPathForRow:newIndexPath.row inSection:ASLTableViewSectionLogins];
@@ -220,6 +227,8 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
         }
         case NSFetchedResultsChangeDelete:
             [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            // HACK: If you deleted the second to last login cell, the last login cell should no longer show the
+            // delete editing style indicator so we force a reload of this cell.
             if (self.editing && [self numberOfLogins] == 0) {
                 [tableView reloadRowsAtIndexPaths:@[[NSIndexPath indexPathForRow:1 inSection:ASLTableViewSectionLogins]] withRowAnimation:UITableViewRowAnimationAutomatic];
             }
@@ -280,6 +289,14 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
 - (Login *)loginForIndexPath:(NSIndexPath *)indexPath {
     if (indexPath.row < [self numberOfLogins]) {
         return [self.loginsFetchedResultsController objectAtIndexPath:[NSIndexPath indexPathForRow:indexPath.row inSection:0]];
+    } else {
+        return nil;
+    }
+}
+
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    if (section == 1) {
+        return @"Logins";
     } else {
         return nil;
     }
@@ -393,9 +410,11 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
         Login *login = [self loginForIndexPath:indexPath];
         switch (textField.tag) {
             case ASLLoginTextFieldUsername:
+                self.changeIsUserDriven = YES;
                 login.username = [self encryptString:textField.text];
                 break;
             case ASLLoginTextFieldPassword:
+                self.changeIsUserDriven = YES;
                 login.password = [self encryptString:textField.text];
                 break;
         }
