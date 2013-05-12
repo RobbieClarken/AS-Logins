@@ -40,6 +40,7 @@
 		DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D39173F8A940041D991 /* DeleteCell.m */; };
 		DCEF9D3D173F8EDE0041D991 /* red_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3B173F8EDE0041D991 /* red_button.png */; };
 		DCEF9D3E173F8EDE0041D991 /* red_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */; };
+		DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D40173FC0B40041D991 /* Login+Encryption.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -101,6 +102,8 @@
 		DCEF9D39173F8A940041D991 /* DeleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteCell.m; sourceTree = "<group>"; };
 		DCEF9D3B173F8EDE0041D991 /* red_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_button.png; sourceTree = "<group>"; };
 		DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_button@2x.png"; sourceTree = "<group>"; };
+		DCEF9D3F173FC0B40041D991 /* Login+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login+Encryption.h"; sourceTree = "<group>"; };
+		DCEF9D40173FC0B40041D991 /* Login+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Encryption.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -132,6 +135,8 @@
 				DC00B86D16FB517E00FDA9FC /* Group+Create.h */,
 				DC00B86E16FB517E00FDA9FC /* Group+Create.m */,
 				DC00B87C16FB616900FDA9FC /* Login+Create.h */,
+				DCEF9D3F173FC0B40041D991 /* Login+Encryption.h */,
+				DCEF9D40173FC0B40041D991 /* Login+Encryption.m */,
 				DC00B87D16FB616900FDA9FC /* Login+Create.m */,
 			);
 			name = "Managed Objects";
@@ -328,6 +333,7 @@
 				DCE1396D17327D810028605C /* NSData+Base64.m in Sources */,
 				DCAA7D171732A4470083EF5B /* NSData+Random.m in Sources */,
 				DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */,
+				DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

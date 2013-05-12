@@ -11,6 +11,7 @@
 #import "DeviceCell.h"
 #import "Device+Create.h"
 #import "AppDelegate.h"
+#import "Login+Encryption.h"
 
 // TODO: Prevent device cell appearing before modal view is presented
 
@@ -143,6 +144,17 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
     Device *device = [self deviceForIndexPath:indexPath];
     cell.name = device.name;
     cell.hostname = device.hostname;
+    if ([device.logins count] > 0) {
+        Login *login = device.logins[0];
+        cell.username = login.decryptedUsername;
+        cell.password = login.decryptedPassword;
+        cell.additionalLogins = [device.logins count]-1;
+    } else {
+        cell.username = @"";
+        cell.password = @"";
+        cell.additionalLogins = 0;
+    }
+    
     return cell;
 }
 

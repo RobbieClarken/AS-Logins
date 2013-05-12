@@ -22,6 +22,7 @@
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
+        
         UILabel *nameLabel = [self labelInContentView];
         UILabel *hostnameLabel = [self labelInContentView];
         UILabel *loginLabel = [self labelInContentView];
@@ -30,15 +31,25 @@
         NSDictionary *viewsDictionary = NSDictionaryOfVariableBindings(nameLabel, hostnameLabel, loginLabel,additionalLoginsLabel);
         NSDictionary *metrics = @{@"sideSpacing": @8.0f};
         
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[nameLabel]-|" options:kNilOptions metrics:metrics views:viewsDictionary]];
-        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[hostnameLabel]-|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[nameLabel(==loginLabel)][loginLabel]-sideSpacing-|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-sideSpacing-[hostnameLabel(==additionalLoginsLabel)][additionalLoginsLabel]-sideSpacing-|" options:kNilOptions metrics:metrics views:viewsDictionary]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[nameLabel(==hostnameLabel)][hostnameLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[loginLabel(==additionalLoginsLabel)][additionalLoginsLabel]|" options:kNilOptions metrics:metrics views:viewsDictionary]];
         
         nameLabel.font = [UIFont boldSystemFontOfSize:18.0f];
         hostnameLabel.font = [UIFont systemFontOfSize:14.0f];
         
+        nameLabel.textAlignment = NSTextAlignmentLeft;
+        hostnameLabel.textAlignment = NSTextAlignmentLeft;
+        loginLabel.textAlignment = NSTextAlignmentRight;
+        additionalLoginsLabel.textAlignment = NSTextAlignmentRight;
+    
+        loginLabel.adjustsFontSizeToFitWidth = YES;
+        
         self.nameLabel = nameLabel;
         self.hostnameLabel = hostnameLabel;
+        self.loginLabel = loginLabel;
+        self.additionalLoginsLabel = additionalLoginsLabel;
     }
     
     return self;
@@ -79,7 +90,12 @@
 - (void)setAdditionalLogins:(NSUInteger)additionalLogins {
     if (_additionalLogins != additionalLogins) {
         _additionalLogins = additionalLogins;
-        self.additionalLoginsLabel.text = [NSString stringWithFormat:@"%i", additionalLogins];
+        if (additionalLogins > 0) {
+            self.additionalLoginsLabel.text = [NSString stringWithFormat:@"(+%i)", additionalLogins];
+            self.additionalLoginsLabel.hidden = NO;
+        } else {
+            self.additionalLoginsLabel.hidden = YES;
+        }
     }
 }
 
