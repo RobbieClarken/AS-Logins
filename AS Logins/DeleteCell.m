@@ -24,7 +24,7 @@
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[deleteButton]|" options:kNilOptions metrics:0 views:viewsDictionary]];
         [deleteButton setBackgroundImage:[UIImage imageNamed:@"red_button.png"] forState:UIControlStateNormal];
         [deleteButton setTitle:@"Delete" forState:UIControlStateNormal];
-        deleteButton.titleLabel.font = [UIFont fontWithName:@"HelveticaNeue-Bold" size:[UIFont buttonFontSize]];
+        deleteButton.titleLabel.font = [UIFont boldSystemFontOfSize:[UIFont buttonFontSize]];
         self.deleteButton = deleteButton;
     }
     return self;
