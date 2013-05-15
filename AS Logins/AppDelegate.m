@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "GroupsViewController.h"
+#import "LockViewController.h"
 
 @interface AppDelegate()
 
@@ -23,6 +24,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    //LockViewController *navigationController = [[LockViewController alloc] init];
     GroupsViewController *groupsViewController = [[GroupsViewController alloc] initWithStyle:UITableViewStylePlain];
     groupsViewController.managedObjectContext = self.managedObjectContext;
     self.syncManager = [SyncManager syncManagerForManagedObjectContext:self.managedObjectContext];

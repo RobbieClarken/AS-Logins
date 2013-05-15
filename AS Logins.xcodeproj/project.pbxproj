@@ -10,6 +10,8 @@
 		DC00B86F16FB517E00FDA9FC /* Group+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B86E16FB517E00FDA9FC /* Group+Create.m */; };
 		DC00B87216FB548800FDA9FC /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87116FB548800FDA9FC /* GroupsViewController.m */; };
 		DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87D16FB616900FDA9FC /* Login+Create.m */; };
+		DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E55DA17411C9C0065D2C4 /* LockViewController.m */; };
+		DC1E55DE17411E250065D2C4 /* LockView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E55DD17411E250065D2C4 /* LockView.m */; };
 		DC295BA7171B05A10064A8D7 /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BA6171B05A10064A8D7 /* SyncManager.m */; };
 		DC295BB8171B28AC0064A8D7 /* Device+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BB7171B28AC0064A8D7 /* Device+Create.m */; };
 		DC295BD0171B4AA10064A8D7 /* Device.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BCF171B4AA10064A8D7 /* Device.m */; };
@@ -52,6 +54,10 @@
 		DC00B87116FB548800FDA9FC /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
 		DC00B87C16FB616900FDA9FC /* Login+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login+Create.h"; sourceTree = "<group>"; };
 		DC00B87D16FB616900FDA9FC /* Login+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Create.m"; sourceTree = "<group>"; };
+		DC1E55D917411C9C0065D2C4 /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
+		DC1E55DA17411C9C0065D2C4 /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
+		DC1E55DC17411E250065D2C4 /* LockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockView.h; sourceTree = "<group>"; };
+		DC1E55DD17411E250065D2C4 /* LockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockView.m; sourceTree = "<group>"; };
 		DC295BA5171B05A10064A8D7 /* SyncManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SyncManager.h; sourceTree = "<group>"; };
 		DC295BA6171B05A10064A8D7 /* SyncManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SyncManager.m; sourceTree = "<group>"; };
 		DC295BB6171B28AC0064A8D7 /* Device+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Device+Create.h"; sourceTree = "<group>"; };
@@ -248,6 +254,10 @@
 				DCDA31DE170713E10051B2D4 /* GroupCell.m */,
 				DC295BA5171B05A10064A8D7 /* SyncManager.h */,
 				DC295BA6171B05A10064A8D7 /* SyncManager.m */,
+				DC1E55D917411C9C0065D2C4 /* LockViewController.h */,
+				DC1E55DA17411C9C0065D2C4 /* LockViewController.m */,
+				DC1E55DC17411E250065D2C4 /* LockView.h */,
+				DC1E55DD17411E250065D2C4 /* LockView.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -344,6 +354,8 @@
 				DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */,
 				DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */,
 				DCEF9D44173FDC910041D991 /* TDBadgedCell.m in Sources */,
+				DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */,
+				DC1E55DE17411E250065D2C4 /* LockView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
