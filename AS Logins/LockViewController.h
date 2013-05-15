@@ -10,4 +10,6 @@
 
 @interface LockViewController : UIViewController
 
+@property (nonatomic) BOOL settingCode;
+
 @end

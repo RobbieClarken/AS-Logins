@@ -12,6 +12,7 @@
 @interface LockViewController ()
 
 @property (strong, nonatomic) LockView *lockView;
+@property (strong, nonatomic) NSString *firstEnteredCode;
 
 @end
 
@@ -31,6 +32,12 @@
     [super viewDidLoad];
     [self observeKeyboard];
     [self.lockView.codeTextField addTarget:self action:@selector(codeTextFieldChanged) forControlEvents:UIControlEventEditingChanged];
+    
+    if (self.settingCode) {
+        self.lockView.messageLabel.text = @"Enter a passcode";
+    } else {
+        self.lockView.messageLabel.text = @"Enter your passcode";
+    }
 }
 
 - (void)observeKeyboard {
@@ -64,8 +71,18 @@
 
 - (void)codeTextFieldChanged {
     if ([self.lockView.codeTextField.text length] == 4) {
-        // TODO: Check key and allow access
-        [self.lockView.codeTextField resignFirstResponder];
+        if (self.settingCode) {
+            if (self.firstEnteredCode) {
+                // TODO: Check codes match and tell delegate of passcodes
+            } else {
+                // Record code and get user to re-enter code
+                self.firstEnteredCode = self.lockView.codeTextField.text;
+                self.lockView.messageLabel.text = @"Re-enter your passcode";
+                self.lockView.codeTextField.text = @"";
+            }
+        } else {
+            // TODO: Check code and inform delegate
+        }
     }
 }
 

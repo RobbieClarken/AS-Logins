@@ -10,6 +10,7 @@
 
 @interface LockView : UIView
 
+@property (strong, nonatomic) UILabel *messageLabel;
 @property (strong, nonatomic) UITextField *codeTextField;
 @property (nonatomic) CGFloat keyboardHeight;
 
