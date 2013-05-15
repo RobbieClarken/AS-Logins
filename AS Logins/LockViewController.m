@@ -41,7 +41,7 @@
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
-    CGFloat animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    NSTimeInterval animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     if (UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
         self.lockView.keyboardHeight = keyboardFrame.size.width;
@@ -55,7 +55,7 @@
 
 - (void)keyboardWillHide:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
-    CGFloat animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] floatValue];
+    NSTimeInterval animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     self.lockView.keyboardHeight = 0.0f;
     [UIView animateWithDuration:animationDuration animations:^{
         [self.lockView layoutIfNeeded];
@@ -64,6 +64,7 @@
 
 - (void)codeTextFieldChanged {
     if ([self.lockView.codeTextField.text length] == 4) {
+        // TODO: Check key and allow access
         [self.lockView.codeTextField resignFirstResponder];
     }
 }
