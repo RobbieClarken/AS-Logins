@@ -10,6 +10,7 @@
 		DC00B86F16FB517E00FDA9FC /* Group+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B86E16FB517E00FDA9FC /* Group+Create.m */; };
 		DC00B87216FB548800FDA9FC /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87116FB548800FDA9FC /* GroupsViewController.m */; };
 		DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87D16FB616900FDA9FC /* Login+Create.m */; };
+		DC1630A7175641DC00A8E61F /* KeychainHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1630A6175641DC00A8E61F /* KeychainHelper.m */; };
 		DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E55DA17411C9C0065D2C4 /* LockViewController.m */; };
 		DC1E55DE17411E250065D2C4 /* LockView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E55DD17411E250065D2C4 /* LockView.m */; };
 		DC295BA7171B05A10064A8D7 /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BA6171B05A10064A8D7 /* SyncManager.m */; };
@@ -54,6 +55,8 @@
 		DC00B87116FB548800FDA9FC /* GroupsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupsViewController.m; sourceTree = "<group>"; };
 		DC00B87C16FB616900FDA9FC /* Login+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login+Create.h"; sourceTree = "<group>"; };
 		DC00B87D16FB616900FDA9FC /* Login+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Create.m"; sourceTree = "<group>"; };
+		DC1630A5175641DC00A8E61F /* KeychainHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainHelper.h; sourceTree = "<group>"; };
+		DC1630A6175641DC00A8E61F /* KeychainHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainHelper.m; sourceTree = "<group>"; };
 		DC1E55D917411C9C0065D2C4 /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		DC1E55DA17411C9C0065D2C4 /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
 		DC1E55DC17411E250065D2C4 /* LockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockView.h; sourceTree = "<group>"; };
@@ -136,6 +139,7 @@
 		DC5E5F1D16F64F2800FC84EC /* Managed Objects */ = {
 			isa = PBXGroup;
 			children = (
+				DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */,
 				DCB4E0BC1726797A0052A1C0 /* Login.h */,
 				DCB4E0BD1726797A0052A1C0 /* Login.m */,
 				DC295BD1171B4AA10064A8D7 /* Group.h */,
@@ -206,10 +210,11 @@
 				DC7E72BB172AA9AA0015E975 /* ISODateFormatter.m */,
 				DCB6557C16F4F53E00205396 /* AppDelegate.h */,
 				DCB6557D16F4F53E00205396 /* AppDelegate.m */,
+				DC1630A5175641DC00A8E61F /* KeychainHelper.h */,
+				DC1630A6175641DC00A8E61F /* KeychainHelper.m */,
 				DCAA7D181732A5010083EF5B /* Categories */,
 				DCB6559616F503D600205396 /* View Controllers */,
 				DC5E5F1D16F64F2800FC84EC /* Managed Objects */,
-				DC5E5F0816F64CF700FC84EC /* ASLogins.xcdatamodeld */,
 				DCB6557416F4F53E00205396 /* Supporting Files */,
 			);
 			path = "AS Logins";
@@ -356,6 +361,7 @@
 				DCEF9D44173FDC910041D991 /* TDBadgedCell.m in Sources */,
 				DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */,
 				DC1E55DE17411E250065D2C4 /* LockView.m in Sources */,
+				DC1630A7175641DC00A8E61F /* KeychainHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
