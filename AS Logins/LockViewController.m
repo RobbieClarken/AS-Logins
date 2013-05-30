@@ -66,13 +66,15 @@
                     [self.delegate lockView:self finishedSettingCodeWithCodeHash:codeHash];
                 } else {
                     self.firstEnteredCodeHash = 0;
-                    self.lockView.messageLabel.text = @"Passcodes did not match";
+                    self.lockView.messageLabel.text = @"Enter a passcode";
+                    self.lockView.warningLabel.text = @"Passcodes did not match";
                     self.lockView.codeTextField.text = @"";
                 }
             } else {
                 // Record code and get user to re-enter code
                 self.firstEnteredCodeHash = codeHash;
                 self.lockView.messageLabel.text = @"Re-enter your passcode";
+                    self.lockView.warningLabel.text = @"";
                 self.lockView.codeTextField.text = @"";
             }
         } else {
@@ -83,8 +85,9 @@
                 if (self.allowedAttempts > 0 && self.failedAttempts >= self.allowedAttempts) {
                     [self.delegate lockView:self finishedUnlocking:NO];
                 } else {
-                    self.lockView.messageLabel.text = @"Please try again";
+                    //self.lockView.messageLabel.text = @"Please try again";
                     self.lockView.codeTextField.text = @"";
+                    self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
                 }
             }
         }
