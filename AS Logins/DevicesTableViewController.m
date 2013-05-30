@@ -144,15 +144,15 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
     Device *device = [self deviceForIndexPath:indexPath];
     cell.name = device.name;
     cell.hostname = device.hostname;
-    if ([device.logins count] > 0) {
-        Login *login = device.logins[0];
+    if ([device.activeLogins count] > 0) {
+        Login *login = device.activeLogins[0];
         cell.username = login.decryptedUsername;
         cell.password = login.decryptedPassword;
     } else {
         cell.username = @"";
         cell.password = @"";
     }
-    cell.loginCount = [device.logins count];
+    cell.loginCount = [device.activeLogins count];
     
     return cell;
 }

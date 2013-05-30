@@ -54,4 +54,14 @@ static NSString *EntityName = @"Device";
     return device;
 }
 
+- (NSArray *)activeLogins {
+    // Find logins which have not been deleted
+    // TODO: Move to a different category
+    NSFetchRequest *request = [NSFetchRequest fetchRequestWithEntityName:@"Login"];
+    request.predicate = [NSPredicate predicateWithFormat:@"device = %@ AND toDelete = NO", self];
+    request.sortDescriptors = @[ [NSSortDescriptor sortDescriptorWithKey:@"createdDate" ascending:YES] ];
+    NSArray *matches = [self.managedObjectContext executeFetchRequest:request error:nil];
+    return matches;
+}
+
 @end

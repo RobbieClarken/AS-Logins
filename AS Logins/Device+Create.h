@@ -14,5 +14,6 @@
 + (Device *)deviceWithUuid:(NSString *)uuid inContext:(NSManagedObjectContext *)context;
 + (Device *)deviceForGroup:(Group *)group inContext:(NSManagedObjectContext *)context;
 + (Device *)syncDeviceWithPropertyValues:(NSDictionary *)values inContext:(NSManagedObjectContext *)context;
+- (NSArray *)activeLogins;
 
 @end
