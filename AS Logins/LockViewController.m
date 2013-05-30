@@ -24,11 +24,6 @@
     self.view = self.lockView;
 }
 
-- (void)viewDidAppear:(BOOL)animated {
-    [super viewDidAppear:animated];
-    [self.lockView.codeTextField becomeFirstResponder];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self observeKeyboard];
@@ -42,35 +37,24 @@
     
     self.firstEnteredCodeHash = 0;
     self.failedAttempts = 0;
+    [self.lockView.codeTextField becomeFirstResponder];
 }
 
 - (void)observeKeyboard {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
-    [notificationCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification {
     NSDictionary *userInfo = notification.userInfo;
-    NSTimeInterval animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
     CGRect keyboardFrame = [userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    if (UIDeviceOrientationIsLandscape([[UIDevice currentDevice] orientation])) {
+    UIDeviceOrientation orientation = [[UIDevice currentDevice] orientation];
+    if (UIDeviceOrientationIsLandscape(orientation)) {
         self.lockView.keyboardHeight = keyboardFrame.size.width;
     } else {
         self.lockView.keyboardHeight = keyboardFrame.size.height;
     }
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.lockView layoutIfNeeded];
-    }];
-}
-
-- (void)keyboardWillHide:(NSNotification *)notification {
-    NSDictionary *userInfo = notification.userInfo;
-    NSTimeInterval animationDuration = [userInfo[UIKeyboardAnimationDurationUserInfoKey] doubleValue];
-    self.lockView.keyboardHeight = 0.0f;
-    [UIView animateWithDuration:animationDuration animations:^{
-        [self.lockView layoutIfNeeded];
-    }];
+    [self.lockView setNeedsUpdateConstraints];
 }
 
 - (void)codeTextFieldChanged {

@@ -9,10 +9,12 @@
 #import "AppDelegate.h"
 #import "GroupsViewController.h"
 #import "LockViewController.h"
+#import "CodeHelper.h"
 
-@interface AppDelegate()
+@interface AppDelegate() <LockViewControllerDelegate>
 
 @property (nonatomic, strong) SyncManager *syncManager;
+@property (nonatomic) BOOL lockViewVisible;
 
 @end
 
@@ -24,20 +26,20 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
-    
-    //LockViewController *navigationController = [[LockViewController alloc] init];
     GroupsViewController *groupsViewController = [[GroupsViewController alloc] initWithStyle:UITableViewStylePlain];
     groupsViewController.managedObjectContext = self.managedObjectContext;
     self.syncManager = [SyncManager syncManagerForManagedObjectContext:self.managedObjectContext];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupsViewController];
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
+    [self presentLockView];
     return YES;
 }
-							
+
 - (void)applicationWillResignActive:(UIApplication *)application {
     // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
     // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+    [self presentLockView];
 }
 
 - (void)applicationDidEnterBackground:(UIApplication *)application {
@@ -77,6 +79,27 @@
             abort();
         }
     }
+}
+
+- (void)presentLockView {
+    if (self.lockViewVisible) {
+        return;
+    }
+    LockViewController *lockViewController = [[LockViewController alloc] init];
+    if ([CodeHelper securedCode]) {
+        lockViewController.allowedAttempts = 5;
+    } else {
+        lockViewController.settingCode = YES;
+    }
+    lockViewController.delegate = self;
+    lockViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    [self.window.rootViewController presentViewController:lockViewController animated:NO completion:^{}];
+    self.lockViewVisible = YES;
+}
+
+- (void)dismissLockView {
+    [self.window.rootViewController.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
+    self.lockViewVisible = NO;
 }
 
 #pragma mark - Core Data stack
@@ -154,6 +177,23 @@
 // Returns the URL to the application's Documents directory.
 - (NSURL *)applicationDocumentsDirectory {
     return [[[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject];
+}
+
+#pragma mark - LockViewControllerDelegate
+
+- (BOOL)checkCodeHash:(NSUInteger)codeHash {
+    return [CodeHelper securedCodeMatchesCodeHash:codeHash];
+}
+- (void)lockView:(LockViewController *)lockView finishedSettingCodeWithCodeHash:(NSUInteger)codeHash {
+    [CodeHelper setSecuredCodeFromCodeHash:codeHash];
+    [self dismissLockView];
+}
+- (void)lockView:(LockViewController *)lockView finishedUnlocking:(BOOL)success {
+    if (success) {
+        [self dismissLockView];
+    } else {
+        // TODO: Handle failure
+    }
 }
 
 @end
