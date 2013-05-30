@@ -67,9 +67,7 @@
 - (NSString *)stringMatchingIdentifier:(NSString *)identifier {
     NSData *valueData = [self searchKeychainCopyMatchingIdentifier:identifier];
     if (valueData) {
-        NSString *value = [[NSString alloc] initWithData:valueData
-                                                encoding:NSUTF8StringEncoding];
-        return value;
+        return [[NSString alloc] initWithData:valueData encoding:NSUTF8StringEncoding];
     } else {
         return nil;
     }
@@ -83,9 +81,7 @@
     // Protect the keychain entry so it's only valid when the device is unlocked.
     [dictionary setObject:(__bridge id)kSecAttrAccessibleWhenUnlocked forKey:(__bridge id)kSecAttrAccessible];
     
-    // Add.
     OSStatus status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
-    
     if (status == errSecSuccess) {
         return YES;
     } else {
@@ -100,12 +96,9 @@
     NSData *valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
     [updateDictionary setObject:valueData forKey:(__bridge id)kSecValueData];
     
-    // Update.
+    // Assume an existing value and attempt an update
     OSStatus status = SecItemUpdate((__bridge CFDictionaryRef)searchDictionary,
                                     (__bridge CFDictionaryRef)updateDictionary);
-    
-    
-    NSLog(@"%s status: %li", __PRETTY_FUNCTION__, status);
     if (status == errSecSuccess) {
         return YES;
     } else if (status == errSecItemNotFound) {
@@ -118,8 +111,6 @@
 - (void)deleteItemWithIdentifier:(NSString *)identifier {
     NSMutableDictionary *searchDictionary = [self setupSearchDirectoryForIdentifier:identifier];
     CFDictionaryRef dictionary = (__bridge CFDictionaryRef)searchDictionary;
-    
-    //Delete.
     SecItemDelete(dictionary);
 }
 
