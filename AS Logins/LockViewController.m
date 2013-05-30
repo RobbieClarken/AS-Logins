@@ -81,7 +81,9 @@
                 if (codeHash == self.firstEnteredCodeHash) {
                     [self.delegate lockView:self finishedSettingCodeWithCodeHash:codeHash];
                 } else {
-                    // TODO: Handle mismatched codes
+                    self.firstEnteredCodeHash = 0;
+                    self.lockView.messageLabel.text = @"Passcodes did not match";
+                    self.lockView.codeTextField.text = @"";
                 }
             } else {
                 // Record code and get user to re-enter code
