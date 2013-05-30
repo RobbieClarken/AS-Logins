@@ -48,12 +48,12 @@
          ]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[messageLabel]-|" options:kNilOptions metrics:metrics views:views]];
         [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"[codeTextField(codeTextFieldWidth)]" options:kNilOptions metrics:metrics views:views]];
-        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:[messageLabel]-messageToCodeSeperation-[codeTextField(codeTextFieldHeight)]" options:kNilOptions metrics:metrics views:views]];
+        [self addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|->=10-[messageLabel]-messageToCodeSeperation@500-[codeTextField(codeTextFieldHeight)]" options:kNilOptions metrics:metrics views:views]];
         
         // Styling
         self.backgroundColor = [UIColor whiteColor];
         
-        messageLabel.font = [UIFont systemFontOfSize:24.0f];
+        messageLabel.font = [UIFont systemFontOfSize:22.0f];
         messageLabel.textAlignment = NSTextAlignmentCenter;
         
         codeTextField.borderStyle = UITextBorderStyleRoundedRect;
