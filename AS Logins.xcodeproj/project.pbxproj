@@ -11,6 +11,8 @@
 		DC00B87216FB548800FDA9FC /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87116FB548800FDA9FC /* GroupsViewController.m */; };
 		DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87D16FB616900FDA9FC /* Login+Create.m */; };
 		DC1630A7175641DC00A8E61F /* KeychainHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1630A6175641DC00A8E61F /* KeychainHelper.m */; };
+		DC1630AA1756BE0900A8E61F /* CodeHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1630A91756BE0900A8E61F /* CodeHelper.m */; };
+		DC1630AC1756C79F00A8E61F /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DC1630AB1756C79F00A8E61F /* Security.framework */; };
 		DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E55DA17411C9C0065D2C4 /* LockViewController.m */; };
 		DC1E55DE17411E250065D2C4 /* LockView.m in Sources */ = {isa = PBXBuildFile; fileRef = DC1E55DD17411E250065D2C4 /* LockView.m */; };
 		DC295BA7171B05A10064A8D7 /* SyncManager.m in Sources */ = {isa = PBXBuildFile; fileRef = DC295BA6171B05A10064A8D7 /* SyncManager.m */; };
@@ -57,6 +59,9 @@
 		DC00B87D16FB616900FDA9FC /* Login+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Create.m"; sourceTree = "<group>"; };
 		DC1630A5175641DC00A8E61F /* KeychainHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeychainHelper.h; sourceTree = "<group>"; };
 		DC1630A6175641DC00A8E61F /* KeychainHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KeychainHelper.m; sourceTree = "<group>"; };
+		DC1630A81756BE0900A8E61F /* CodeHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CodeHelper.h; sourceTree = "<group>"; };
+		DC1630A91756BE0900A8E61F /* CodeHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CodeHelper.m; sourceTree = "<group>"; };
+		DC1630AB1756C79F00A8E61F /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		DC1E55D917411C9C0065D2C4 /* LockViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockViewController.h; sourceTree = "<group>"; };
 		DC1E55DA17411C9C0065D2C4 /* LockViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LockViewController.m; sourceTree = "<group>"; };
 		DC1E55DC17411E250065D2C4 /* LockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LockView.h; sourceTree = "<group>"; };
@@ -125,6 +130,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DC1630AC1756C79F00A8E61F /* Security.framework in Frameworks */,
 				DCEF9D46173FDCB00041D991 /* QuartzCore.framework in Frameworks */,
 				DC5E5F2B16F6578100FC84EC /* CoreData.framework in Frameworks */,
 				DCB6556E16F4F53E00205396 /* UIKit.framework in Frameworks */,
@@ -191,6 +197,7 @@
 		DCB6556C16F4F53E00205396 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DC1630AB1756C79F00A8E61F /* Security.framework */,
 				DC5E5F2A16F6578100FC84EC /* CoreData.framework */,
 				DCB6556D16F4F53E00205396 /* UIKit.framework */,
 				DCB6556F16F4F53E00205396 /* Foundation.framework */,
@@ -212,6 +219,8 @@
 				DCB6557D16F4F53E00205396 /* AppDelegate.m */,
 				DC1630A5175641DC00A8E61F /* KeychainHelper.h */,
 				DC1630A6175641DC00A8E61F /* KeychainHelper.m */,
+				DC1630A81756BE0900A8E61F /* CodeHelper.h */,
+				DC1630A91756BE0900A8E61F /* CodeHelper.m */,
 				DCAA7D181732A5010083EF5B /* Categories */,
 				DCB6559616F503D600205396 /* View Controllers */,
 				DC5E5F1D16F64F2800FC84EC /* Managed Objects */,
@@ -362,6 +371,7 @@
 				DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */,
 				DC1E55DE17411E250065D2C4 /* LockView.m in Sources */,
 				DC1630A7175641DC00A8E61F /* KeychainHelper.m in Sources */,
+				DC1630AA1756BE0900A8E61F /* CodeHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

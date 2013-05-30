@@ -6,6 +6,7 @@
 //
 
 #import "KeychainHelper.h"
+#import <Security/Security.h>
 
 @interface KeychainHelper()
 
@@ -85,17 +86,14 @@
     // Add.
     OSStatus status = SecItemAdd((__bridge CFDictionaryRef)dictionary, NULL);
     
-    // If the addition was successful, return. Otherwise, attempt to update existing key or quit (return NO).
     if (status == errSecSuccess) {
         return YES;
-    } else if (status == errSecDuplicateItem) {
-        return [self updateValue:value forIdentifier:identifier];
     } else {
         return NO;
     }
 }
 
-- (BOOL)updateValue:(NSString *)value forIdentifier:(NSString *)identifier {
+- (BOOL)setValue:(NSString *)value forIdentifier:(NSString *)identifier {
     
     NSMutableDictionary *searchDictionary = [self setupSearchDirectoryForIdentifier:identifier];
     NSMutableDictionary *updateDictionary = [[NSMutableDictionary alloc] init];
@@ -106,8 +104,12 @@
     OSStatus status = SecItemUpdate((__bridge CFDictionaryRef)searchDictionary,
                                     (__bridge CFDictionaryRef)updateDictionary);
     
+    
+    NSLog(@"%s status: %li", __PRETTY_FUNCTION__, status);
     if (status == errSecSuccess) {
         return YES;
+    } else if (status == errSecItemNotFound) {
+        return [self createValue:value forIdentifier:identifier];
     } else {
         return NO;
     }

@@ -12,7 +12,8 @@
 @interface LockViewController ()
 
 @property (strong, nonatomic) LockView *lockView;
-@property (strong, nonatomic) NSString *firstEnteredCode;
+@property (nonatomic) NSUInteger firstEnteredCodeHash;
+@property (nonatomic) NSUInteger failedAttempts;
 
 @end
 
@@ -38,6 +39,9 @@
     } else {
         self.lockView.messageLabel.text = @"Enter your passcode";
     }
+    
+    self.firstEnteredCodeHash = 0;
+    self.failedAttempts = 0;
 }
 
 - (void)observeKeyboard {
@@ -71,17 +75,32 @@
 
 - (void)codeTextFieldChanged {
     if ([self.lockView.codeTextField.text length] == 4) {
+        NSUInteger codeHash = [self.lockView.codeTextField.text hash];
         if (self.settingCode) {
-            if (self.firstEnteredCode) {
-                // TODO: Check codes match and tell delegate of passcodes
+            if (self.firstEnteredCodeHash) {
+                if (codeHash == self.firstEnteredCodeHash) {
+                    [self.delegate lockView:self finishedSettingCodeWithCodeHash:codeHash];
+                } else {
+                    // TODO: Handle mismatched codes
+                }
             } else {
                 // Record code and get user to re-enter code
-                self.firstEnteredCode = self.lockView.codeTextField.text;
+                self.firstEnteredCodeHash = codeHash;
                 self.lockView.messageLabel.text = @"Re-enter your passcode";
                 self.lockView.codeTextField.text = @"";
             }
         } else {
-            // TODO: Check code and inform delegate
+            if ([self.delegate checkCodeHash:codeHash]) {
+                [self.delegate lockView:self finishedUnlocking:YES];
+            } else {
+                self.failedAttempts += 1;
+                if (self.allowedAttempts > 0 && self.failedAttempts >= self.allowedAttempts) {
+                    [self.delegate lockView:self finishedUnlocking:NO];
+                } else {
+                    self.lockView.messageLabel.text = @"Please try again";
+                    self.lockView.codeTextField.text = @"";
+                }
+            }
         }
     }
 }

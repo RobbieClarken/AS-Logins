@@ -12,8 +12,7 @@
 
 - (id)initWithServiceName:(NSString *)serviceName;
 - (NSString *)stringMatchingIdentifier:(NSString *)identifier;
-- (BOOL)createValue:(NSString *)value forIdentifier:(NSString *)identifier;
-- (BOOL)updateValue:(NSString *)value forIdentifier:(NSString *)identifier;
+- (BOOL)setValue:(NSString *)value forIdentifier:(NSString *)identifier;
 - (void)deleteItemWithIdentifier:(NSString *)identifier;
 
 @end
