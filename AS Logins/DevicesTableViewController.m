@@ -175,6 +175,7 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
     Device *device = [self deviceForIndexPath:indexPath];
     DeviceViewController *destinationViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
     destinationViewController.device = device;
+    destinationViewController.toolbarItems = self.toolbarItems;
     [self.navigationController pushViewController:destinationViewController animated:YES];
 }
 

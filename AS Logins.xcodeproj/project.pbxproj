@@ -40,6 +40,8 @@
 		DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCB6558316F4F53E00205396 /* Default-568h@2x.png */; };
 		DCB6559216F4F6B900205396 /* DevicesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559116F4F6B900205396 /* DevicesTableViewController.m */; };
 		DCB6559516F503C900205396 /* DeviceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCB6559416F503C900205396 /* DeviceViewController.m */; };
+		DCBE227E175812B7001FB677 /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBE227D175812B6001FB677 /* SettingsViewController.m */; };
+		DCBE2281175861DF001FB677 /* SettingsButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBE2280175861DF001FB677 /* SettingsButtonCell.m */; };
 		DCDA31DF170713E10051B2D4 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA31DE170713E10051B2D4 /* GroupCell.m */; };
 		DCE1396D17327D810028605C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1396C17327D810028605C /* NSData+Base64.m */; };
 		DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D39173F8A940041D991 /* DeleteCell.m */; };
@@ -109,6 +111,10 @@
 		DCB6559116F4F6B900205396 /* DevicesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DevicesTableViewController.m; sourceTree = "<group>"; };
 		DCB6559316F503C900205396 /* DeviceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeviceViewController.h; sourceTree = "<group>"; };
 		DCB6559416F503C900205396 /* DeviceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeviceViewController.m; sourceTree = "<group>"; };
+		DCBE227C175812B6001FB677 /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		DCBE227D175812B6001FB677 /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		DCBE227F175861DF001FB677 /* SettingsButtonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsButtonCell.h; sourceTree = "<group>"; };
+		DCBE2280175861DF001FB677 /* SettingsButtonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsButtonCell.m; sourceTree = "<group>"; };
 		DCDA31DD170713E10051B2D4 /* GroupCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupCell.h; sourceTree = "<group>"; };
 		DCDA31DE170713E10051B2D4 /* GroupCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GroupCell.m; sourceTree = "<group>"; };
 		DCE1396B17327D810028605C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
@@ -272,6 +278,10 @@
 				DC1E55DA17411C9C0065D2C4 /* LockViewController.m */,
 				DC1E55DC17411E250065D2C4 /* LockView.h */,
 				DC1E55DD17411E250065D2C4 /* LockView.m */,
+				DCBE227C175812B6001FB677 /* SettingsViewController.h */,
+				DCBE227D175812B6001FB677 /* SettingsViewController.m */,
+				DCBE227F175861DF001FB677 /* SettingsButtonCell.h */,
+				DCBE2280175861DF001FB677 /* SettingsButtonCell.m */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";
@@ -372,6 +382,8 @@
 				DC1E55DE17411E250065D2C4 /* LockView.m in Sources */,
 				DC1630A7175641DC00A8E61F /* KeychainHelper.m in Sources */,
 				DC1630AA1756BE0900A8E61F /* CodeHelper.m in Sources */,
+				DCBE227E175812B7001FB677 /* SettingsViewController.m in Sources */,
+				DCBE2281175861DF001FB677 /* SettingsButtonCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

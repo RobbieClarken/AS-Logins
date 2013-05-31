@@ -8,13 +8,13 @@
 
 #import "AppDelegate.h"
 #import "GroupsViewController.h"
+#import "SettingsViewController.h"
 #import "LockViewController.h"
 #import "CodeHelper.h"
 
-@interface AppDelegate() <LockViewControllerDelegate>
+@interface AppDelegate() <LockViewControllerDelegate, SettingsViewControllerDelegate>
 
 @property (nonatomic, strong) SyncManager *syncManager;
-@property (nonatomic) BOOL lockViewVisible;
 
 @end
 
@@ -30,9 +30,14 @@
     groupsViewController.managedObjectContext = self.managedObjectContext;
     self.syncManager = [SyncManager syncManagerForManagedObjectContext:self.managedObjectContext];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupsViewController];
+    navigationController.toolbarHidden = NO;
+    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed:)];
+    UIBarButtonItem *flexibleSpace = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil];
+    groupsViewController.toolbarItems = @[flexibleSpace, settingsItem];
+    
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
-    [self presentLockView];
+    //[self presentLockView];
     return YES;
 }
 
@@ -82,9 +87,7 @@
 }
 
 - (void)presentLockView {
-    if (self.lockViewVisible) {
-        return;
-    }
+    [self.window.rootViewController dismissViewControllerAnimated:NO completion:^{}];
     LockViewController *lockViewController = [[LockViewController alloc] init];
     if ([CodeHelper securedCode]) {
         lockViewController.allowedAttempts = 5;
@@ -94,12 +97,23 @@
     lockViewController.delegate = self;
     lockViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
     [self.window.rootViewController presentViewController:lockViewController animated:NO completion:^{}];
-    self.lockViewVisible = YES;
 }
 
 - (void)dismissLockView {
     [self.window.rootViewController.presentedViewController dismissViewControllerAnimated:YES completion:^{}];
-    self.lockViewVisible = NO;
+}
+
+- (void)settingsButtonPressed:(id)sender {
+    SettingsViewController *settingsViewController = [[SettingsViewController alloc] initWithStyle:UITableViewStyleGrouped];
+    settingsViewController.modalTransitionStyle = UIModalTransitionStyleCoverVertical;
+    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:settingsViewController];
+    [self.window.rootViewController presentViewController:navigationController animated:YES completion:^{}];
+}
+
+#pragma mark - SettingsViewController
+
+- (void)dismissSettingsViewController:(SettingsViewController *)settingsViewController {
+    [self.window.rootViewController dismissViewControllerAnimated:YES completion:^{}];
 }
 
 #pragma mark - Core Data stack

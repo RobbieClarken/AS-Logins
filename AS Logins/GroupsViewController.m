@@ -34,6 +34,11 @@ static NSString *CellIdentifier = @"GroupCell";
     self.fetchedResultsController.delegate = self;
     self.navigationItem.rightBarButtonItem = self.editButtonItem;
     self.cellInsertedDueToEditOfEmptyTextField = NO;
+    
+    UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed:)];
+    self.navigationController.toolbarHidden = NO;
+    //[self setToolbarItems:@[settingsItem] animated:YES];
+    [self.navigationController setToolbarItems:@[settingsItem] animated:YES];
 }
 
 - (NSFetchedResultsController *)fetchedResultsController {
@@ -208,6 +213,7 @@ static NSString *CellIdentifier = @"GroupCell";
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
     DevicesTableViewController *devicesTableViewController = [[DevicesTableViewController alloc] initWithStyle:UITableViewStylePlain];
     devicesTableViewController.group = (Group *)[self.fetchedResultsController objectAtIndexPath:indexPath];
+    devicesTableViewController.toolbarItems = self.toolbarItems;
     [self.navigationController pushViewController:devicesTableViewController animated:YES];
 }
 
