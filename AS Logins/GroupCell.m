@@ -47,4 +47,22 @@
     [super setEditing:editing animated:animated];
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    if(highlighted) {
+        self.textField.textColor = [UIColor whiteColor];
+    } else {
+        self.textField.textColor = [UIColor blackColor];
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    if(selected) {
+        self.textField.textColor = [UIColor whiteColor];
+    } else {
+        self.textField.textColor = [UIColor blackColor];
+    }
+}
+
 @end

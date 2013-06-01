@@ -357,6 +357,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
                         textField.keyboardType = UIKeyboardTypeURL;
                         textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
                         textField.text = self.device.url;
+                        // TODO: Make URL open in browser
                         break;
                 }
             } else {

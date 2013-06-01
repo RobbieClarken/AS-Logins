@@ -130,4 +130,38 @@
     return label;
 }
 
+- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
+    [super setHighlighted:highlighted animated:animated];
+    if(highlighted) {
+        UIColor *textColor = [UIColor whiteColor];
+        self.nameLabel.textColor = textColor;
+        self.hostnameLabel.textColor = textColor;
+        self.usernameLabel.textColor = textColor;
+        self.passwordLabel.textColor = textColor;
+    } else {
+        UIColor *textColor = [UIColor blackColor];
+        self.nameLabel.textColor = textColor;
+        self.hostnameLabel.textColor = textColor;
+        self.usernameLabel.textColor = textColor;
+        self.passwordLabel.textColor = textColor;
+    }
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+    [super setSelected:selected animated:animated];
+    if(selected) {
+        UIColor *textColor = [UIColor whiteColor];
+        self.nameLabel.textColor = textColor;
+        self.hostnameLabel.textColor = textColor;
+        self.usernameLabel.textColor = textColor;
+        self.passwordLabel.textColor = textColor;
+    } else {
+        UIColor *textColor = [UIColor blackColor];
+        self.nameLabel.textColor = textColor;
+        self.hostnameLabel.textColor = textColor;
+        self.usernameLabel.textColor = textColor;
+        self.passwordLabel.textColor = textColor;
+    }
+}
+
 @end
