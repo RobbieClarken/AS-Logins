@@ -14,7 +14,10 @@ typedef void (^SyncCompletionBlock)(BOOL success);
 
 @property (strong, nonatomic) NSManagedObjectContext *managedObjectContext;
 
-+ (SyncManager *)syncManagerForManagedObjectContext:(NSManagedObjectContext *)context;
-- (void)syncWithCompetionBlock:(SyncCompletionBlock)completionBlock;
++ (id)sharedSyncManager;
++ (NSDate *)lastSynchronized;
+- (void)syncWithCompetionBlock:(SyncCompletionBlock)block;
+
+@property (nonatomic) BOOL syncing;
 
 @end

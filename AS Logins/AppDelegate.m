@@ -26,9 +26,12 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    
+    self.syncManager = [SyncManager sharedSyncManager];
+    self.syncManager.managedObjectContext = self.managedObjectContext;
+    
     GroupsViewController *groupsViewController = [[GroupsViewController alloc] initWithStyle:UITableViewStylePlain];
     groupsViewController.managedObjectContext = self.managedObjectContext;
-    self.syncManager = [SyncManager syncManagerForManagedObjectContext:self.managedObjectContext];
     UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:groupsViewController];
     navigationController.toolbarHidden = NO;
     UIBarButtonItem *settingsItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStyleBordered target:self action:@selector(settingsButtonPressed:)];
@@ -58,17 +61,15 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
     // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
-    [self initiateSync:^(BOOL success) {}];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 }
 
-- (void)initiateSync:(SyncCompletionBlock)completionBlock {
+- (void)sync {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     [self.syncManager syncWithCompetionBlock:^(BOOL success) {
-        completionBlock(success);
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
     }];
 }
@@ -205,6 +206,7 @@
 - (void)lockView:(LockViewController *)lockView finishedUnlocking:(BOOL)success {
     if (success) {
         [self dismissLockView];
+        [self sync];
     } else {
         // TODO: Handle failure
     }

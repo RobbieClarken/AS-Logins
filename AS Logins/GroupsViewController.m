@@ -10,7 +10,7 @@
 #import "Group+Create.h"
 #import "DevicesTableViewController.h"
 #import "GroupCell.h"
-#import "AppDelegate.h"
+#import "SyncManager.h"
 
 static NSUInteger GroupPositionStep = 0x10000;
 static NSString *CellIdentifier = @"GroupCell";
@@ -69,7 +69,7 @@ static NSString *CellIdentifier = @"GroupCell";
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             abort();
         }
-        [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
+        [[SyncManager sharedSyncManager] syncWithCompetionBlock:^(BOOL success) {}];
     }
     if (editing) {
         self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemCancel target:self action:@selector(cancelButtonPressed:)];

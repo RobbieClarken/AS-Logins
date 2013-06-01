@@ -10,7 +10,7 @@
 #import "DeviceViewController.h"
 #import "DeviceCell.h"
 #import "Device+Create.h"
-#import "AppDelegate.h"
+#import "SyncManager.h"
 #import "Login+Encryption.h"
 
 // TODO: Prevent device cell appearing before modal view is presented
@@ -119,7 +119,7 @@ static NSString *DeviceCellIdentifier = @"DeviceCellIdentifier";
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
             abort();
         }
-        [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
+        [[SyncManager sharedSyncManager] syncWithCompetionBlock:^(BOOL success) {}];
         DeviceViewController *newDeviceViewController = [[DeviceViewController alloc] initWithStyle:UITableViewStyleGrouped];
         newDeviceViewController.device = editDeviceViewController.device;
         [self.navigationController pushViewController:newDeviceViewController animated:NO];

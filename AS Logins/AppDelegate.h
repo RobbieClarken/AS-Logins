@@ -19,6 +19,5 @@
 
 - (NSURL *)applicationDocumentsDirectory;
 - (void)saveContext;
-- (void)initiateSync:(SyncCompletionBlock)completionBlock;
 
 @end

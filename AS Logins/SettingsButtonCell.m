@@ -8,6 +8,12 @@
 
 #import "SettingsButtonCell.h"
 
+@interface SettingsButtonCell()
+
+@property (strong, nonatomic) UIActivityIndicatorView *activityIndicatorView;
+
+@end
+
 @implementation SettingsButtonCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier {
@@ -15,20 +21,28 @@
     if (self) {
         
         UILabel *titleLabel = [[UILabel alloc] init];
+        UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
         
         titleLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        activityIndicatorView.translatesAutoresizingMaskIntoConstraints = NO;
         [self.contentView addSubview:titleLabel];
+        [self.contentView addSubview:activityIndicatorView];
         
-        NSDictionary *views = NSDictionaryOfVariableBindings(titleLabel);
+        NSDictionary *views = NSDictionaryOfVariableBindings(titleLabel,activityIndicatorView);
         
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[titleLabel]-|" options:kNilOptions metrics:nil views:views]];
         [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|[titleLabel]|" options:kNilOptions metrics:nil views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[activityIndicatorView]-|" options:kNilOptions metrics:nil views:views]];
+        [self.contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[activityIndicatorView]-|" options:kNilOptions metrics:nil views:views]];
         
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         
+        activityIndicatorView.hidden = YES;
+    
         self.titleLabel = titleLabel;
+        self.activityIndicatorView = activityIndicatorView;
     }
     return self;
 }
@@ -43,12 +57,19 @@
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    if(selected) {
-        self.titleLabel.textColor = [UIColor whiteColor];
-    } else {
-        self.titleLabel.textColor = [UIColor blackColor];
-    }
+    // Disable selection
+}
+
+- (void)startActivity {
+    [self.activityIndicatorView startAnimating];
+    self.titleLabel.hidden = YES;
+    self.activityIndicatorView.hidden = NO;
+}
+
+- (void)stopActivity {
+    [self.activityIndicatorView stopAnimating];
+    self.activityIndicatorView.hidden = YES;
+    self.titleLabel.hidden = NO;
 }
 
 @end

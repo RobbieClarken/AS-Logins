@@ -12,4 +12,7 @@
 
 @property (strong, nonatomic) UILabel *titleLabel;
 
+- (void)startActivity;
+- (void)stopActivity;
+
 @end

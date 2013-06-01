@@ -13,19 +13,42 @@
 #import "ISODateFormatter.h"
 #import "SiteSettings.h"
 
+static NSString *LastSyncDateKey = @"lastSyncDate";
+
 @interface SyncManager()
 
 @property (strong, nonatomic) ISODateFormatter *dateFormatter;
-@property (nonatomic) BOOL syncing;
+@property (strong, nonatomic) NSMutableArray *completionBlocks;
 
 @end
 
 @implementation SyncManager
 
-+ (SyncManager *)syncManagerForManagedObjectContext:(NSManagedObjectContext *)context {
-    SyncManager *syncManager = [[SyncManager alloc] init];
-    syncManager.managedObjectContext = context;
-    return syncManager;
++ (id)sharedSyncManager {
+    static SyncManager *sharedManager;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        sharedManager = [[self alloc] init];
+    });
+    return sharedManager;
+}
+
++ (NSDate *)lastSynchronized {
+    NSDate * lastSyncDate = [[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
+    if (!lastSyncDate) {
+        lastSyncDate = [NSDate dateWithTimeIntervalSince1970:0.0f];
+        [[NSUserDefaults standardUserDefaults] setObject:lastSyncDate forKey:LastSyncDateKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+    }
+    return lastSyncDate;
+}
+
+- (id)init {
+    self = [super init];
+    if (self) {
+        self.completionBlocks = [NSMutableArray array];
+    }
+    return self;
 }
 
 - (ISODateFormatter *)dateFormatter {
@@ -50,15 +73,20 @@
     }];
 }
 
-- (void)syncWithCompetionBlock:(SyncCompletionBlock)completionBlock {
-    self.syncing = YES;
-    static NSString *LastSyncDateKey = @"lastSyncDate";
-    NSDate *lastSyncDate = (NSDate *)[[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
-    if (!lastSyncDate) {
-        lastSyncDate = [NSDate dateWithTimeIntervalSince1970:0.0f];
-        [[NSUserDefaults standardUserDefaults] setObject:lastSyncDate forKey:LastSyncDateKey];
+- (void)executeBlocks:(BOOL)success {
+    for (SyncCompletionBlock block in self.completionBlocks) {
+        block(success);
     }
-    
+    [self.completionBlocks removeAllObjects];
+}
+
+- (void)syncWithCompetionBlock:(SyncCompletionBlock)block {
+    [self.completionBlocks addObject:[block copy]];
+    if (self.syncing) {
+        return;
+    }
+    self.syncing = YES;
+    NSDate *lastSyncDate = [SyncManager lastSynchronized];    
     NSData *postData = [self JSONDataOfLocalChangesAfterDate:lastSyncDate];
     
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:[NSURL URLWithString:kSyncServerURL]];
@@ -69,20 +97,21 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[[NSOperationQueue alloc] init] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error) {
         if (error) {
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
-            completionBlock(NO);
+            [self executeBlocks:NO];
             self.syncing = NO;
             return;
         }
         NSDictionary *changes = (NSDictionary *)[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error];
         if (error) {
             NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
-            completionBlock(NO);
+            [self executeBlocks:NO];
             self.syncing = NO;
             return;
         }
         [[NSUserDefaults standardUserDefaults] setObject:[NSDate date] forKey:LastSyncDateKey];
+        [[NSUserDefaults standardUserDefaults] synchronize];
         [self updateChangesFromServer:changes];
-        completionBlock(YES);
+        [self executeBlocks:YES];
         self.syncing = NO;
     }];
 }

@@ -12,7 +12,7 @@
 #import "DeviceFieldCell.h"
 #import "LoginCell.h"
 #import "DeleteCell.h"
-#import "AppDelegate.h"
+#import "SyncManager.h"
 
 static NSString *DeviceFieldCellIdentifier = @"DeviceFieldCellIdentifier";
 static NSString *LoginCellIdentifier = @"LoginCellIdentifier";
@@ -88,7 +88,7 @@ typedef NS_ENUM(NSUInteger, ASLTableViewSection) {
         NSLog(@"Unresolved error in %s: %@, %@", __PRETTY_FUNCTION__, error, [error userInfo]);
         abort();
     }
-    [(AppDelegate *)[UIApplication sharedApplication].delegate initiateSync:^(BOOL success) {}];
+    [[SyncManager sharedSyncManager] syncWithCompetionBlock:^(BOOL success) {}];
 }
 
 - (void)setEditing:(BOOL)editing animated:(BOOL)animated {
