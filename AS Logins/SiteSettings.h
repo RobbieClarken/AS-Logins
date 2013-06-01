@@ -11,5 +11,6 @@
 
 #define kSyncServerURL @"http://localhost:5051"
 #define kSecretKey @"secret key"
+#define kKeychainServiceName @"com.example"
 
 #endif
