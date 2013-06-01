@@ -40,7 +40,7 @@
     
     self.window.rootViewController = navigationController;
     [self.window makeKeyAndVisible];
-    //[self presentLockView];
+    [self presentLockView];
     return YES;
 }
 
