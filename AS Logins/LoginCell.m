@@ -58,6 +58,7 @@
     textField.tag = tag;
     textField.font = [UIFont fontWithName:@"Courier-Bold" size:17.0f];
     textField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    textField.autocorrectionType = UITextAutocorrectionTypeNo;
     textField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     textField.adjustsFontSizeToFitWidth = YES;
     return textField;

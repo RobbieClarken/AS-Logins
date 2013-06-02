@@ -8,6 +8,8 @@
 
 #import "DeviceCell.h"
 
+// TODO: Redesign for long strings
+
 @interface DeviceCell()
 
 @property (strong, nonatomic) UILabel *nameLabel;

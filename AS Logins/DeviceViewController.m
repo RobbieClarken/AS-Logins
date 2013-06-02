@@ -6,6 +6,15 @@
 //  Copyright (c) 2013 Robbie Clarken. All rights reserved.
 //
 
+// TODO: Redesign for long strings
+// TODO: Prevent usernames starting with i being capitalised when a new login row is generated
+// TODO: Test bug where you:
+//          (1) Have two passwords
+//          (2) Cut the text out of the password of the first login
+//          (3) Delete the first login
+//          The password of the second login may be erronously cleared.
+
+
 #import "DeviceViewController.h"
 #import "Login+Create.h"
 #import "Login+Encryption.h"

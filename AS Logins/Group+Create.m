@@ -47,9 +47,7 @@ static NSString *EntityName = @"Group";
 
 + (Group *)syncGroupWithPropertyValues:(NSDictionary *)values inContext:(NSManagedObjectContext *)context {
     Group *group = [Group groupWithUuid:values[@"uuid"] inContext:context];
-    NSLog(@"%@", group);
     [group updateWithPropertyValues:values];
-    NSLog(@"%@", group);
     return group;
 }
 
