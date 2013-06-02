@@ -9,6 +9,8 @@
 #import "LockViewController.h"
 #import "LockView.h"
 
+static NSString *FailedAttemptsKey = @"failedAttempts";
+
 @interface LockViewController ()
 
 @property (strong, nonatomic) LockView *lockView;
@@ -24,6 +26,15 @@
     self.view = self.lockView;
 }
 
+- (NSUInteger)failedAttempts {
+    return [(NSNumber *)[[NSUserDefaults standardUserDefaults] objectForKey:FailedAttemptsKey] unsignedIntegerValue];
+}
+
+- (void)setFailedAttempts:(NSUInteger)failedAttempts {
+    [[NSUserDefaults standardUserDefaults] setObject:[NSNumber numberWithUnsignedInteger:failedAttempts] forKey:FailedAttemptsKey];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self observeKeyboard];
@@ -36,7 +47,11 @@
     }
     
     self.firstEnteredCodeHash = 0;
-    self.failedAttempts = 0;
+    if (self.failedAttempts) {
+        self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
+    }
+    // TODO: Show locked out if failedAttempts > allowedAttempts
+    
     [self.lockView.codeTextField becomeFirstResponder];
 }
 
@@ -79,13 +94,17 @@
             }
         } else {
             if ([self.delegate checkCodeHash:codeHash]) {
+                self.failedAttempts = 0;
                 [self.delegate lockView:self finishedUnlocking:YES];
             } else {
                 self.failedAttempts += 1;
                 if (self.allowedAttempts > 0 && self.failedAttempts >= self.allowedAttempts) {
+                    self.lockView.warningLabel.text = [NSString stringWithFormat:@"Access denied"];
+                    self.lockView.codeTextField.text = @"";
+                    self.lockView.codeTextField.enabled = NO;
+                    
                     [self.delegate lockView:self finishedUnlocking:NO];
                 } else {
-                    //self.lockView.messageLabel.text = @"Please try again";
                     self.lockView.codeTextField.text = @"";
                     self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
                 }

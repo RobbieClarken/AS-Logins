@@ -34,7 +34,7 @@ static NSString *LastSyncDateKey = @"lastSyncDate";
 }
 
 + (NSDate *)lastSynchronized {
-    NSDate * lastSyncDate = [[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
+    NSDate *lastSyncDate = [[NSUserDefaults standardUserDefaults] objectForKey:LastSyncDateKey];
     if (!lastSyncDate) {
         lastSyncDate = [NSDate dateWithTimeIntervalSince1970:0.0f];
         [[NSUserDefaults standardUserDefaults] setObject:lastSyncDate forKey:LastSyncDateKey];
