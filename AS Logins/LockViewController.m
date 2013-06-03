@@ -43,14 +43,8 @@ static NSString *FailedAttemptsKey = @"failedAttempts";
     if (self.settingCode) {
         self.lockView.messageLabel.text = @"Enter a passcode";
     } else {
-        self.lockView.messageLabel.text = @"Enter your passcode";
+        [self updateUnlockingView];
     }
-    
-    self.firstEnteredCodeHash = 0;
-    if (self.failedAttempts) {
-        self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
-    }
-    // TODO: Show locked out if failedAttempts > allowedAttempts
     
     [self.lockView.codeTextField becomeFirstResponder];
 }
@@ -58,6 +52,7 @@ static NSString *FailedAttemptsKey = @"failedAttempts";
 - (void)observeKeyboard {
     NSNotificationCenter *notificationCenter = [NSNotificationCenter defaultCenter];
     [notificationCenter addObserver:self selector:@selector(keyboardWillChangeFrame:) name:UIKeyboardWillChangeFrameNotification object:nil];
+    [notificationCenter addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 }
 
 - (void)keyboardWillChangeFrame:(NSNotification *)notification {
@@ -69,10 +64,40 @@ static NSString *FailedAttemptsKey = @"failedAttempts";
     } else {
         self.lockView.keyboardHeight = keyboardFrame.size.height;
     }
+    // HACK: We use setNeedsUpdateConstraints instead of
+    // layoutIfNeeded in an animation to avoid glitch where
+    // subviews will animate in from the top left corner when
+    // the view is loaded modally.
     [self.lockView setNeedsUpdateConstraints];
 }
 
-- (void)codeTextFieldChanged {
+- (void)keyboardWillHide:(NSNotification *)notification {
+    NSDictionary *userInfo = notification.userInfo;
+    NSTimeInterval animationDuraction = [[userInfo objectForKey:UIKeyboardAnimationDurationUserInfoKey] doubleValue];
+    self.lockView.keyboardHeight = 0.0f;
+    [UIView animateWithDuration:animationDuraction animations:^{
+        [self.lockView layoutIfNeeded];
+    }];
+}
+
+- (void)updateUnlockingView {
+    if (self.allowedAttempts > 0 && self.failedAttempts >= self.allowedAttempts) {
+        self.lockView.messageLabel.text = [NSString stringWithFormat:@"Access denied"];
+        self.lockView.codeTextField.text = @"";
+        self.lockView.codeTextField.enabled = NO;
+        self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
+    } else {
+        self.lockView.messageLabel.text = @"Enter your passcode";
+        self.lockView.codeTextField.text = @"";
+        if (self.failedAttempts > 0) {
+            self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
+        } else {
+            self.lockView.warningLabel.text = @"";
+        }
+    }
+}
+
+- (void)codeTextFieldChanged {    
     if ([self.lockView.codeTextField.text length] == 4) {
         NSUInteger codeHash = [self.lockView.codeTextField.text hash];
         if (self.settingCode) {
@@ -89,7 +114,7 @@ static NSString *FailedAttemptsKey = @"failedAttempts";
                 // Record code and get user to re-enter code
                 self.firstEnteredCodeHash = codeHash;
                 self.lockView.messageLabel.text = @"Re-enter your passcode";
-                    self.lockView.warningLabel.text = @"";
+                self.lockView.warningLabel.text = @"";
                 self.lockView.codeTextField.text = @"";
             }
         } else {
@@ -98,15 +123,9 @@ static NSString *FailedAttemptsKey = @"failedAttempts";
                 [self.delegate lockView:self finishedUnlocking:YES];
             } else {
                 self.failedAttempts += 1;
+                [self updateUnlockingView];
                 if (self.allowedAttempts > 0 && self.failedAttempts >= self.allowedAttempts) {
-                    self.lockView.warningLabel.text = [NSString stringWithFormat:@"Access denied"];
-                    self.lockView.codeTextField.text = @"";
-                    self.lockView.codeTextField.enabled = NO;
-                    
                     [self.delegate lockView:self finishedUnlocking:NO];
-                } else {
-                    self.lockView.codeTextField.text = @"";
-                    self.lockView.warningLabel.text = [NSString stringWithFormat:@"%i of %i incorrect attempts", self.failedAttempts, self.allowedAttempts];
                 }
             }
         }
