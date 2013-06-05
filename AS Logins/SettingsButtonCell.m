@@ -38,6 +38,7 @@
         titleLabel.backgroundColor = [UIColor clearColor];
         titleLabel.font = [UIFont boldSystemFontOfSize:17.0f];
         titleLabel.textAlignment = NSTextAlignmentCenter;
+        titleLabel.highlightedTextColor = [UIColor whiteColor];
         
         activityIndicatorView.hidden = YES;
     
@@ -45,15 +46,6 @@
         self.activityIndicatorView = activityIndicatorView;
     }
     return self;
-}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [super setHighlighted:highlighted animated:animated];
-    if(highlighted) {
-        self.titleLabel.textColor = [UIColor whiteColor];
-    } else {
-        self.titleLabel.textColor = [UIColor blackColor];
-    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

@@ -74,11 +74,19 @@
     
         usernameLabel.adjustsFontSizeToFitWidth = YES;
         passwordLabel.adjustsFontSizeToFitWidth = YES;
+                
+        UIColor *highlightedTextColor = [UIColor whiteColor];
+        nameLabel.highlightedTextColor = highlightedTextColor;
+        hostnameLabel.highlightedTextColor = highlightedTextColor;
+        usernameLabel.highlightedTextColor = highlightedTextColor;
+        passwordLabel.highlightedTextColor = highlightedTextColor;
+        
         
         self.nameLabel = nameLabel;
         self.hostnameLabel = hostnameLabel;
         self.usernameLabel = usernameLabel;
         self.passwordLabel = passwordLabel;
+        
         
         self.badge.fontSize = 14.0f;
         self.badge.radius = 10;
@@ -130,40 +138,6 @@
     label.translatesAutoresizingMaskIntoConstraints = NO;
     [view addSubview:label];
     return label;
-}
-
-- (void)setHighlighted:(BOOL)highlighted animated:(BOOL)animated {
-    [super setHighlighted:highlighted animated:animated];
-    if(highlighted) {
-        UIColor *textColor = [UIColor whiteColor];
-        self.nameLabel.textColor = textColor;
-        self.hostnameLabel.textColor = textColor;
-        self.usernameLabel.textColor = textColor;
-        self.passwordLabel.textColor = textColor;
-    } else {
-        UIColor *textColor = [UIColor blackColor];
-        self.nameLabel.textColor = textColor;
-        self.hostnameLabel.textColor = textColor;
-        self.usernameLabel.textColor = textColor;
-        self.passwordLabel.textColor = textColor;
-    }
-}
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-    if(selected) {
-        UIColor *textColor = [UIColor whiteColor];
-        self.nameLabel.textColor = textColor;
-        self.hostnameLabel.textColor = textColor;
-        self.usernameLabel.textColor = textColor;
-        self.passwordLabel.textColor = textColor;
-    } else {
-        UIColor *textColor = [UIColor blackColor];
-        self.nameLabel.textColor = textColor;
-        self.hostnameLabel.textColor = textColor;
-        self.usernameLabel.textColor = textColor;
-        self.passwordLabel.textColor = textColor;
-    }
 }
 
 @end
