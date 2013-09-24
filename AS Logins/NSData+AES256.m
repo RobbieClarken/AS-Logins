@@ -10,13 +10,25 @@
 
 @implementation NSData (AES256)
 
+- (BOOL)key:(NSString *)key toCString:(char *)keyPtr ofLength:(size_t)length {
+	bzero(keyPtr, length); // fill with zeroes (for padding)
+    BOOL patchNeeded = ([key length] > kCCKeySizeAES256);
+    if (patchNeeded) {
+        key = [key substringToIndex:kCCKeySizeAES256]; // Ensure that the key isn't longer than what's needed (kCCKeySizeAES256)
+    }
+    // fetch key data
+    BOOL success = [key getCString:keyPtr maxLength:length encoding:NSUTF8StringEncoding];
+    
+    if (patchNeeded) {
+        keyPtr[0] = '\0';  // Previous iOS version than iOS7 set the first char to '\0' if the key was longer than kCCKeySizeAES256
+    }
+    return success;
+}
+
 - (NSData *)AES256EncryptWithKey:(NSString *)key andSalt:(NSData *)salt {
 	// 'key' should be 32 bytes for AES256, will be null-padded otherwise
 	char keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
-	bzero(keyPtr, sizeof(keyPtr)); // fill with zeroes (for padding)
-	
-	// fetch key data
-	[key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+    [self key:key toCString:keyPtr ofLength:sizeof(keyPtr)];
 	
 	NSUInteger dataLength = [self length];
 	
@@ -45,10 +57,7 @@
 - (NSData *)AES256DecryptWithKey:(NSString *)key andSalt:(NSData *)salt {
 	// 'key' should be 32 bytes for AES256, will be null-padded otherwise
 	char keyPtr[kCCKeySizeAES256+1]; // room for terminator (unused)
-	bzero(keyPtr, sizeof(keyPtr)); // fill with zeroes (for padding)
-	
-	// fetch key data
-	[key getCString:keyPtr maxLength:sizeof(keyPtr) encoding:NSUTF8StringEncoding];
+    [self key:key toCString:keyPtr ofLength:sizeof(keyPtr)];
 	
 	NSUInteger dataLength = [self length];
 	
