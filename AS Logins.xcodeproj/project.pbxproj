@@ -44,6 +44,7 @@
 		DCBE2281175861DF001FB677 /* SettingsButtonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCBE2280175861DF001FB677 /* SettingsButtonCell.m */; };
 		DCDA31DF170713E10051B2D4 /* GroupCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCDA31DE170713E10051B2D4 /* GroupCell.m */; };
 		DCE1396D17327D810028605C /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = DCE1396C17327D810028605C /* NSData+Base64.m */; };
+		DCE992221848A78100E1BF19 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DCE992211848A78100E1BF19 /* Images.xcassets */; };
 		DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D39173F8A940041D991 /* DeleteCell.m */; };
 		DCEF9D3D173F8EDE0041D991 /* red_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3B173F8EDE0041D991 /* red_button.png */; };
 		DCEF9D3E173F8EDE0041D991 /* red_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */; };
@@ -120,6 +121,7 @@
 		DCE1396B17327D810028605C /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
 		DCE1396C17327D810028605C /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		DCE1396E1732993A0028605C /* SiteSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SiteSettings.h; sourceTree = "<group>"; };
+		DCE992211848A78100E1BF19 /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		DCEF9D38173F8A940041D991 /* DeleteCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DeleteCell.h; sourceTree = "<group>"; };
 		DCEF9D39173F8A940041D991 /* DeleteCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DeleteCell.m; sourceTree = "<group>"; };
 		DCEF9D3B173F8EDE0041D991 /* red_button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = red_button.png; sourceTree = "<group>"; };
@@ -232,6 +234,7 @@
 				DCAA7D181732A5010083EF5B /* Categories */,
 				DCB6559616F503D600205396 /* View Controllers */,
 				DC5E5F1D16F64F2800FC84EC /* Managed Objects */,
+				DCE992211848A78100E1BF19 /* Images.xcassets */,
 				DCB6557416F4F53E00205396 /* Supporting Files */,
 			);
 			path = "AS Logins";
@@ -338,6 +341,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DCB6557816F4F53E00205396 /* InfoPlist.strings in Resources */,
+				DCE992221848A78100E1BF19 /* Images.xcassets in Resources */,
 				DCB6558016F4F53E00205396 /* Default.png in Resources */,
 				DCB6558216F4F53E00205396 /* Default@2x.png in Resources */,
 				DCB6558416F4F53E00205396 /* Default-568h@2x.png in Resources */,
@@ -460,10 +464,12 @@
 		DCB6558E16F4F53E00205396 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AS Logins/AS Logins-Prefix.pch";
 				INFOPLIST_FILE = "AS Logins/AS Logins-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
@@ -473,10 +479,12 @@
 		DCB6558F16F4F53E00205396 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "AS Logins/AS Logins-Prefix.pch";
 				INFOPLIST_FILE = "AS Logins/AS Logins-Info.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				TARGETED_DEVICE_FAMILY = "1,2";
 				WRAPPER_EXTENSION = app;
