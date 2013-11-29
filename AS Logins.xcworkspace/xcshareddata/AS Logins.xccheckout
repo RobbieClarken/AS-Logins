@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E646C7AC-6D1E-4FA1-B23C-7BB4349BD97C</string>
+	<key>IDESourceControlProjectName</key>
+	<string>AS Logins</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>26D17FE2-E301-4C67-936E-C44607672DFD</key>
+		<string>ssh://github.com/RobbieClarken/AS-Logins.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>AS Logins.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>26D17FE2-E301-4C67-936E-C44607672DFD</key>
+		<string>..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>ssh://github.com/RobbieClarken/AS-Logins.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>110</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>26D17FE2-E301-4C67-936E-C44607672DFD</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>26D17FE2-E301-4C67-936E-C44607672DFD</string>
+			<key>IDESourceControlWCCName</key>
+			<string>ASLogins</string>
+		</dict>
+	</array>
+</dict>
+</plist>

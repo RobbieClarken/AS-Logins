@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		709D60A4DED040C0AB97A9B7 /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38A00AB8D2824060AE404C72 /* libPods.a */; };
 		DC00B86F16FB517E00FDA9FC /* Group+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B86E16FB517E00FDA9FC /* Group+Create.m */; };
 		DC00B87216FB548800FDA9FC /* GroupsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87116FB548800FDA9FC /* GroupsViewController.m */; };
 		DC00B87E16FB616900FDA9FC /* Login+Create.m in Sources */ = {isa = PBXBuildFile; fileRef = DC00B87D16FB616900FDA9FC /* Login+Create.m */; };
@@ -49,11 +50,12 @@
 		DCEF9D3D173F8EDE0041D991 /* red_button.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3B173F8EDE0041D991 /* red_button.png */; };
 		DCEF9D3E173F8EDE0041D991 /* red_button@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */; };
 		DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D40173FC0B40041D991 /* Login+Encryption.m */; };
-		DCEF9D44173FDC910041D991 /* TDBadgedCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCEF9D43173FDC910041D991 /* TDBadgedCell.m */; };
 		DCEF9D46173FDCB00041D991 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCEF9D45173FDCB00041D991 /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		38A00AB8D2824060AE404C72 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		9F7E2B96B7E041F5AF708E70 /* Pods.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.xcconfig; path = Pods/Pods.xcconfig; sourceTree = "<group>"; };
 		DC00B86D16FB517E00FDA9FC /* Group+Create.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Group+Create.h"; sourceTree = "<group>"; };
 		DC00B86E16FB517E00FDA9FC /* Group+Create.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Group+Create.m"; sourceTree = "<group>"; };
 		DC00B87016FB548800FDA9FC /* GroupsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GroupsViewController.h; sourceTree = "<group>"; };
@@ -128,8 +130,6 @@
 		DCEF9D3C173F8EDE0041D991 /* red_button@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "red_button@2x.png"; sourceTree = "<group>"; };
 		DCEF9D3F173FC0B40041D991 /* Login+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Login+Encryption.h"; sourceTree = "<group>"; };
 		DCEF9D40173FC0B40041D991 /* Login+Encryption.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Login+Encryption.m"; sourceTree = "<group>"; };
-		DCEF9D42173FDC900041D991 /* TDBadgedCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TDBadgedCell.h; sourceTree = "<group>"; };
-		DCEF9D43173FDC910041D991 /* TDBadgedCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TDBadgedCell.m; sourceTree = "<group>"; };
 		DCEF9D45173FDCB00041D991 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
@@ -144,6 +144,7 @@
 				DCB6556E16F4F53E00205396 /* UIKit.framework in Frameworks */,
 				DCB6557016F4F53E00205396 /* Foundation.framework in Frameworks */,
 				DCB6557216F4F53E00205396 /* CoreGraphics.framework in Frameworks */,
+				709D60A4DED040C0AB97A9B7 /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,6 +192,7 @@
 				DCB6557316F4F53E00205396 /* AS Logins */,
 				DCB6556C16F4F53E00205396 /* Frameworks */,
 				DCB6556B16F4F53E00205396 /* Products */,
+				9F7E2B96B7E041F5AF708E70 /* Pods.xcconfig */,
 			);
 			sourceTree = "<group>";
 		};
@@ -211,6 +213,7 @@
 				DCB6556F16F4F53E00205396 /* Foundation.framework */,
 				DCB6557116F4F53E00205396 /* CoreGraphics.framework */,
 				DCEF9D45173FDCB00041D991 /* QuartzCore.framework */,
+				38A00AB8D2824060AE404C72 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -259,8 +262,6 @@
 		DCB6559616F503D600205396 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				DCEF9D42173FDC900041D991 /* TDBadgedCell.h */,
-				DCEF9D43173FDC910041D991 /* TDBadgedCell.m */,
 				DCB6559316F503C900205396 /* DeviceViewController.h */,
 				DCB6559416F503C900205396 /* DeviceViewController.m */,
 				DC86C3C617183A8E001BD154 /* DeviceCell.h */,
@@ -296,9 +297,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DCB6558D16F4F53E00205396 /* Build configuration list for PBXNativeTarget "AS Logins" */;
 			buildPhases = (
+				8033574F2AD943DA9E17EF15 /* Check Pods Manifest.lock */,
 				DCB6556616F4F53E00205396 /* Sources */,
 				DCB6556716F4F53E00205396 /* Frameworks */,
 				DCB6556816F4F53E00205396 /* Resources */,
+				1DF91226AE974000B99D0680 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -352,6 +355,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		1DF91226AE974000B99D0680 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		8033574F2AD943DA9E17EF15 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DCB6556616F4F53E00205396 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -381,7 +417,6 @@
 				DCAA7D171732A4470083EF5B /* NSData+Random.m in Sources */,
 				DCEF9D3A173F8A940041D991 /* DeleteCell.m in Sources */,
 				DCEF9D41173FC0B40041D991 /* Login+Encryption.m in Sources */,
-				DCEF9D44173FDC910041D991 /* TDBadgedCell.m in Sources */,
 				DC1E55DB17411C9C0065D2C4 /* LockViewController.m in Sources */,
 				DC1E55DE17411E250065D2C4 /* LockView.m in Sources */,
 				DC1630A7175641DC00A8E61F /* KeychainHelper.m in Sources */,
@@ -430,7 +465,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
@@ -454,7 +489,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNINITIALIZED_AUTOS = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 6.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -463,6 +498,7 @@
 		};
 		DCB6558E16F4F53E00205396 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F7E2B96B7E041F5AF708E70 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
@@ -478,6 +514,7 @@
 		};
 		DCB6558F16F4F53E00205396 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9F7E2B96B7E041F5AF708E70 /* Pods.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
